@@ -1,0 +1,49 @@
+body{
+    margin: 0;
+}
+
+#overcast {
+    position: absolute;
+    z-index: 10000;
+    background: rgba(0,0,0,0.6);
+    width: 100%;
+}
+
+#overcast .wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+#overcast .wrapper > *{
+    position: absolute;
+    left: -250px;
+    top: 50%;
+    min-width: 200px;
+    text-align: center;
+    background: rgba(0,0,0,0.9);
+    padding: 10px 20px;
+    box-shadow: 0 0 8px black;
+}
+
+#overcast .wrapper form[name="login"]{
+    width: 300px;
+}
+
+#overcast .wrapper form[name="login"] .input-group{
+    margin: 5px;
+}
+
+
+#overcast .wrapper form[name="login"] img{
+    width: 100%;
+    color: white;
+}
+
+#slider{
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
