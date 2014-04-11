@@ -1,5 +1,8 @@
 <?php
 
+namespace modules\mybook\message;
+
+/*
 require_once '../../config/server.settings.php';
 require_once '../../config/database.lib.php';
 
@@ -8,6 +11,7 @@ $settings_file = 'config/server.settings.php';
 $database_file = 'config/database.lib.php';
 require_once  (is_file('etc/'.$settings_file))? 'etc/'.$settings_file: '../../'.$settings_file;
 require_once (is_file('etc/'.$database_file))? 'etc/'.$database_file:'../../'.$database_file;
+*/
 
 class Message{
 	private $body, $sender, $message_id, $user_id, $subject, $recipient_ids, $reader_id, $date, $db;

@@ -1,9 +1,7 @@
-var overcast = document.querySelector("#overcast");
 var background_slide = document.querySelector("#slider");
 background_slide.style.height = window.innerHeight+"px";
-overcast.style.height = window.innerHeight+"px";
-
 var image_urls = ["static/img/bob.jpg", "static/img/people.jpg", "static/img/group.jpg"];
+load(wrapper, "page/forms.php #login", null);
 
 function preload_image(image_urls){
     var images = new Array();
@@ -31,3 +29,6 @@ window.onload = function(){
     container.style.top = "-"+(container.clientHeight/2)+"px"; 
     container.style.left = "-"+(container.clientWidth/2)+"px";
 }
+
+
+

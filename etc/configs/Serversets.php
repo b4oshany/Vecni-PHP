@@ -1,4 +1,6 @@
 <?php
+require_once "__autoload.php";
+use libs\database\DatabaseConnection;
 /* Developer:			Oshane Bailey
  * Organization:		Osoobe Inc.
  * Description:			Variable definition based on host location
@@ -18,7 +20,7 @@ $server_location = $_SERVER['HTTP_HOST'];
 # The mysql library consist of database error handling, manipulation and consifiguration
 # It is advise to not to mess with this file unless you posses advance experience in PHP object orientated programming and database handling
 # The file below is the library of all mysql functions that can be performed on the database
-require_once 'database.lib.php';
+
 
 # Section 2.1.2.2 Mysql Settings
 # The following lines below defines the database connection settings that will be used across the website
@@ -38,7 +40,7 @@ $db_name = 'cheapomail';
 # Section 2.1.2.3 Databse Connection
 # In order for the website to successfully connect to a database all the required fields in Section 2.2.2 Mysql Settings must be valid
 # The following lines below uses the values that were set in Section 2.1.2.2 to connect to the database by setting the static variable for the database connection class
-Database::set_Connection($db_user, $db_pass, $db_name, $db_location, $db_name);
+DatabaseConnection::set_Connection($db_user, $db_pass, $db_name, $db_location, $db_name);
 
 
 # Section 2.1.3 Sessions

@@ -1,15 +1,14 @@
 <?php
-$settings_file = 'config/server.settings.php';
-$database_file = 'config/database.lib.php';
-require_once  (is_file('etc/'.$settings_file))? 'etc/'.$settings_file: '../../'.$settings_file;
-require_once (is_file('etc/'.$database_file))? 'etc/'.$database_file:'../../'.$database_file;
-
+namespace modules\mybook\user;
+require_once "setup.php";
+use libs\database\Database;
+use configs\Websets;
 class User{
 	protected $first_name, $last_name, $username, $name;
 	protected $db;
 	
 	public function __construct(){	
-		$this->db = new Db_Functions();	
+		$this->db = new Database();	
 	} 	
 	
 	public function login($username, $password){

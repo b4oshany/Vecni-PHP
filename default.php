@@ -1,7 +1,3 @@
-<?php 
-require_once "etc/__autoload.php";
-use etc\configs\Websets;
-?>
 <!DOCTYPE html>
 <html lang="en">
     <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

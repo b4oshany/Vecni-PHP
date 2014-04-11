@@ -1,49 +1,7 @@
 <?php
-    class Database{		
-		//privilige user for the database
-		protected static $database_user;
-		protected static $database_pass;
-	
-		//set the database to use
-		protected static $database_name; 
-				
-		//database database_host location
-		protected static $database_host;
-		
-		public function __construct(){
-			$this->connect();		
-		}
-		
-		public function connect(){		
-            try{
-				if(!mysql_connect(self::$database_host, self::$database_user, self::$database_pass)){
-					throw new Exception("\nError connecting to database host", 1);
-				}else{
-					if(!mysql_select_db(self::$database_name)){
-						throw new Exception("\nError connecting to database ".self::$database_name, 1);						
-					}
-				}
-			}catch(Exception $e){
-				echo $e->getMessage();	
-			}
-		}
-		
-		public function set_Database($db){
-			self::$database_name = $db;
-			$this->connect();
-		}
-        
-        public static function set_Connection($user = "root", $password = "", $database = "", $database_host = "localhost"){            
-            self::$database_host = $database_host;
-			self::$database_name = $database;
-			self::$database_pass = $password;
-			self::$database_user = $user;
-        }
-	}
-	
-    
-
-	class Db_Functions extends Database{			
+namespace libs\database;
+require_once "DatabaseConnection.php";
+    class Database extends DatabaseConnection{			
 		public function query($sql, $print_sql=0){
 			try{
 				if($print_sql == 1){
@@ -54,7 +12,7 @@
 				if($run_query){
 					return $run_query;
 				}else{					
-					throw new Exception("\nError in sql query CODE:x01f019", 1);
+					throw new \Exception("\nError in sql query CODE:x01f019", 1);
 				}
 			}catch(Exception $e){
 				echo $e->getMessage();

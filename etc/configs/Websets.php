@@ -1,4 +1,5 @@
 <?php
+namespace configs;
 /*
 *	Section 1. Comapny Information
 *	The following lines below consisit of the company detailed information which is used across this website
@@ -22,30 +23,13 @@ $company_email = 'info@feroinc.com';
 
 # Section 2.1 Server Setting
 # change the file location for server setting file which you like to use for the current hosting configuration
-require_once 'server.settings.php';
+require_once "Serversets.php";
 
 # Section 2.3 File System
 # This defines the overall structure of the website, that is, it defines the location of the modules, themes, pictures, data, css and javascript files and folders
 # The file below defines the location core folders and files withing the system
-require_once 'core_files.settings.php';
 
 
-# Section X Extraction
-# This section defines functions that will extract the core files needed throughout the website
-function output_files($cores){
-	foreach($cores as $file){
-		$type = substr($file, strrpos($file, '.')+1);
-		switch($type){
-		case 'js':
-			echo '<script src="'.$file.'"></script>';
-			break;
-		case 'php':
-			require_once $file;
-			break;
-		case 'css':
-			echo '<link type="text/css" rel="stylesheet" href="'.$file.'" />';
-			break;			
-		}
-	}
-}
+
+
 ?>
