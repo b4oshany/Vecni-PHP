@@ -9,13 +9,12 @@ require_once "DatabaseConnection.php";
 				}
 				$run_query = mysql_query($sql);
 				//Checking if the query ran successfully, if not then throw an exception
-				if($run_query){
-					return $run_query;
-				}else{					
-					throw new \Exception("\nError in sql query CODE:x01f019", 1);
-				}
+				return $run_query;
 			}catch(Exception $e){
-				echo $e->getMessage();
+                //echo '<br/>';
+               //echo $e->getMessage();
+               // echo '<br/>';
+                throw new \Exception("\nError in sql query CODE:x01f019", 1);
 			}		
 		}
 		
@@ -101,6 +100,7 @@ require_once "DatabaseConnection.php";
 		public function fetch_query_results($sql, $type = 'associated'){
 			$count = 0;
 			$data = array(); 
+            //echo $sql;
 			$query = $this->query($sql);
 			//Traverse through each row and place them into an associate array
 			if(mysql_num_rows($query) > 0){

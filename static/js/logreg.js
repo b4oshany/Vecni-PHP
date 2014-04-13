@@ -7,10 +7,10 @@ var form_ulogin = $('form[name="fm_ulogin"]');
 var form_uregister = $('form[name="fm_usignup"]');
 
 var pass = $('#pass');
-var cpass = $('#compass');
+//var cpass = $('#compass');
 
 
-$('#pass, #cpass').keyup(function(e){
+$('#pass').keyup(function(e){
     if(!patt.test(this.value)){
         this.style.outline = '1px solid red';
     }else{
@@ -19,9 +19,9 @@ $('#pass, #cpass').keyup(function(e){
 });
 
 form_ulogin.submit(function(e){
-    $.post('etc/modules/user/login.php', ($(this).serialize())+"rt=signin", function(data){
+    $.post('page/request_handler.php', ($(this).serialize())+"&rt=usignin", function(data){
        if(data == 1){
-            window.location.assign('?do=mail');   
+            window.location.assign('home');   
        }else{
            $("#err").remove();
             $('#container').append('<div id="err">You username or password is invalid, please try log in again');   
@@ -31,23 +31,20 @@ form_ulogin.submit(function(e){
 }); 
 
 form_uregister.submit(function(e){   
-    if(pass.val() === cpass.val() && patt.test(pass.val())){
-    $.post('etc/modules/user/add.php', ($(this).serialize())+"rt=usignup", function(data){
+   // if(patt.test(pass.val())){
+    $.post('page/request_handler.php', ($(this).serialize())+"&rt=usignup", function(data){
         console.log(data);
+        alert(data);
        if(data == 1){
-            window.location.assign('index.php?do=home');   
+            window.location.assign('home');   
        }else{
-           $("#err").remove();
-            $('#container').append('<div id="err">Something went wrong in registeration</div>');   
+           //$("#err").remove();
+            //$('#container').append('<div id="err">Something went wrong in registeration</div>');   
        }
     });
-    }else{
-        if(pass != cpass){
-            this.cpass.placeholder = 'passwords did not match';
-        }else{
-            this.cpass.placeholder = 'the password you enter is invalid'
-        }
-    }
+   /* }else{
+            this.pass.placeholder = 'the password you enter is invalid'
+    }*/
     return false;
 });  
 

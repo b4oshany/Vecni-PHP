@@ -1,10 +1,10 @@
 <?php
-require_once "__autoload.php";
-use libs\database\DatabaseConnection;
 /* Developer:			Oshane Bailey
  * Organization:		Osoobe Inc.
  * Description:			Variable definition based on host location
  */
+require_once "__autoload.php";
+use libs\database\Database;
 
 # Section 2.1.1 Server Settings
 
@@ -40,8 +40,7 @@ $db_name = 'mybook';
 # Section 2.1.2.3 Databse Connection
 # In order for the website to successfully connect to a database all the required fields in Section 2.2.2 Mysql Settings must be valid
 # The following lines below uses the values that were set in Section 2.1.2.2 to connect to the database by setting the static variable for the database connection class
-DatabaseConnection::set_Connection($db_user, $db_pass, $db_name, $db_location, $db_name);
-
+Database::set_Connection($db_user, $db_pass, $db_name, $db_location, $db_name);
 
 # Section 2.1.3 Sessions
 # Start sessions at the begining of the script

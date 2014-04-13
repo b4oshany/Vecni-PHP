@@ -3,7 +3,7 @@
         <img src="static/img/user-3.png">
         <div class="input-group">
           <span class="input-group-addon">@</span>
-          <input type="text" class="form-control" name="user" placeholder="Username">
+          <input type="text" class="form-control" name="username" placeholder="Username">
         </div>
         <div class="input-group">
           <span class="input-group-addon">*</span>
@@ -17,15 +17,15 @@
         <img src="static/img/user-3.png">
         <div class="input-group">
           <span class="input-group-addon">@</span>
-          <input type="text" class="form-control" name="user" placeholder="Username">
+          <input type="text" class="form-control" name="username" placeholder="Username">
         </div>
         <div class="input-group">
           <span class="input-group-addon">*</span>
-          <input type="text" class="form-control" name="fname" placeholder="Firstname">
+          <input type="text" class="form-control" name="first_name" placeholder="Firstname">
         </div>
         <div class="input-group">
           <span class="input-group-addon">*</span>
-          <input type="text" class="form-control" name="lname" placeholder="Lastname">
+          <input type="text" class="form-control" name="last_name" placeholder="Lastname">
         </div>
         <div class="input-group">
           <span class="input-group-addon">*</span>
@@ -33,11 +33,11 @@
         </div>
         <div class="input-group">
           <span class="input-group-addon">*</span>
-          <input type="password" class="form-control" name="pass" placeholder="Password">
+          <input type="email" class="form-control" name="email" placeholder="email">
         </div>
         <div class="input-group">
           <span class="input-group-addon">*</span>
-          <input type="password" class="form-control" name="conpass" placeholder="Comfirm Password">
+          <input type="password" class="form-control" name="pass" placeholder="Password">
         </div>
         <input type="button" value="Sign In" class="btn btn-primary btn-lg bn_usignin" onclick="show_loginbox()"  />
         <input type="submit" value="Register" class="btn btn-primary btn-lg" />

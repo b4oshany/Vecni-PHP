@@ -21,6 +21,8 @@ use etc\configs\Websets;
     <div class='wrapper'>        
      </div>  
   </div>
-  <?php require_once $page ?>
+  <?php
+    require_once $page 
+      ?>
   </body>
 </html>
