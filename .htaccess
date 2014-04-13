@@ -1,0 +1,5 @@
+# Establish a 404 message page
+ErrorDocument 404 /MyBook/index.php
+
+# Prevent directory listing
+#IndexIgnore *

@@ -1,7 +1,7 @@
 <?php
-
+if (!function_exists('autoload')) {
 function autoload($className){
-    $module_container = "etc"+DIRECTORY_SEPARATOR;
+    $module_container = "etc".DIRECTORY_SEPARATOR;
     $module = $className;
     $className = ltrim($className, '\\');
     $fileName  = '';
@@ -11,9 +11,10 @@ function autoload($className){
         $className = substr($className, $lastNsPos + 1);
         $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
     }
-    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-    //$fileName = $module_container.$fileName;
+    $fileName .= $className.'.php';
+    $fileName =  $module_container.$fileName;
     for($i = 0; $i < 5; $i++){
+    //echo $fileName."<br/>";
         if(file_exists($fileName)){
             require_once $fileName;
             break;
@@ -21,7 +22,6 @@ function autoload($className){
             $fileName = "..".DIRECTORY_SEPARATOR.$fileName;
     }    
 }
-
 spl_autoload_register('\autoload');
-
+}
 ?>

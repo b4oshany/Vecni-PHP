@@ -1,7 +1,10 @@
 var background_slide = document.querySelector("#slider");
 background_slide.style.height = window.innerHeight+"px";
 var image_urls = ["static/img/bob.jpg", "static/img/people.jpg", "static/img/group.jpg"];
-load(wrapper, "page/forms.php #login", null);
+load(wrapper, "page/forms.php #get_login_register", function(){
+    $('form[name="fm_ulogin"]').show();    
+    overcast_reposition();
+});
 
 function preload_image(image_urls){
     var images = new Array();
@@ -25,9 +28,7 @@ function do_slider(element, images){
 do_slider(background_slide, preload_image(image_urls));
 
 window.onload = function(){
-    container = document.querySelector("#overcast .wrapper > *");
-    container.style.top = "-"+(container.clientHeight/2)+"px"; 
-    container.style.left = "-"+(container.clientWidth/2)+"px";
+    overcast_reposition();
 }
 
 

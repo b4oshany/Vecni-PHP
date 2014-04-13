@@ -26,16 +26,16 @@ body{
     box-shadow: 0 0 8px black;
 }
 
-#overcast .wrapper form[name="login"]{
+#overcast .wrapper form[name="fm_ulogin"], #overcast .wrapper form[name="fm_usignup"]{
     width: 300px;
 }
 
-#overcast .wrapper form[name="login"] .input-group{
+#overcast .wrapper form .input-group{
     margin: 5px;
 }
 
 
-#overcast .wrapper form[name="login"] img{
+#overcast .wrapper form[name="fm_ulogin"] img, #overcast .wrapper form[name="fm_usignup"] img{
     width: 100%;
     color: white;
 }

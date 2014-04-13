@@ -32,10 +32,10 @@ $db_location = 'localhost';
 # By default the user name and password for the database is set to root and null
 # To change this, change the value of the db_user or/and db_name to the appropriate credentials for the databse
 $db_user = 'root';
-$db_pass = '';
+$db_pass = 'oshany1991';
 
 # Please set the default databse name in db_name variable below
-$db_name = 'cheapomail';
+$db_name = 'mybook';
 
 # Section 2.1.2.3 Databse Connection
 # In order for the website to successfully connect to a database all the required fields in Section 2.2.2 Mysql Settings must be valid

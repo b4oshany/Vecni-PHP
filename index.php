@@ -1,5 +1,6 @@
 <?php 
 require_once "etc/__autoload.php";
+require_once "page/page_handler.php";
 use etc\configs\Websets;
 ?>
 <!DOCTYPE html>
@@ -17,14 +18,9 @@ use etc\configs\Websets;
     </head>
   <body > 
   <div id="overcast">
-    <div class='wrapper'>
-        
+    <div class='wrapper'>        
      </div>  
   </div>
-  <script src="static/js/jquery.js"></script>
-  <script src="static/bootstrap/js/bootstrap.min.js"></script>  
-  <script src="static/js/default.js"></script>
-  <div id="slider"></div>
-  <script src="static/js/home.js"></script>        
+  <?php require_once $page ?>
   </body>
 </html>

@@ -7,19 +7,19 @@ if(typeof(Storage) !== undefined){
     supportStorage = true;
 }
 
-
-$('form[name="login"]').submit(function(e){
-    $.post('etc/modules/user/login.php', $(this).serialize(), function(data){
-       if(data == 1){
-            window.location.assign('?do=mail');   
-       }else{
-           $("#err").remove();
-            $('#container').append('<div id="err">You username or password is invalid, please try log in again');   
-       }
-    });
-    return false;
-}); 
-
 function load(element, url, fn){
-    $(element).load(url, fn);    
+    $(element).load(url, function(data){
+        fn();
+        var scripts = $(data).find('jscript');
+        scripts.each(function(){
+           src = this.getAttribute('src');
+           $.getScript(src);
+        });
+    });    
+}
+
+function overcast_reposition(){    
+    container = document.querySelector("#overcast .wrapper > *");
+    container.style.top = "-"+(container.clientHeight/2)+"px"; 
+    container.style.left = "-"+(container.clientWidth/2)+"px";
 }
