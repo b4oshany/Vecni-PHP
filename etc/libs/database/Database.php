@@ -118,7 +118,7 @@ require_once "DatabaseConnection.php";
 			// Afterwards return the associate array for display or any other use
 			return $data;
 			}else{
-				return 0;
+				return array();
 			}
 		}	
 	}

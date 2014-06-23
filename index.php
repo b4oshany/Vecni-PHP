@@ -1,7 +1,7 @@
 <?php 
-require_once "etc/__autoload.php";
-require_once "page/page_handler.php";
-use etc\configs\Websets;
+    include "main.ini.php";
+    use configs\Vency;
+    Vency::get_route();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@ use etc\configs\Websets;
         <meta name="author" content="">
         <link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
         <title>Welcome To Fero Inc.</title>
-        <link rel="stylesheet" type="text/css" href="static/css/home.css" >
+        <link rel="stylesheet" type="text/css" href="static/css/default.css" >
         <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap.css">
     </head>
   <body > 
@@ -21,8 +21,6 @@ use etc\configs\Websets;
     <div class='wrapper'>        
      </div>  
   </div>
-  <?php
-    require_once $page 
-      ?>
-  </body>
+
+    </body>
 </html>

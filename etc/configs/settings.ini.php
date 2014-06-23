@@ -13,9 +13,6 @@ use libs\database\Database;
 # In order to point this website to a specific location, then change the host location below
 $server_location = $_SERVER['HTTP_HOST'];
 
-# Section 2.1.2 Database Settings
-
-
 # Section 2.1.2.1 Mysql Library
 # The mysql library consist of database error handling, manipulation and consifiguration
 # It is advise to not to mess with this file unless you posses advance experience in PHP object orientated programming and database handling

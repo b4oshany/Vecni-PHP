@@ -1,8 +1,9 @@
 var background_slide = document.querySelector("#slider");
 background_slide.style.height = window.innerHeight+"px";
 var image_urls = ["static/img/bob.jpg", "static/img/people.jpg", "static/img/group.jpg"];
-load(wrapper, "page/forms.php #get_login_register", function(){
+load(wrapper, "page/forms.php", "#get_login_register", function(){
     $('form[name="fm_ulogin"]').show();    
+    overcast.style.display = "block";
     overcast_reposition();
 });
 
