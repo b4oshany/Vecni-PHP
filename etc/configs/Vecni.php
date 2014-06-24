@@ -1,7 +1,7 @@
 <?php
 namespace configs;
 
-class Vency{
+class Vecni{
     /*
     *	Section 1.1 Comapny Information
     *	The following lines below consisit of the company detailed information which is used across this website
@@ -31,16 +31,18 @@ class Vency{
     
     private $vars = array();
     
-    private static $app_route = array(
-            "tattletale" => "welcome",
-            "/"=>"welcome",
-            "public_html"=>"welcome"    
-        );
+    private static $app_route = array();
     
         
     public static function run_config(){
+        # get the root folder of the application
         self::$main_dir = dirname(dirname(dirname(__FILE__)));        
-        self::$main_dirname = basename(self::$main_dir );        
+        self::$main_dirname = basename(self::$main_dir );
+        
+        # set the default page of the application
+        self::set_route(self::$main_dirname, "welcome");
+        
+        # set the default subfolders of the application
         self::$template_dir = self::$main_dirname.DIRECTORY_SEPARATOR.self::$template_dir;
         self::$static_dir = self::$main_dirname.DIRECTORY_SEPARATOR.self::$static_dir;
         self::$css_dir = self::$static_dir.DIRECTORY_SEPARATOR.self::$css_dir;
@@ -111,12 +113,8 @@ class Vency{
     public static function set_route($url, $app_route){
         self::$app_route[$url] = $app_route;      
     }
-    
-    public static function ok(){
-        echo "ok";
-    }
 }
 
-Vency::run_config();
+Vecni::run_config();
 
 ?>

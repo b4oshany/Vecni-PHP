@@ -1,13 +1,13 @@
 <?php
 # include packages
-require_once "etc/configs/Vency.php";
+require_once "etc/configs/Vecni.php";
 require_once 'etc/libs/twig/lib/Twig/Autoloader.php';
 require_once 'etc/libs/less/lessc.inc.php';
 
 # define package usage
-use configs\Vency;
+use configs\Vecni;
 
-$vency = new Vency();
+$Vecni = new Vecni();
 
 # register autloading package twig
 Twig_Autoloader::register();
@@ -17,12 +17,12 @@ $twig = new Twig_Environment($loader);
 
 # compile css less files
 $less = new lessc;
-$less->checkedCompile(dirname(Vency::$main_dir)
-                      .DIRECTORY_SEPARATOR.Vency::$css_dir
+$less->checkedCompile(dirname(Vecni::$main_dir)
+                      .DIRECTORY_SEPARATOR.Vecni::$css_dir
                       .DIRECTORY_SEPARATOR."less"
                       .DIRECTORY_SEPARATOR."style.less",
-                     dirname(Vency::$main_dir)
-                      .DIRECTORY_SEPARATOR.Vency::$css_dir
+                     dirname(Vecni::$main_dir)
+                      .DIRECTORY_SEPARATOR.Vecni::$css_dir
                       .DIRECTORY_SEPARATOR."src"
                       .DIRECTORY_SEPARATOR."style.css"
                      );
