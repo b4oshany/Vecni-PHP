@@ -13,14 +13,21 @@ class Vency{
     public static $company_address = 'Kingston, Jamaica';
     # company contact number
     public static $company_number = '(876) 8295969';
-    #company email address
+    # company email address
     public static $company_email = 'info@feroinc.com';
     
-    private static $main_dir = "";    
-    private static $template_dir = "templates";
-    private static $static_dir = "static";
-    private static $routes_file = "main.ini.php";
-    private static $current_route = "";
+    # absolute path of the application folder
+    public static $main_dir = "";    
+    # name of the application folder
+    public static $main_dirname = "";
+    # currently viewed route of the user
+    public static $current_route = "";
+    
+    # main directories of the application
+    public static $template_dir = "templates";
+    public static $static_dir = "static";
+    public static $css_dir = "css";
+    public static $routes_file = "main.ini.php";
     
     private $vars = array();
     
@@ -31,8 +38,13 @@ class Vency{
         );
     
         
-    public static function run_config(){    
-        self::$main_dir = basename(dirname(dirname(dirname(__FILE__))));            
+    public static function run_config(){
+        self::$main_dir = dirname(dirname(dirname(__FILE__)));        
+        self::$main_dirname = basename(self::$main_dir );        
+        self::$template_dir = self::$main_dirname.DIRECTORY_SEPARATOR.self::$template_dir;
+        self::$static_dir = self::$main_dirname.DIRECTORY_SEPARATOR.self::$static_dir;
+        self::$css_dir = self::$static_dir.DIRECTORY_SEPARATOR.self::$css_dir;
+        self::$routes_file = self::$main_dir.DIRECTORY_SEPARATOR.self::$routes_file;
     }
 
     /*
