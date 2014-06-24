@@ -1,7 +1,21 @@
+Description
+-----------
+
+Vecni is a light-weight PHP micro-framework that utilizes url dispatching to server files instead of 
+filesystem url resolution. It utilizes Twig, which is equivalent to Jinja2 templates for advance template
+management. 
+
+The aim of Vecni is to allow fast development and separate developers and designers task from each other
+without bombarding them with tones of tools which they may not need. 
+In addition, Vecni is about the developers, who want to do most of coding, but have unique tools and functions 
+to aid in development. For instance, Vecni uses advance namespaces and autoloading tools to access modules from anywhere, which is much like python or C++ package management.
+
+There is no installation, everything works right out of the box once you've downloaded the modules you need for development.
+
 Important
 ---------
 
-This mirco-framework uses a number of components such as [Twig] for templating, [Less] for css pre-processing
+Vecni uses a number of components such as [Twig] for templating, [Less] for css pre-processing
 amongst others that will be mentioned in the Tech Stack section. 
 Therefore, additional steps are need to fully setup this mrico-framework.
 Such steps are highlighted in the Step Instruction step
@@ -9,9 +23,6 @@ Such steps are highlighted in the Step Instruction step
 Setup Instructions
 ------------------
 ------------------
-
-Installation
-------------
 
 After downloading the source files, you will need to run an additional git commands
 inorder for this application to use the external modules such as [Twig] and [Less] 
