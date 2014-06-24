@@ -43,6 +43,7 @@ Tech Stack
 Author of vecni
 -------------------------
 [Oshane Bailey]
+
 ![alt tag](https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t1.0-1/c127.37.466.466/s148x148/76418_1578880746745_2542594_n.jpg)
 
   
