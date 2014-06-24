@@ -1,5 +1,5 @@
 <?php 
     include "main.ini.php";
-    use configs\Vency;
-    Vency::get_route();
+    use configs\Vecni;
+    Vecni::get_route();
 ?>
