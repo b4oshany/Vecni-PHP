@@ -1,0 +1,6 @@
+[submodule "etc/libs/less"]
+	path = etc/libs/less
+	url = git@github.com:leafo/lessphp.git
+[submodule "etc/libs/twig"]
+	path = etc/libs/twig
+	url = git://github.com/fabpot/Twig.git
