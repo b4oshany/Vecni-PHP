@@ -56,24 +56,24 @@
 
       <!-- Three columns of text below the carousel -->
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <img class="img-circle" data-src="holder.js/140x140" alt="140x140" src="static/img/icons/ic_scheduling.png" style="width: 140px; height: 140px;">
           <h2>Poor Time Management, Inaccurate Schedules</h2>
           <p>Never miss a class, bus or even special event again. With Tattle Tale, we got you covered by keeping you up to date with class, clubs and your university events and activities.</p>
           <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
+        </div><!-- /.col-md-4 -->
+        <div class="col-md-4">
           <img class="img-circle" data-src="holder.js/140x140" alt="140x140" src="static/img/icons/ic_mayday.png" style="width: 140px; height: 140px;">
           <h2>Don't Know Where To Go?</h2>
           <p>Tattle Tale got you covered. With Tattle Tale, you can find places on campus such as cheapest to the most expensivee restaurants, as well as classes, bus stops, agmonst other places. Tattle Tale is your ultimate university guide</p>
           <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
+        </div><!-- /.col-md-4 -->
+        <div class="col-md-4">
           <img class="img-circle" data-src="holder.js/140x140" alt="140x140" src="static/img/icons/ic_location.png" style="width: 140px; height: 140px;">
           <h2>Do You Have a Burning Question?</h2>
           <p>Then get blazing answers right at your fingertips. With Tattle Tale, you can post your questions in a class, club or general forum and get response from your peers and advisors.</p>
           <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-        </div><!-- /.col-lg-4 -->
+        </div><!-- /.col-md-4 -->
       </div><!-- /.row -->
 
 
