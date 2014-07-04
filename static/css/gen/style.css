@@ -1,0 +1,190 @@
+body {
+  background-color: #f2f2f2;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: #555;
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #333;
+}
+h1 h1,
+h2 h1,
+h3 h1,
+h4 h1,
+h5 h1,
+h6 h1 {
+  font-size: 40px;
+}
+h1 h3,
+h2 h3,
+h3 h3,
+h4 h3,
+h5 h3,
+h6 h3 {
+  color: #95a5a6;
+  font-weight: 400;
+}
+h1 h4,
+h2 h4,
+h3 h4,
+h4 h4,
+h5 h4,
+h6 h4 {
+  color: #95a5a6;
+  font-weight: 400;
+  font-size: 20px;
+}
+p {
+  line-height: 28px;
+  margin-bottom: 25px;
+  font-size: 16px;
+}
+.centered {
+  text-align: center;
+}
+a {
+  color: #3498db;
+  word-wrap: break-word;
+  -webkit-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  -moz-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  -ms-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  -o-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  transition: #3498db 0.1s ease-in background 0.1s ease-in;
+}
+a:before,
+a:after {
+  -webkit-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  -moz-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  -ms-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  -o-transition: #3498db 0.1s ease-in background 0.1s ease-in;
+  transition: #3498db 0.1s ease-in background 0.1s ease-in;
+}
+a:hover,
+a:focus {
+  color: #7b7b7b;
+  text-decoration: none;
+  outline: 0;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+.navbar-default {
+  background-color: #3498db;
+  border-color: transparent;
+}
+.navbar-default .navbar-brand {
+  color: white;
+}
+.navbar-default .navbar-nav > li > a {
+  color: white;
+}
+#headerwrap {
+  background-color: #3498db;
+  margin-top: -20px;
+  padding-top: 200px;
+  background-attachment: relative;
+  background-position: center center;
+  min-height: 650px;
+  width: 100%;
+  -webkit-background-size: 100%;
+  -moz-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+#headerwrap h1 {
+  margin-top: 60px;
+  margin-bottom: 15px;
+  color: white;
+  font-size: 45px;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+form.login label,
+form.register label {
+  display: block;
+}
+form.login .form-group,
+form.register .form-group {
+  width: 100%;
+}
+form.login .form-group input[type="text"],
+form.login .form-group input[type="email"],
+form.login .form-group input[type="password"],
+form.register .form-group input[type="text"],
+form.register .form-group input[type="email"],
+form.register .form-group input[type="password"] {
+  width: 100%;
+}
+.modal form.register {
+  display: none;
+}
+.modal form.register #password-field {
+  position: absolute;
+  bottom: 20px;
+}
+.modal form.register [class^="col-"]:nth-last-of-type(2) {
+  float: right;
+}
+footer {
+  background: #333;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  color: white;
+}
+.mt {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.form-control {
+  height: 42px;
+  font-size: 18px;
+  width: 280px;
+}
+i {
+  margin: 8px;
+  color: #3498db;
+}
+.time_circles {
+  position: relative;
+  width: 100%;
+  height: 300px !important;
+}
+.time_circles > div {
+  position: absolute;
+  text-align: center;
+}
+.time_circles > div > h4 {
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Century Gothic', Arial;
+}
+.time_circles > div > span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: 'Century Gothic', Arial;
+  font-size: 300%;
+  margin-top: 0.4em;
+  font-weight: bold;
+}

@@ -1,40 +1,41 @@
 
 <!-- NAVBAR ================================================= -->   
-<div class="navbar-wrapper">
-    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+ <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="."><?php echo $website_name; ?></a>
+          <a class="navbar-brand" href="#"><img src = "static/img/icons/tattletale.png" /><b class = "logo">{{configs.website_name}}</b></a>
         </div>
-        <div class="navbar-collapse collapse" style="height: 1px;">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="">Contact</a></li>
-           <!-- <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>-->
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            {% if user is not defined %}
+                <li><a href = "#login" data-toggle="modal" data-target="#login-register">Already a member?</a></li>
+            {% else %}
+                <li><a href="logout"><span class="glyphicon glyphicon-user"></span> {{user.user_name}}</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="logout">Logout</a></li>
+                    </ul>              
+                </li>
+            {% endif %}
           </ul>
-            <ul class="nav navbar-nav signin register" id="account">
-                <li><a>Login</a></li>
-                <li><a>Sign Up</a></li>
-            </ul>
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
+	<!--Login Modal -->
+<div class="modal fade" id="login-register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel" style="color:white;" > Sign In</h4>
+      </div>	  
+        {% include 'bit/forms/login.modal.php' %}  
+        {% include 'bit/forms/register.modal.php' %}  
+    </div>
+  </div>
 </div>

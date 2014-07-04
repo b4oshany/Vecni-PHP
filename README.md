@@ -2,7 +2,7 @@ Description
 -----------
 
 Vecni is a light-weight PHP micro-framework that utilizes url dispatching to server files instead of 
-filesystem url resolution. It utilizes Twig, which is equivalent to Jinja2 templates for advance template
+filesystem url resolution. It utilizes Twig, which is equivalent to Python Jinja2 templates for advance template
 management. 
 
 The aim of Vecni is to allow fast development and separate developers and designers task from each other
@@ -11,6 +11,7 @@ In addition, Vecni is about the developers, who want to do most of coding, but h
 to aid in development. For instance, Vecni uses advance namespaces and autoloading tools to access modules from anywhere, which is much like python or C++ package management.
 
 There is no installation, everything works right out of the box once you've downloaded the modules you need for development.
+However, there are few requiements in order to use Vecni, see Setup Instructions;
 
 Important
 ---------
@@ -38,7 +39,23 @@ Database Configuration
 
 In the etc/configs folder there is a settings.ini.php file which contains basic server configuration.
 There are four variables that are needed to be adjustment for MySQL database configuration. 
-Please follow the instruction given in the file
+Please follow the instruction given in the file. If you don't see the settings.ini.php file, please visit your
+Vecni based site. Once you run, the web application, it will generate the settings.ini.php file. Afterwards update 
+the settings.ini.php based on what was said previously
+
+Apache Configuration
+--------------------
+In order for the application to use url dispatching, apache should be configure to use .htaccess file and .htpasswd
+
+In addition, symbolic links with multiview should be enabled.
+
+Additionally, enable mod_rewrite/a2remod for apache so that url dispatching can work at it fully capacity, where by
+all request to the Vecni base application is have to be validated via the index page. This will disallow direct 
+POST and GET requests to files and folders. 
+
+PHP Configuration
+-----------------
+Please ensure that PDO extension is enabled for PHP.
 
 
 Tech Stack
@@ -49,9 +66,10 @@ Tech Stack
   - [Bootstrap][], [Font Awesome][], [Social Buttons][]
   - [jQuery][]
   - [OpenID][] sign in (Google, Facebook, Twitter)
+  - [PDO]
   
 
-Author of vecni
+Author of Vecni
 -------------------------
 [Oshane Bailey]
 
@@ -61,6 +79,7 @@ Author of vecni
 [Oshane Bailey]: https://github.com/b4oshany
 [Twig]: http://twig.sensiolabs.org/doc/installation.html
 [bootstrap]: http://getbootstrap.com/
+[PDO]: http://www.php.net/manual/en/book.pdo.php
 [font awesome]: http://fortawesome.github.com/Font-Awesome/
 [jquery]: http://jquery.com/
 [less]: http://lesscss.org/
