@@ -36,17 +36,26 @@
 	letter-spacing: 1px;
 }
 
+.modal-header{
+    background-color: @modal-header-color;
+    .modal-title{
+        color: black !important;
+        font-weight: bold !important;
+    }
+}
+
+
 form{
     &.login, &.register{
-        label{
-            display: block;
-        }
         
         .form-group{
             width: 100%;
             
             input[type="text"], input[type="email"], input[type="password"]{
                 width: 100%;
+            }
+            img{
+                max-height: 150px;
             }
         }
     }
@@ -61,6 +70,12 @@ form{
         
         [class^="col-"]:nth-last-of-type(2){
             float:right;
+        }
+    }
+    
+    .modal &.login{
+        [class^="col-"]{
+            position: relative;
         }
     }
 }

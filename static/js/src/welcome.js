@@ -26,15 +26,3 @@ $("#DateCountdown").TimeCircles({
         }
     }
 });
-
-$("[name='register'][type='button']").click(function(){
-    $("#login-register form.login").hide("slow");
-    $("#login-register .modal-title").html("Register");
-    $("#login-register form.register").show("slow");
-})
-
-$("[name='signin'][type='button']").click(function(){
-    $("#login-register form.register").hide("slow");
-    $("#login-register .modal-title").html("Sign In");
-    $("#login-register form.login").show("slow");
-})

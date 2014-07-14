@@ -26,10 +26,11 @@ class Vecni{
     public static $current_route = "";
     
     # main directories of the application
-    public static $template_dir = "templates";
-    public static $static_dir = "static";
-    public static $css_dir = "css";
-    public static $routes_file = "main.ini.php";
+    public static $template_dir;
+    public static $static_dir;
+    public static $libs_dir;
+    public static $css_dir;
+    public static $routes_file;    
     
     public static $db = null;
     private static $db_user;
@@ -40,7 +41,7 @@ class Vecni{
     private $vars = array();    
     private static $app_route = array();
     
-        
+       
     public static function run_config(){
         # get the root folder of the application
         # absolute address
@@ -54,10 +55,11 @@ class Vecni{
         self::set_route("welcome", "welcome");
 
         # set the default subfolders of the application
-        self::$template_dir = self::$main_dirname.DIRECTORY_SEPARATOR.self::$template_dir;
-        self::$static_dir = self::$main_dirname.DIRECTORY_SEPARATOR.self::$static_dir;
-        self::$css_dir = self::$static_dir.DIRECTORY_SEPARATOR.self::$css_dir;
-        self::$routes_file = self::$main_dir.DIRECTORY_SEPARATOR.self::$routes_file;
+        self::$template_dir = self::$main_dirname.DIRECTORY_SEPARATOR."templates";
+        self::$static_dir = self::$main_dirname.DIRECTORY_SEPARATOR."static";
+        self::$css_dir = self::$static_dir.DIRECTORY_SEPARATOR."css";
+        self::$routes_file = self::$main_dir.DIRECTORY_SEPARATOR."main.ini.php";
+        self::$libs_dir = self::$main_dir.DIRECTORY_SEPARATOR."etc".DIRECTORY_SEPARATOR."libs";
         
         self::start_database();
     }
@@ -132,6 +134,37 @@ session_start();
         }
     }
 
+     public static function twig_loader(){
+        require_once self::$libs_dir.DIRECTORY_SEPARATOR
+            ."twig".DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR
+            ."Twig".DIRECTORY_SEPARATOR."Autoloader.php";
+        
+        # register autloading package twig
+        \Twig_Autoloader::register();
+        # get the templates folder and prepare template rendering
+        $loader = new \Twig_Loader_Filesystem(self::$main_dir.DIRECTORY_SEPARATOR."templates");
+        return new \Twig_Environment($loader);
+    }
+    
+    public static function less_loader(){
+        require_once self::$libs_dir.DIRECTORY_SEPARATOR
+            ."less".DIRECTORY_SEPARATOR."lessc.inc.php";
+        return new \lessc;
+    }
+    
+    public static function email_loader(){
+        require_once self::$libs_dir.DIRECTORY_SEPARATOR."mailer".DIRECTORY_SEPARATOR."PHPMailerAutoload.php";
+        $mailer = new \PHPMailer;
+        $mailer->From = 'info@feroinc.com';
+        $mailer->FromName = 'Fero\'s Help Desk';
+        $mailer->addReplyTo('info@feroinc.com', 'Help Desk');
+        $mailer->Subject = 'Tattle Tale is here for you';
+        $mailer->isHTML(true);
+        $mailer->WordWrap = 70;
+        return $mailer;
+    }
+
+
     # Section 2.3 File System
     # This defines the overall structure of the website, that is, it defines the location of the modules, themes, pictures, data, css and javascript files and folders
     # The file below defines the location core folders and files withing the system
@@ -163,7 +196,7 @@ session_start();
             if(array_key_exists($path, self::$app_route)){
                 try{
                     $app_route = self::$app_route[$path];
-                    self::get_route($app_route);
+                    echo self::get_route($app_route);
                 }catch(Exception $e){
                     echo "something went wrong";
                 }                                  
@@ -174,15 +207,25 @@ session_start();
             require_once self::$routes_file;
             try{
                 self::$current_route = $app_route;
-                $app_route();
+                echo $app_route();
             }catch(Exception $e){
-                self::get_route();
+                echo self::get_route();
             }   
         }
     }
-    
+
     public static function set_route($url, $app_route){
         self::$app_route[$url] = $app_route;      
+    }
+    
+    public static function get_path(){
+        $path = $_SERVER['REQUEST_URI'];
+        $len =  strlen(self::$main_dirname);
+        $pos = strripos($path, self::$main_dirname);
+        if($pos <= $len){
+            return substr($path, ($len+1));
+        }
+        return substr($path, 1);
     }
     
     public static function get_configs(){
@@ -194,6 +237,7 @@ session_start();
             "company_name"=>self::$company_name
         );
     }
+
     
     public static function set_Connection($db_user, $db_pass, $db_name, $db_location='localhost', $db_name){
         self::$db_location = $db_location;
@@ -205,6 +249,14 @@ session_start();
     public static function close_database(){
         self::$db = null;
     }
+        
+    public static function redirect($url = "welcome"){
+        ?>
+            <script>
+                window.location.assign("<?php echo $url ?>");
+            </script>
+        <?php
+    }    
     
 }
 

@@ -1,3 +1,5 @@
 *~
-static/img/photo/
-static/css/src/style.css
+*.DS_Store
+.DS_Store
+etc/configs/settings.ini.php
+static/css/gen/

@@ -1,29 +1,22 @@
 <?php
-# include packages
-require_once 'etc/libs/twig/lib/Twig/Autoloader.php';
-require_once 'etc/libs/less/lessc.inc.php';
-
 # define package usage
 use configs\Vecni;
 use libs\user\User;
-
+use libs\university\University;
+use libs\Response;
 
 $vecni = new Vecni();
-$user = new User();
-$user->start_session();
+User::start_session();
 
-# register autloading package twig
-Twig_Autoloader::register();
-# get the templates folder and prepare template rendering
-$loader = new Twig_Loader_Filesystem("./templates");
-$twig = new Twig_Environment($loader);
+$twig = Vecni::twig_loader();
+$less = Vecni::less_loader();
+Response::init();
 
 # added global variables to twig
 $twig->addGlobal("configs", $vecni->get_configs());
 $twig->addGlobal("title", "Unversity Style");
-if($current_user = User::current_user_name()){
-    $user = User::get_current_user();
-    $twig->addGlobal("user", $user);
+if(User::is_login()){
+    $twig->addGlobal("user", User::get_current_user());
 }
 
 #allow call to static functions
@@ -35,7 +28,6 @@ function staticCall($class, $function, $args = array()){
 $twig->addFunction('staticCall', new Twig_Function_Function('staticCall'));
 
 # compile css less files
-$less = new lessc;
 $css_file = dirname(Vecni::$main_dir)
                       .DIRECTORY_SEPARATOR.Vecni::$css_dir
                       .DIRECTORY_SEPARATOR."gen"
@@ -45,7 +37,13 @@ $less_file = dirname(Vecni::$main_dir)
                       .DIRECTORY_SEPARATOR."less"
                       .DIRECTORY_SEPARATOR."style.less";
 $style = $less->compileFile($less_file);
-file_put_contents($css_file, $style);
+if(file_exists($css_file)){
+    unlink($css_file);
+}
+$fp = fopen($css_file, 'w');
+fwrite($fp, $style);
+fclose($fp);
+chmod($css_file, 0777); 
 
 /**
 Welcome:
@@ -54,13 +52,20 @@ Welcome:
     have been registered in the system by default.
 */
 function welcome(){
-    global $twig, $user;
-    echo $twig->render('welcome.php',
+    global $twig;
+    if(User::is_login()){
+        return $twig->render("home.php",
+                    array(
+                        "html_class"=>"welcome"
+                    ));
+    }else{
+        return $twig->render('welcome.php',
                       array(
                         "html_class"=>"welcome",                     
                         "title"=>"Welcome to Tattle Tale"                      
                       )                      
                   );
+    }
 }
 
 /**
@@ -72,26 +77,52 @@ error:
 */
 function error(){
     global $twig;
-    echo $twig->render('404.php');
+    return $twig->render('404.php');
 }
 
+/**
+* Sign in page for users
+*/
+Vecni::set_route("signin", "signin_require");
+function signin_require($message=""){
+    global $twig;
+    return $twig->render('signin.php',
+              array(
+                "html_class"=>"signin",                     
+                "title"=>"Signin Required",
+                "message"=>$message
+              )                      
+          );
+}
+/**
+* Registration page for users
+*/
+Vecni::set_route("registration", "reg_request");
+function reg_request($message=""){
+    global $twig;
+    return $twig->render('registration.php');                         
+}
+/**
+* Sign in processing for users
+*/
 Vecni::set_route("procsignin", "process_login");
 function process_login(){
-    global $user;
     if(!empty($_POST['username']) && !empty($_POST['password'])){
         $username = $_POST['username'];
         $pass = $_POST['password']; 
-        $status = $user->login($username, $pass); 
+        $status = User::login($username, $pass);
         if($status){
-            header('Content-Type: application/json');
-            $json = array('status'=>200, 'message'=>$username);
-            echo json_encode($json);
+            return Response::json_response(200, $username);
         }else{
-            echo json_encode(array('status'=>204, 'message'=>"Login Failure"));
+            return Response::json_response(204, "Login Failure");
         }     
     }  
 }
 
+
+/**
+* Registration processing for users
+*/
 Vecni::set_route("procregister", "register");
 function register(){
     global $user;
@@ -101,44 +132,28 @@ function register(){
         $lname = $_POST['last_name'];
         $email = $_POST['email'];
         $pass = $_POST['password'];
-        $status = $user->addUser($uname, $pass, $fname, $lname, $email);
+        $status = User::register($uname, $pass, $fname, $lname, $email);
         if($status){
-            header('Content-Type: application/json');
-            $json = array('status'=>200, 'message'=>$uname);
-            echo json_encode($json);
+            return Response::json_response(200, $uname);
         }else{
-            echo json_encode(array('status'=>204, 'message'=>"something went wrong"));
+            return Response::json_response(204, "Something went wrong");
         }             
     }
 }
 
+
+/**
+* Log out users out of Tattle Tale
+* @redirect page welcome
+*/
 Vecni::set_route("logout", "log_out");
 function log_out(){
-    global $twig, $user;
-    if($user->is_login()){
-        $user->log_out();  
+    global $twig;
+    if(User::is_login()){
+        User::log_out();  
         $twig->addGlobal("user", new User());
     }    
-    echo $twig->render('welcome.php',
-                      array(
-                        "html_class"=>"welcome",                     
-                        "title"=>"Welcome to Tattle Tale"                      
-                      )                      
-                  );
-}
-
-
-Vecni::set_route("tryout", "trya");
-function trya(){
-    try {        
-        foreach(Vecni::$db->query('SELECT * from users') as $row) {
-            print_r($row);
-        }
-        Vecni::$db = null;
-    } catch (PDOException $e) {
-        print "Error!: " . $e->getMessage() . "<br/>";
-        die();
-    }
+    Vecni::redirect();
 }
 
 ?>

@@ -4,3 +4,6 @@
 [submodule "etc/libs/twig"]
 	path = etc/libs/twig
 	url = git://github.com/fabpot/Twig.git
+[submodule "etc/libs/mailer"]
+	path = etc/libs/mailer
+	url = git@github.com:PHPMailer/PHPMailer.git

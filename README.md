@@ -62,11 +62,12 @@ Tech Stack
 ----------
 
   - [Twig]
+  - [PHPMailer]
   - [Less][]
   - [Bootstrap][], [Font Awesome][], [Social Buttons][]
   - [jQuery][]
   - [OpenID][] sign in (Google, Facebook, Twitter)
-  - [PDO]
+  - [MongoDB]
   
 
 Author of Vecni
@@ -78,8 +79,9 @@ Author of Vecni
   
 [Oshane Bailey]: https://github.com/b4oshany
 [Twig]: http://twig.sensiolabs.org/doc/installation.html
+[PHPMailer]: https://github.com/PHPMailer/PHPMailer
 [bootstrap]: http://getbootstrap.com/
-[PDO]: http://www.php.net/manual/en/book.pdo.php
+[MongoDB]: http://php.net/manual/en/book.mongo.php
 [font awesome]: http://fortawesome.github.com/Font-Awesome/
 [jquery]: http://jquery.com/
 [less]: http://lesscss.org/

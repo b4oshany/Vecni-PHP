@@ -1,11 +1,39 @@
+@import "form.less";
 body {
   background-color: #f2f2f2;
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   font-size: 16px;
   color: #555;
+  position: relative;
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
+}
+.full-width {
+  width: 100%;
+}
+.bottom {
+  position: absolute;
+  bottom: 0;
+}
+#main-content {
+  padding-top: 55px;
+  min-height: 500px;
+}
+form[name="user_invite"] .bootstrap-tagsinput input {
+  font-size: 18px !important;
+  padding-bottom: 10px !important;
+  padding-top: 5px !important;
+}
+form[name="user_invite"] [type="submit"] {
+  vertical-align: top !important;
+}
+.alert {
+  position: fixed;
+  z-index: 10000;
+  top: 60px;
+  width: 90%;
+  margin: 0 5%;
 }
 h1,
 h2,
@@ -118,9 +146,12 @@ hr {
   font-weight: 300;
   letter-spacing: 1px;
 }
-form.login label,
-form.register label {
-  display: block;
+.modal-header {
+  background-color: #f5f5f5;
+}
+.modal-header .modal-title {
+  color: black !important;
+  font-weight: bold !important;
 }
 form.login .form-group,
 form.register .form-group {
@@ -134,6 +165,10 @@ form.register .form-group input[type="email"],
 form.register .form-group input[type="password"] {
   width: 100%;
 }
+form.login .form-group img,
+form.register .form-group img {
+  max-height: 150px;
+}
 .modal form.register {
   display: none;
 }
@@ -144,11 +179,46 @@ form.register .form-group input[type="password"] {
 .modal form.register [class^="col-"]:nth-last-of-type(2) {
   float: right;
 }
+.modal form.login [class^="col-"] {
+  position: relative;
+}
 footer {
   background: #333;
   padding-bottom: 30px;
   padding-top: 30px;
   color: white;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
+html.signin #main-content {
+  background: url("../../img/photo/blur.png");
+}
+html.signin #main-content .opci.signin {
+  background: rgba(0,0,0,0.2);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px black;
+}
+html.university_register #main-content {
+  background: url("../../img/photo/blur.png");
+}
+html.university_register #main-content .container {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+html.university_register #main-content form[name="university_registration"] {
+  background: rgba(0,0,0,0.3);
+  border-radius: 15px;
+  box-shadow: 0 0 15px black;
+  padding: 15px;
+}
+html.university_register #main-content form[name="university_registration"] .input-group {
+  width: 100%;
+}
+html.university_register #main-content form[name="university_registration"] .input-group input.form-control {
+  display: inline-block;
+  margin-bottom: 20px;
 }
 .mt {
   margin-top: 40px;
