@@ -1,5 +1,5 @@
 
-{% macro input(name, kargs, class, inp_class,  type, value) %}
+{% macro input(name, kargs, class, inp_class, type, value) %}
 <div class="input-group {{inp_class}}">
   <input type="{{ type|default('text') }}" name="{{ name }}" value="{{ value|e }}" {% autoescape %}{{kargs|raw}}{% endautoescape %} class="form-control {{class}}" />
 </div>
@@ -21,13 +21,13 @@
     <div class="btn-group input-group {{holder_class}} " data-toggle="buttons">
         {% for option in options %}
         <label class="btn {{option.label_class}}" {% autoescape %}{{option.label_kargs|raw}}{% endautoescape %}>
-            <input type="radio" class="{{option.class}}" 
-                   value="{{option.value}}"
-                   {% if default == option.value %}
+            <input  name="{{name}}" type="radio" class="{{option.class}}" 
+                   value="{{option.key}}"
+                   {% if default == option.key %}
                         selected
                    {% endif %}
                    {% autoescape %}{{option.kargs|raw}}{% endautoescape %} name="{{ name }}"/>
-            {{option.key}}  
+            {{option.value}}
         </label>
         {% endfor %}
     </div>
@@ -37,25 +37,29 @@
 {% macro select_input(name, options, default="", holder_class) %}
     <div class="form-group input-group {{holder_class}} ">
         <span class="input-group-addon noCurve"><div class="glyphicon glyphicon-tower"  ></div></span>
-        <select class="form-control">
+        <select class="form-control" name="{{name}}">
             {% for key, value in options %}
-                <option value="{{value}}" 
-                        {% if default == value %}
+                <option value="{{key}}" 
+                        {% if default == key %}
                             selected
                         {% endif %}
-                        {% if default == "" %}
-                            disabled
-                        {% endif %}
-                        >{{key}}</option>
+                        >{{value}}</option>
             {% endfor %}
         </select>
     </div>
 {% endmacro %}
 
+{% macro textarea(name, kargs, class, inp_class, value) %}
+<div class="input-group {{inp_class}}">
+    <textarea name="{{ name }}" {% autoescape %}{{kargs|raw}}{% endautoescape %} class="form-control {{class}}">{{ value|e }}</textarea>
+</div>
+{% endmacro %}
+
 {% macro labelled_input(label, name, kargs, class, inp_class, type, value) %}
 {% import _self as forms %}
-<label class='control-label'>{{label}}
+<label class='control-label'><span>{{label}}</span>
     {{forms.input(name, kargs, class, inp_class, type, value)}}
+</label>
 {% endmacro %}
 
 {% macro help_input(description, field) %}
@@ -73,3 +77,24 @@
       <button type="submit" class="btn btn-warning btn-lg">Invite Me!</button>
     </form>
 {% endmacro %}
+    
+    
+    
+{% macro social_fb_button() %}
+    <div class="fb-login-button btn btn-primary social-button noCurve" style="width:100px;" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false" data-scope="email,user_birthday,user_education_history" ></div>    
+{% endmacro %}
+    
+{% macro social_gplus_button() %}
+    <div id="gplus-login" type="button" class="btn btn-danger social-button noCurve g-signin" style="width:100px;"  data-callback="gplus_signinCallback"
+    data-clientid="136591707736-log70mgd8lpelsmt8vrgnv2r0jv1vgnk.apps.googleusercontent.com"
+    data-cookiepolicy="single_host_origin"
+    data-requestvisibleactions="http://schema.org/AddAction"
+    data-scope="https://www.googleapis.com/auth/plus.login">
+	</div>
+{% endmacro %}
+    
+{% macro social_twitter_button() %}
+    <button type="button" class="btn btn-info social-button noCurve" style="width:100px;"><strong>Twitter</strong></button>    
+{% endmacro %}
+                            
+                            

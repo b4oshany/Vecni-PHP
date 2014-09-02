@@ -1,6 +1,8 @@
+{% import "macros/forms.html" as forms %}
 <!DOCTYPE html>
 <html class="{% block html_class %}{{html_class}}{% endblock %}" lang="en">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -8,28 +10,29 @@
     <title>
         {% block title %}{{title}}{% endblock %}
     </title>
-    {% include 'bit/styles.html' %}      
+    {% include 'bit/styles.html' %}
     {% block head %}
     {% endblock %}
     {% include 'bit/analytics.html' %}
+    {% block styles %}
+    {% endblock %}
+    <link rel="shortcut icon" href="{{host}}/static/img/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{host}}/static/img/icons/favicon.ico" type="image/x-icon">
   </head>
 
   <body>
+    <div id="fb-root"></div><!--Something A got with Facebook-->
     {% include 'bit/header.html' %}
-    {% include 'bit/announcements.html' %}  
+    {% include 'bit/announcements.html' %}
     {% block header %}
-    {% endblock %}     
-    {% block content %}
     {% endblock %}
+    <div id="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
     {% include 'bit/footer.html' %}
     {% include 'bit/scripts.html' %}
     {% block scripts %}
-    {% endblock %}    
-    <div id="overcast">
-        <div class='wrapper'>
-            {% block overcast %}
-            {% endblock %}
-        </div>  
-    </div>
+    {% endblock %}
   </body>
 </html>

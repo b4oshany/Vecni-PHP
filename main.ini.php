@@ -1,20 +1,25 @@
 <?php
 # define package usage
-use configs\Vecni;
 use libs\user\User;
 use libs\university\University;
-use libs\Response;
+use libs\university\Faculty;
+use libs\vecni\Response;
+use libs\vecni\Request;
+use libs\vecni\Vecni;
+use libs\schedule\Calendar;
 
 $vecni = new Vecni();
 User::start_session();
 
 $twig = Vecni::twig_loader();
+include_once "etc/configs/settings.ini.php";
 $less = Vecni::less_loader();
 Response::init();
 
 # added global variables to twig
 $twig->addGlobal("configs", $vecni->get_configs());
-$twig->addGlobal("title", "Unversity Style");
+$twig->addGlobal("host", Vecni::$host);
+$twig->addGlobal("title", "Tattle Tale");
 if(User::is_login()){
     $twig->addGlobal("user", User::get_current_user());
 }
@@ -43,7 +48,7 @@ if(file_exists($css_file)){
 $fp = fopen($css_file, 'w');
 fwrite($fp, $style);
 fclose($fp);
-chmod($css_file, 0777); 
+chmod($css_file, 0777);
 
 /**
 Welcome:
@@ -51,6 +56,7 @@ Welcome:
     This function is the default fall back function that
     have been registered in the system by default.
 */
+Vecni::set_route("/", "welcome");
 function welcome(){
     global $twig;
     if(User::is_login()){
@@ -59,85 +65,117 @@ function welcome(){
                         "html_class"=>"welcome"
                     ));
     }else{
-        return $twig->render('welcome.php',
+        return $twig->render('welcome.html',
                       array(
-                        "html_class"=>"welcome",                     
-                        "title"=>"Welcome to Tattle Tale"                      
-                      )                      
+                        "html_class"=>"welcome",
+                        "title"=>Vecni::$website_name
+                      )
                   );
     }
 }
 
 /**
-error:
-    Navigational view that renders the error page to the user when
-    there is a server error or a page is not found.
-    This function is the default fall back function that
-    have been registered in the system by default.
-*/
-function error(){
-    global $twig;
-    return $twig->render('404.php');
-}
-
-/**
 * Sign in page for users
 */
-Vecni::set_route("signin", "signin_require");
+Vecni::set_route("/signin", "signin_require");
 function signin_require($message=""){
     global $twig;
     return $twig->render('signin.php',
               array(
-                "html_class"=>"signin",                     
+                "html_class"=>"signin",
                 "title"=>"Signin Required",
                 "message"=>$message
-              )                      
+              )
           );
 }
+
 /**
 * Registration page for users
 */
-Vecni::set_route("registration", "reg_request");
+Vecni::set_route("/registration", "reg_request");
 function reg_request($message=""){
     global $twig;
-    return $twig->render('registration.php');                         
+    if(User::is_login()){
+        Vecni::redirect();
+    }
+    return $twig->render('registration.php');
 }
+
 /**
 * Sign in processing for users
 */
-Vecni::set_route("procsignin", "process_login");
+Vecni::set_route("/procsignin", "process_login");
 function process_login(){
-    if(!empty($_POST['username']) && !empty($_POST['password'])){
-        $username = $_POST['username'];
-        $pass = $_POST['password']; 
-        $status = User::login($username, $pass);
+    if(!empty($_POST['email']) && !empty($_POST['password'])){
+        $email = $_POST['email'];
+        $pass = $_POST['password'];
+        $status = User::login($email, $pass);
         if($status){
-            return Response::json_response(200, $username);
+            return Response::json_response(200, $email);
         }else{
-            return Response::json_response(204, "Login Failure");
-        }     
-    }  
+            return Response::abort("$email, does not exists in our system. Please register for account if you don't have one");
+        }
+    }
 }
 
 
 /**
 * Registration processing for users
 */
-Vecni::set_route("procregister", "register");
+Vecni::set_route("/procregister", "register");
 function register(){
     global $user;
-    if(!empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['username']) && $_POST['password']){
-        $uname = $_POST['username'];
-        $fname = $_POST['first_name'];
-        $lname = $_POST['last_name'];
-        $email = $_POST['email'];
-        $pass = $_POST['password'];
-        $status = User::register($uname, $pass, $fname, $lname, $email);
+    if($first_name = Request::POST('first_name') && $last_name =  Request::POST('last_name') && $password = Request::POST('password') && $email = Request::POST('email')){
+        $new_user = new User();
+        $new_user->first_name = $first_name;
+        $new_user->last_name = $last_name;
+        $new_user->email = $email;
+        if($dob = Request::POST('dob')){
+            $new_user->dob  = DateTime::createFromFormat('m/d/Y',
+                                           $dob);
+        }else{
+            $new_user->dob = new DateTime("NOW");
+        }
+        $new_user->gender = Request::POST('gender');
+        if($school = Request::POST('school')){
+            $new_user->school = $school;
+        }
+        $status = $new_user->register($email, $password);
         if($status){
-            return Response::json_response(200, $uname);
+            return Response::json_response(200, $email);
+        }else{
+            return Response::abort("$email, does not exists in our system. Please register for account if you don't have one");
+        }
+    }
+}
+
+Vecni::set_route("/facebooklogin", "login_with_social_network");
+Vecni::set_route("/googleplus", "login_with_social_network");
+Vecni::set_route("/twitter", "login_with_social_network");
+function login_with_social_network(){
+    global $user;
+    if(User::is_login()){
+        Vecni::redirect();
+    }
+    if(!empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['social_network']) && !empty($_POST['social_network_id']) && !empty($_POST['email'])){
+        $new_user = new User();
+        $new_user->first_name = $_POST['first_name'];
+        $new_user->last_name = $_POST['last_name'];
+        $email = $_POST['email'];
+        $new_user->dob  = DateTime::createFromFormat('m/d/Y',
+                                           $_POST['dob']);
+        $new_user->gender = $_POST['gender'];
+        if(!empty($_POST['school'])){
+            $new_user->school = $_POST['school'];
+        }
+        $account_type = $_POST['social_network'];
+        $account_id = $_POST['social_network_id'];
+        $status = $new_user->login_with_social_network($email, $account_type, $account_id);
+        if($status){
+            return Response::json_response(200, $email);
         }else{
             return Response::json_response(204, "Something went wrong");
-        }             
+        }
     }
 }
 
@@ -146,14 +184,16 @@ function register(){
 * Log out users out of Tattle Tale
 * @redirect page welcome
 */
-Vecni::set_route("logout", "log_out");
+Vecni::set_route("/logout", "log_out");
 function log_out(){
     global $twig;
     if(User::is_login()){
-        User::log_out();  
+        User::log_out();
         $twig->addGlobal("user", new User());
-    }    
+    }
     Vecni::redirect();
 }
 
 ?>
+
+

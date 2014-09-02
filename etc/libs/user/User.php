@@ -2,193 +2,259 @@
 namespace libs\user;
 require_once "setup.php";
 use configs\Vecni;
-class User{
-	public $first_name, $last_name, $user_name, $name, $dob, $email, $is_active, $is_admin, $profile_pic;
-    private $chnages;
-	public function __construct(){	
-        $this->changes = array();
-	} 	
-	public function login($user_name, $password){
-        $stmt = Vecni::$db->prepare("call login('$user_name','$password')");
-		if($stmt->execute()){
-			$this->start_session($stmt->fetch());
-            if(isset($_SESSION['uid'])){
-                return 1;
-            }else{
-                return 0;
-            }
-		}else{
-			return 0;
-		}
-	}		
-	
-	public static function getUserData($condition = 1){   
-        $stmt = Vecni::$db->query("select users.user_name, first_name, last_name, contact_number, email, profile_pic, is_admin, is_active from users where ".$condition);
-        $user = new User;
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
-        $users = array();
-        while ($user = $result->fetch()) {
-            $users.push($user);
-        }
-        return $users;
-	}
-	
-	public function addUser($user_name, $pass, $first_name, $last_name, $email){
-        $stmt = Vecni::$db->prepare("call add_user('$user_name', '$email', '$first_name', '$last_name', '$pass')");
-		if($stmt->execute()){
-			$this->start_session($stmt->fetch());
-            return 1;
-		}else{
-			return 0;
-		}
-	}
-    
-    public static function getUsers($condition = 1){
-        $results = self::getUserData($condition);
-        $users_data = array();
-        if($results != null){
-            foreach($results as $data){
-                $user = new User();
-                $user->set_user_data(false, $data);
-                array_push($users_data, $user);
-            }
-        }
-        return $users_data;        
+use libs\mongodb\Model;
+use libs\schedule\Calendar;
+
+/**
+* @package user
+* @property string $username - username of the user
+* @property string $first_name - first name of the user
+* @property string $last_name - last name of the user
+* @property string $email - email of the user
+* @property string $status - status of user (new, regular, paid)
+* @method login($email, $password) - login user invoking
+* @method register($email, $password) - register user
+* @method login_with_social_network($email, $account_type, $account_id) - login with social network account
+* @method is_admin() - check if a user is an admin or not
+* @method get_calendars($query) - get all calendar for that user
+* @method get_default_calendar() - get the default calendar for the user
+* @method log_out() - logout the current user
+*/
+
+class User extends Model{
+    public static $collection = "user";
+
+    protected $password;        // password of user
+    public $username;           // username of user
+    public $first_name;         // user first name
+    public $last_name;          // user last name
+    public $email;              // user email
+    public $is_login;           // user login status
+    public $status;             // user registration status
+    public $dob;                // user date of birth
+
+    /**
+    * __callstatic is triggered when invoking inaccessible methods in an static context
+    * This method will initiate the mongodb connection and select the desired database
+    * In addition, it will initiate the collection model for the user data.
+    */
+    public static function setUp(){
+        parent::setUp();
+        $collection = self::$collection;
+        self::$model = self::$mongodb->$collection;
     }
-    	
-	public function start_session($data = ''){
-		if(!empty($data)){
-			$_SESSION['uid'] = $data; 	
-		};
-		if(isset($_SESSION['uid'])){
-			$this->user_name = $_SESSION['uid']['user_name'];	//username address for user
-			$this->first_name = $_SESSION['uid']['first_name'];	// first name 
-			$this->last_name = $_SESSION['uid']['last_name'];	// last name 	
-            //$this->dob = $_SESSION['uid']['dob'];
-            $this->email = $_SESSION['uid']['email'];
-            $this->profile_pic = $_SESSION['uid']['profile_pic'];
-            $this->status = $_SESSION['uid']['is_active'];
-            $this->is_admin = $_SESSION['uid']['is_admin'];
-			$this->name = $this->first_name.' '.$this->last_name;
-		}else{
-			return 0;
-		}
-	}
-    
-    public function set_user_data($is_current = true, $data = ''){
-		if(!empty($data) && $is_current){
-			$_SESSION['uid'] = $data[0]; 	
-		}
-		if(isset($_SESSION['uid']) && $is_current){
-			$this->user_name = $_SESSION['uid']['user_name'];	//username address for user
-			$this->first_name = $_SESSION['uid']['first_name'];	// first name 
-			$this->last_name = $_SESSION['uid']['last_name'];	// last name 	
-            //$this->dob = $_SESSION['uid']['dob'];
-            $this->email = $_SESSION['uid']['email'];
-            $this->profile_pic = $_SESSION['uid']['profile_pic'];
-            $this->status = $_SESSION['uid']['is_active'];
-            $this->is_admin = $_SESSION['uid']['is_admin'];
-			$this->name = $this->first_name.' '.$this->last_name;
-		}else{
-			$this->user_name = $data['user_name'];	//username address for user
-			$this->first_name = $data['first_name'];	// first name 
-			$this->last_name = $data['last_name'];	// last name 	
-            //$this->dob = $data['dob'];
-            $this->email = $data['email'];
-            $this->profile_pic = $data['profile_pic'];
-            $this->status = $data['is_active'];
-            $this->is_admin = $data['is_admin'];
-			$this->name = $this->first_name.' '.$this->last_name;
-		}
-	}
-    
-    public static function get_current_user(){
-        $user = new User;
-        $user->set_user_data();
-        return $user;
+
+    /**
+    * Set the collection settings for monogodb
+    * such as the unique attributes in the collection
+    */
+    public static function collectionSettings(){
+        self::$mongodb->user->createIndex(
+            array("username"=>1,
+                  "email"=>1
+                 ),
+            array("unique"=>1)
+        );
     }
-    
-    public function set_user_info($attribute, $value){
-        $this->$attribute = $value;
-        array_push($this->changes, $attribute);
-    }
-    
-    public function commitChnages(){
-        $sql = "update profile set ";
-        $first = true;
-        foreach($this->changes as $changes){
-            $_SESSION['uid'][$changes] = $this->$changes;
-            $sql .= (($first)? "":", ").$changes." = '".$this->$changes."' ";
-            $first = false;
-        }
-        $sql .= " where user_name = '".$this->user_name."'";
-        if(self::$db->query($sql)){
-            return 1;   
+
+    /**
+    * Login user with their normal user account
+    * @param string $email - email to be used for login
+    * @password string $password - password to be used for login
+    * @return bool - true if the user is success logged in and session has been started
+    * false if there was an error during login
+    */
+    public static function login($email, $password){
+        $user = self::$model->findOne(array("email"=>$email,
+                                         "password"=>md5($password)
+                                         ),
+                                      array("password" => 0)
+                                     );
+        if(!empty($user)){
+            $user["id"] = (string) $user["_id"];
+            $user->update(array('$set'=>array("is_login"=>true)));
+            $user->is_login = true;
+            return self::start_session($user);
         }else{
             return 0;
-        }        
-    }
-    
-    public static function getFriends($condition = 1){
-         self::$db = new Database();
-		if($result = self::$db->fetch_query_results("select friend_id, first_name, last_name from friend_of as fof join profile as p on fof.friend_id = p.user_name where ".$condition)){
-			return $result;
-		}else{
-			return 0;
-		}
-    }
-	
-	public function getUserBy($attribute){
-		return (!empty($this->$attribute))? $this->$attribute:0;
-	}
-	
-	public function isUserLogin($user_name){
-		return ($this->user_name ===  $user_name)? 1:0;	
-	}
-    
-    public function is_active(){
-        return $this->is_active;   
-    }
-    
-    public function is_admin(){
-        return $this->is_admin;   
-    }
-	
-	public function is_login($username = ''){
-		return (isset($_SESSION['uid']['user_name']) && ($_SESSION['uid']['user_name'] ==  $this->user_name))? 1:0;	
-	}
-	
-	public function log_out(){
-        $stmt = Vecni::$db->prepare("update users set is_active = False where user_name = '$user_name'");
-        if($stmt->execute()){
-		     unset($_SESSION['uid']);
-			 return 1;
-		}else{
-			return 0;
-		}
-	}
-	
-	public function removeUser($user_name){
-		return ($this->is_login($user_name))? (self::$db->query("delete from users where user_name = '$user_name'"))? 1:0:0;
-	}	
-	
-	public function userExists($user_name){
-		return self::$db->recordExist("select count(*) > 0 from users where user_name = '$user_name'");
-	}
-    
-    
-    public static function current_user_name(){
-        if(isset($_SESSION['uid'])){
-            try{
-                return $_SESSION['uid']['user_name'];
-            }catch(Exception $e){
-                #echo $e->getMessage();
-                return false; 
-            }
         }
-        return false;
+    }
+
+    /**
+    * Normal registration for user account
+    * @param string $email - email to be used for registration
+    * @param string $passowrd - password to be used for registration
+    * @return bool - true if registration was success and session has been started
+    * false if their was a error or failure to do soundex
+    */
+    public function register($email, $password){
+        $user_exist = self::$model->findOne(array('email'=>$email));
+        if(!empty($user_exist)){
+            $this->email = $email;
+        }else{
+            return 0;
+        }
+        $this->password = md5($password);
+        $this->is_login = true;
+        $this->is_admin = false;
+        $this->status = "new";
+        $this->date_joined = new \DateTime("NOW");
+        $user_id = (string) $this->save();
+        $this->id = $user_id;
+        if(self::start_session($this->to_array())){
+            return 1;
+        }
+        return 0;
+    }
+
+    public function enforce_constraints(){
+        $this->dob = self::cast("DateTime", (array) $this->dob);
+        $this->date_joined = self::cast("DateTime", (array) $this->date_joined);
+    }
+
+    /**
+    * Special login or registration of user with their social network account.
+    * This function copies the basic user information from their social network into
+    * the database of this application
+    * @method login_with_social_network($email, $account_type, $account_id)
+    * @param string $email - email of user social netowrk account
+    * @param string $accounty_type - type of social network account
+    * @param mixed $account_id - the id of their social network account
+    * @return bool - true if user is success login with thier social network account
+    * and the session has started else false if their is any login failure
+    */
+    public function login_with_social_network($email, $account_type, $account_id){
+        $user_exist = self::$model->findOne(array('email'=>$email));
+        if(!empty($user_exist)){
+            self::$model->update(array("email"=>$email),
+                                array('$set'=>array($account_type=>$account_id)
+                                     ));
+            $this->populate($user_exist);
+            $this->$account_type = $account_id;
+            $this->id = $user_exist["_id"];
+            $this->email = $email;
+        }else{
+            $this->email = $email;
+            $this->$account_type = $account_id;
+            $this->is_login = true;
+            $this->is_admin = false;
+            $this->status = "new";
+            $user_id = (string) $this->save();
+            $this->id = $user_id;
+        }
+        if(self::start_session($this->to_array())){
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+    * Start the session of for the current user
+    * @param array $data - takes in the user object array data
+    * @return bool - true if the user session has been set else false
+    */
+    public static function start_session(array $data = null){
+        if(!empty($data)){
+            $_SESSION['uid'] = $data;
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+    * Get the current logged in user via the session variable
+    * @return User|null - current user object if user session has set, else null
+    */
+    public static function get_current_user(){
+        if(isset($_SESSION['uid'])){
+            return self::load($_SESSION['uid']);
+        }else{
+            return null;
+        }
+    }
+
+    /**
+    * Get the current logged in user id
+    * @return string - current user id
+    */
+    public static function get_current_user_id(){
+        if(isset($_SESSION['uid'])){
+            return $_SESSION['uid']["id"];
+        }
+    }
+
+    /**
+    * Get the current logged in user via the session variable
+    * @return User|null - current user object if user session has set, else null
+    */
+    public static function get_current_user_db(){
+        if(isset($_SESSION['uid']["id"])){
+            $user_id =  $_SESSION['uid']["id"];
+            return self::get_by_id($user_id);
+        }
+    }
+
+    /**
+    * check if the user is logged in
+    * @param string $user_id - mongodb id for user to be check for login
+    * if the $user_id is provided, then it will use it, else it will check for the current logged in user
+    * @return bool true if the user is logged in false if not
+    */
+    public static function is_login($username = null){
+        if(isset($username)){
+            return ((isset($_SESSION['uid']['email'])) && ($_SESSION['uid']['email'] ==  $username));
+        }
+        return isset($_SESSION['uid']['email']);
+    }
+
+    /**
+    * Logout user out of the current session
+    * @return bool - true if logout was successful false if not
+    */
+    public static function log_out(){
+        if(isset($_SESSION['uid'])){
+            $user = self::get_current_user_db();
+            unset($_SESSION['uid']);
+            $user->update(array('$set'=>array("is_login"=>false)));
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+    * Get the default calendar for the current user
+    * @param array $query - mongodb query creteria to be used to fetch user calendar
+    * @param Calendar - user default calendar
+    */
+    public function get_default_calendar(){
+        $calendar = Calendar::find_one(
+            array(
+                "creator"=>$this->get_MongoId(),
+                "title"=>"General"
+            )
+        );
+        if(!empty($calendar)){
+            return $calendar;
+        }else{
+            $calendar = Calendar::create("General");
+            $calendar->create_event("My Birthday", $this->dob, "Happy Birthday $this->first_name");
+            return $calendar;
+        }
+    }
+
+    /**
+    * Get all of the current user calendars
+    * @param array $query - condition to get all user calendars
+    * @return array - list of Calendar object for the current user
+    */
+    public function get_calendars(array $query = null){
+        if(!isset($query)){
+            $query = array("creator"=>$this->get_MongoId());
+        }
+        return Calendar::find($query);
     }
 }
 
-
+User::setUp();
+User::collectionSettings();
 ?>

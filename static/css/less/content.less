@@ -11,8 +11,8 @@ html{
             }
         }
     }
-    
-    &.university_register{
+
+    &.university_register, &.faculty_register{
         #main-content{
             background: url("../../img/photo/blur.png");
             
@@ -21,7 +21,7 @@ html{
                 padding-bottom: 50px;
             }
             
-            form[name="university_registration"]{
+            form{
                 background: rgba(0,0,0,.3);
                 border-radius: 15px;
                 box-shadow: 0 0 15px black;
@@ -36,5 +36,53 @@ html{
                 }
             }
         }
+    }
+    
+    &.university_view{
+        #profile-header{
+            @profile-header-height: 300px;
+            #profile-cover-pic{
+                background-image: url("../../img/photo/DistanceEducationInDelhi-NCR.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+                height:  @profile-header-height;
+            }
+            
+            .profile-data{
+                padding: 5px;
+                background-color: rgba(0,0,0,0.3);
+                color: white;
+                font-weight: bold;
+                text-align: center;
+                height:  @profile-header-height;
+                
+                .logo img{
+                    width: 40%;
+                }
+            }
+            
+            .menu{
+                background: white;
+            }
+        }
+        
+        form[name=university_info_update]{
+			label{
+				span{
+					display: inline-block;
+					width: 100px;
+					vertical-align: super;
+					text-align: left;
+				}
+				.input-group{
+					display: inline-block;
+				}
+				&.control-label{
+					display: block;
+					text-align: left;
+				}
+			}
+		}
     }
 }

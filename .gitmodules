@@ -1,9 +1,12 @@
 [submodule "etc/libs/less"]
-	path = etc/libs/less
-	url = git@github.com:leafo/lessphp.git
+        path = etc/libs/less
+        url = git@github.com:leafo/lessphp.git
 [submodule "etc/libs/twig"]
-	path = etc/libs/twig
-	url = git://github.com/fabpot/Twig.git
+        path = etc/libs/twig
+        url = git://github.com/fabpot/Twig.git
 [submodule "etc/libs/mailer"]
-	path = etc/libs/mailer
-	url = git@github.com:PHPMailer/PHPMailer.git
+        path = etc/libs/mailer
+        url = git@github.com:PHPMailer/PHPMailer.git
+[submodule "etc/libs/error"]
+        path = etc/libs/error
+        url = git@github.com:JosephLenton/PHP-Error.git
