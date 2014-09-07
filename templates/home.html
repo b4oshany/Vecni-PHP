@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block styles %}
+{% endblock %}
+{% block scripts %}
+  <script>window["_GOOG_TRANS_EXT_VER"] = "1";</script>
+  <script src="static/js/src/image-gallery.js"></script>
+  <script src="static/js/src/jquery.mousewheel-3.0.6.pack.js"></script>
+  <script src="static/js/src/jquery.fancybox.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="nav-headers">
+        <section>Find Your Favorite Image, Video, and Other With Fransisca Gallery.</section>
+        <button type="button" class="btn btn-primary">Learn more →</button>
+      </div>
+      <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="#"><i class="icon-picture"></i> Newest</a>
+        </li>
+        <li><a href="#"><i class="icon-ok"></i> Popular</a>
+        </li>
+        <li><a href="#"><i class="icon-certificate"></i> Top Sites</a>
+        </li>
+        <li><a href="#"><i class="icon-bookmark"></i> Most Viewed</a>
+        </li>
+        <li><a href="#"><i class="icon-th-list"></i> Categories</a>
+        </li>
+        <li><a href="#"><i class="icon-download"></i> Most Download</a>
+        </li>
+        <li><a href="#"><i class="icon-heart"></i> Recomended</a>
+        </li>
+      </ul>
+    </div>
+    {% for property in range(1, 16) %}
+      <article class="col-md-3">
+        <div class="galery">
+          <section class="menu-galery">
+            <a href="#" rel="tooltip" data-original-title="Detail"><i class="glyphicon glyphicon-search"></i></a>
+            <a href="#" rel="tooltip" data-original-title="Add Comment"><i class="glyphicon glyphicon-comment"></i></a>
+            <a href="#" rel="tooltip" data-original-title="Add to Watch List"><i class="glyphicon glyphicon-eye-open"></i></a>
+            <a href="#" rel="tooltip" data-original-title="Like"><i class="glyphicon glyphicon-star"></i></a>
+          </section>
+          <section class="image-galery">
+            <a class="group" rel="group1" href="static/img/photo/5_b.jpg">
+              <img src="static/img/photo/5_b.jpg">
+            </a>
+          </section>
+          <section class="property-summary">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <span class="badge">price</span>
+                <span class="price">$14,100</span>
+              </li>
+              <li class="list-group-item">
+                <span class="badge">owner</span>
+                <span class="owner">Oshane Bailey</span>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+

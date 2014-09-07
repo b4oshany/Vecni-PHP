@@ -17,7 +17,7 @@ $less = Vecni::less_loader();
 Response::init();
 
 # added global variables to twig
-$twig->addGlobal("configs", $vecni->get_configs());
+$twig->addGlobal("config", $vecni->get_configs());
 $twig->addGlobal("host", Vecni::$host);
 $twig->addGlobal("title", "Tattle Tale");
 if(User::is_login()){
@@ -60,15 +60,15 @@ Vecni::set_route("/", "welcome");
 function welcome(){
     global $twig;
     if(User::is_login()){
-        return $twig->render("home.php",
+        return $twig->render("home.html",
                     array(
                         "html_class"=>"welcome"
                     ));
     }else{
-        return $twig->render('welcome.html',
+        return $twig->render('home.html',
                       array(
                         "html_class"=>"welcome",
-                        "title"=>Vecni::$website_name
+                        "title"=>Vecni::$BRAND_NAME
                       )
                   );
     }

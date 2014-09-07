@@ -1,3 +1,16 @@
+ @font-face {
+  font-family: segoeuil;
+  src: url('../../fonts/segoeuil.ttf');
+}
+ @font-face {
+  font-family: segoeui;
+  src: url('../../fonts/segoeui.ttf');
+}
+ @font-face {
+    font-family: segoeuib;
+    src: url('../../fonts/segoeuib.ttf');
+}
+
 .btn-inverse {
   background-color: #414141;
   *background-color: #222222;

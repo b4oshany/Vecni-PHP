@@ -1,7 +1,7 @@
 <?php
 use libs\vecni\Vecni;
 # name of the website
-Vecni::$website_name = 'Vecni';
+Vecni::$BRAND_NAME = 'Ohomes';
 # company location
 Vecni::$company_address = 'Kingston, Jamaica';
 # company contact number

@@ -1,0 +1,53 @@
+<header class="navbar navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">{{config.BRAND_NAME}}</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="nav-menu">
+      <ul class="nav navbar-nav">
+        <li class="active">
+          <a href="#"><span class="glyphicon glyphicon-th-list"></span></a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="#">
+            <span class="glyphicon glyphicon-search"></span>
+          </a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span>
+            <span class="user_name">Oshane</span>
+            <span class="caret"></span>
+          </a>
+          <section class="dropdown-menu user-overview" role="menu">
+            <div class="user-profile">
+              <img src="static/img/icons/user.png" class="img-circle" alt="User Image" />
+              <a href="#">Oshane Bailey</a>
+              <span>Member since Nov. 2014</span>
+            </div>
+            <ul class="nav nav-pills quick-pick">
+              <li><a href="#">My Home</a></li>
+              <li><a href="#">Watch List</a></li>
+              <li><a href="#">Settings</a></li>
+            </ul>
+            <div class="fn-profile">
+              <button type="button" class="btn btn-default">View Profile</button>
+              <button type="button" class="btn btn-default pull-right">Sign Out</button>
+            </div>
+          </section>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</header>

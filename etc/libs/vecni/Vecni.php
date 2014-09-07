@@ -9,7 +9,7 @@ class Vecni{
     *    The following lines below consisit of the company detailed information which is used across this website
     */
     # name of the website
-    public static $website_name = 'Vecni';
+    public static $BRAND_NAME = 'Vecni';
     # company location
     public static $company_address = 'Kingston, Jamaica';
     # company contact number
@@ -200,7 +200,7 @@ class Vecni{
 
     public static function get_configs(){
         return array(
-            "website_name"=>self::$website_name,
+            "BRAND_NAME"=>self::$BRAND_NAME,
             "company_address"=>self::$company_address,
             "company_number"=>self::$company_number,
             "company_email"=>self::$company_email,
