@@ -34,6 +34,7 @@ class Vecni{
     public static $routes_file;
     public static $mdb;
     public static $host;
+    public static $protocol;
 
     private $vars = array();
     private static $app_route = array();
@@ -60,11 +61,11 @@ class Vecni{
 
     public static function get_host(){
         self::$host = $_SERVER["SERVER_NAME"];
-        $protocol = isset($_SERVER["HTTPS"]) ? 'https://' : 'http://';
+        self::$protocol = isset($_SERVER["HTTPS"]) ? 'https://' : 'http://';
         if(self::$host == "localhost"){
-            self::$host = $protocol.self::$host.DIRECTORY_SEPARATOR.self::$main_dirname;
+            self::$host = self::$protocol.self::$host.DIRECTORY_SEPARATOR.self::$main_dirname;
         }else{
-            self::$host = $protocol.self::$host.DIRECTORY_SEPARATOR;
+            self::$host = self::$protocol.self::$host;
         }
     }
 
@@ -143,13 +144,25 @@ class Vecni{
     }
 
     public static function get_route($app_route=null){
+        /**
+        * Get the url dispatching function to be used to render the view or data.
+        *
+        * @param string|null $app_route, url for the dispatching function to be used if
+            string, else assume it's the home page.
+        */
         if($app_route == null){
             krsort(self::$app_route);
             $path = $_SERVER['REQUEST_URI'];
+            if(self::$host."/" != self::$protocol.$_SERVER["SERVER_NAME"].$path){
+                unset(self::$app_route["/"]);
+            }
+            // Search for the respective url dispatching function.
             foreach(self::$app_route as $url => $app_route){
                 $url_regex = str_replace('/', '\/', $url);
                 $url_regexpr = preg_replace("/\{.+?\}/", "\w+", $url_regex);
                 $result = preg_match("/".$url_regexpr.'\/?\??.*$'."/", $path);
+                // If an unique id is found and has a unique variable id,
+                // set it to a GET request.
                 if($result){
                     preg_match("/".$url_regexpr."/", $path, $matches);
                     $data = explode("/", $matches[0]);
@@ -176,8 +189,17 @@ class Vecni{
         }
     }
 
+    public static function set_error_route($fn_name){
+        self::$app_route["error404"] = $fn_name;
+    }
+
     public static function error_route(){
-        return "404. Not Found";
+        if(isset(self::$app_route["error404"])){
+            $app_route = self::$app_route["error404"];
+            return $app_route();
+        }else{
+            return "404. Not Found";
+        }
     }
 
     public static function index_route(){
@@ -227,7 +249,15 @@ class Vecni{
         <?php
     }
 
-    public static function url_for($file){
+    public static function url_for($url_fn){
+        try{
+            $url = array_search($url_fn, self::$app_route, true);
+            if(!empty($url)){
+                return;
+            }
+        }catch(Exception $e){
+            return;
+        }
 
     }
 }
