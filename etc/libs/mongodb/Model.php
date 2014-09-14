@@ -1,6 +1,6 @@
 <?php
 namespace libs\mongodb;
-require "__autoload.php";
+require ".autoload.php";
 use libs\vecni\Object;
 
 

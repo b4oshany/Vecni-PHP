@@ -1,570 +1,327 @@
-{% extends "base.php" %}
+{% extends 'base.html' %}
 {% block styles %}
-<link href="{{host}}/static/css/src/vecni/prettify.css" type="text/css" rel="stylesheet" />
-<link href="{{host}}/static/css/src/vecni/style.css" rel="stylesheet">
-<link href="{{host}}/static/css/src/vecni/docs/style.css" rel="stylesheet" type="text/css">
+  <!-- Le styles -->
+  <link href="http://modalrabi.web.id/themes/fransisca/css/style.css" rel="stylesheet">
+  <link href="http://modalrabi.web.id/themes/fransisca/css/icon-style.css" rel="stylesheet">
+  <link href="http://modalrabi.web.id/themes/fransisca/css/bootstrap-responsive.css" rel="stylesheet">
+  <link href="http://modalrabi.web.id/themes/fransisca/source/jquery.fancybox.css" rel="stylesheet">
+
+  <link rel="shortcut icon" href="http://modalrabi.web.id/themes/fransisca/img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://modalrabi.web.id/themes/fransisca/img/favicon.ico" type="image/x-icon">
 {% endblock %}
 {% block scripts %}
-<script type="text/javascript" src="{{host}}/static/js/src/vecni/respond.js"></script>
-<script type="text/javascript">
-  $(function () {
-    //Load Goodle Code Pretiffy
-    window.prettyPrint && prettyPrint();
-    //Tab function
-    $('#pluginTab a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    });
-    //FAQ autosuggest
-    $('.typeahead').typeahead();
-    //tooltip init
-    $("a.tip").tooltip();
-    //footer link to got top
-    gotoTop();
+  <script>window["_GOOG_TRANS_EXT_VER"] = "1";</script>
 
-    function gotoTop() {
-      // scroll body to 0px on click
-      $('a#top').on('click', function () {
-        $('body,html').animate({
-          scrollTop: 0
-        }, 800);
-        return false;
-      });
-    };
-  });
-</script>
-<script>
-  window["_GOOG_TRANS_EXT_VER"] = "1";
-</script>
-<script>
-  window["_GOOG_TRANS_EXT_VER"] = "1";
-</script>
+  <!-- Le javascript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="./Fransisca Gallery_files/jquery-1.7.2.min.js"></script>
+  <script src="./Fransisca Gallery_files/bootstrap.js"></script>
+  <script src="./Fransisca Gallery_files/image-gallery.js"></script>
+  <script src="./Fransisca Gallery_files/jquery.mousewheel-3.0.6.pack.js"></script>
+  <script src="./Fransisca Gallery_files/jquery.fancybox.js"></script>
 {% endblock %}
 {% block content %}
-<header class="masthead">
-  <div class="container">
-    <a href="{{host}}/welcome" id="brand">Vecni PHP Micro-Framework</a>
-    <h1 class="font-bree-serif">Vecni</h1>
-    <p class="font-open-sans-normal">Simple and flexible plugin documentation theme for your next project.</p>
 
-    <p class="jumbo"> <a href="{{host}}/welcome" class="btn btn-inverse btn-large font-open-sans-normal"><strong>View Plugin on GitHub</strong></a>  <a href="{{host}}/welcome" class="btn btn-success btn-large font-open-sans-normal"><strong>Download Plugin </strong><small>(v1.0.0)</small></a>
-    </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="nav-headers">
+                    <h3>Find Your Favorite Image, Video, and Other With Fransisca Gallery.</h3>
+                    <p><a href="http://modalrabi.web.id/themes/fransisca/#" class="btn">Learn more →</a></p>
+                </div>
+                <ul class="nav nav-tabs nav-stacked">
+                    <li class="active"><a href="http://modalrabi.web.id/themes/fransisca/#"><i class="icon-picture"></i> Newest</a></li>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#"><i class="icon-ok"></i> Popular</a></li>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#"><i class="icon-certificate"></i> Top Sites</a></li>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#"><i class="icon-bookmark"></i> Most Viewed</a></li>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#"><i class="icon-th-list"></i> Categories</a></li>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#"><i class="icon-download"></i> Most Download</a></li>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#"><i class="icon-heart"></i> Recomended</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a class="group" rel="group1" href="./Fransisca Gallery_files/4_b.jpg"><img src="./Fransisca Gallery_files/4_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Building</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Tower</a>,
+                    <a href="http://modalrabi.web.id/themes/fransisca/#">Eifel</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Wonders of the world</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Miracle</a></p>
+                </div>
+            </div>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a class="group" rel="group1" href="./Fransisca Gallery_files/3_b.jpg"><img src="./Fransisca Gallery_files/3_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Sun</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Sunrise</a>,
+                    <a href="http://modalrabi.web.id/themes/fransisca/#">Dawn</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Morning</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Landscape</a></p>
+                </div>
+            </div>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a class="group" rel="group1" href="./Fransisca Gallery_files/1_b.jpg"><img src="./Fransisca Gallery_files/1_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Tree</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Landscape</a>,
+                    <a href="http://modalrabi.web.id/themes/fransisca/#">Forest</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Nature</a></p>
+                </div>
+            </div>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a class="images1" href="./Fransisca Gallery_files/5_b.jpg"><img src="./Fransisca Gallery_files/5_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Building</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Home</a></p>
+                </div>
+            </div>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a class="images2" href="./Fransisca Gallery_files/2_b.jpg"><img src="./Fransisca Gallery_files/2_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Sea</a></p>
+                </div>
+            </div>
 
-  </div>
-  <!--end container-->
-</header>
-<div class="main-content">
-  <div class="container">
-    <div class="row" id="content">
-      <div class="span12">
-        <div class="tabbable">
-          <ul class="nav nav-tabs" id="pluginTab">
-            <li class="active"><a href="#overview">Overview</a>
-            </li>
-            <li><a href="#examples">Examples</a>
-            </li>
-            <li><a href="#howtouse">How To Use</a>
-            </li>
-            <li><a href="#documentation">Documentation</a>
-            </li>
-            <li><a href="#faq">FAQ</a>
-            </li>
-            <li><a href="#roadmap">Roadmap and changelog</a>
-            </li>
-          </ul>
-          <div class="tab-content">
-            <!--
-          =====================================
-          Overview Tab Content
-          =====================================
-          -->
-            <div class="tab-pane active" id="overview">
-              <h1 class="font-bree-serif align-center">Designed for designers &amp; developers</h1>
-              <h4 class="align-center font-open-sans-normal-italic">Need reasons to use this plugin? Check the features below.</h4>
-              <div class="row features">
-                <div class="span4"> <i class="feature-icon icon-th"></i>
-                  <h3>12 Column Grid</h3>
-                  <p>Montes faucibus viverra enim egestas nibh placerat pellentesque dignissim vehicula amet eget nascetur lacus sed, nam nonummy diam, hendrerit.</p>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
                 </div>
-                <!--end span4-->
-                <div class="span4"> <i class="feature-icon icon-resize-full"></i>
-                  <h3>Responsive</h3>
-                  <p>Montes faucibus viverra enim egestas nibh placerat pellentesque dignissim vehicula amet eget nascetur lacus sed, nam nonummy diam, hendrerit.</p>
+                <div class="image-galery"><a class="images3" href="./Fransisca Gallery_files/4_b.jpg"><img src="./Fransisca Gallery_files/4_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
                 </div>
-                <!--end span4-->
-                <div class="span4"> <i class="feature-icon icon-twitter"></i>
-                  <h3>Made With Bootstrap</h3>
-                  <p>Montes faucibus viverra enim egestas nibh placerat pellentesque dignissim vehicula amet eget nascetur lacus sed, nam nonummy diam, hendrerit.</p>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Building</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Tower</a>,
+                    <a href="http://modalrabi.web.id/themes/fransisca/#">Eifel</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Wonders of the world</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Miracle</a></p>
                 </div>
-                <!--end span4-->
-              </div>
-              <!--end row-->
-              <div class="row features">
-                <div class="span4"> <i class="feature-icon icon-list-ol"></i>
-                  <h3>Google Code Prettify</h3>
-                  <p>Montes faucibus viverra enim egestas nibh placerat pellentesque dignissim vehicula amet eget nascetur lacus sed, nam nonummy diam, hendrerit.</p>
-                </div>
-                <!--end span4-->
-                <div class="span4"> <i class="feature-icon icon-font"></i>
-                  <h3>Google Web Font</h3>
-                  <p>Montes faucibus viverra enim egestas nibh placerat pellentesque dignissim vehicula amet eget nascetur lacus sed, nam nonummy diam, hendrerit.</p>
-                </div>
-                <!--end span4-->
-                <div class="span4"> <i class="feature-icon icon-flag"></i>
-                  <h3>Font Awesome Icons</h3>
-                  <p>Montes faucibus viverra enim egestas nibh placerat pellentesque dignissim vehicula amet eget nascetur lacus sed, nam nonummy diam, hendrerit.</p>
-                </div>
-                <!--end span4-->
-              </div>
-              <!--end row-->
-              <hr class="soften">
-              <h1 class="font-bree-serif align-center">Showcase</h1>
-              <h4 class="align-center font-open-sans-normal-italic">Websites using this plugin. Check Out</h4>
-              <ul class="thumbnails">
-                <li class="span3">
-                  <a href="{{host}}/welcome" class="thumbnail">
-                    <img src="{{host}}/static/img/photo/placeholder/260x180" alt="">
-                  </a>
-                </li>
-                <li class="span3">
-                  <a href="{{host}}/welcome" class="thumbnail">
-                    <img src="{{host}}/static/img/photo/placeholder/260x180" alt="">
-                  </a>
-                </li>
-                <li class="span3">
-                  <a href="{{host}}/welcome" class="thumbnail">
-                    <img src="{{host}}/static/img/photo/placeholder/260x180" alt="">
-                  </a>
-                </li>
-                <li class="span3">
-                  <a href="{{host}}/welcome" class="thumbnail">
-                    <img src="{{host}}/static/img/photo/placeholder/260x180" alt="">
-                  </a>
-                </li>
-              </ul>
-              <!--end thumbnails-->
             </div>
-            <!--end overview-content-->
-            <!--
-          =====================================
-          Examples
-          =====================================
-          -->
-            <div class="tab-pane" id="examples">
-              <h2 class="font-bree-serif">Example Heading</h2>
-              <p>Some Description about the example if needed</p>
-              <div class="row">
-                <div class="span6">
-                  <ul class="thumbnails">
-                    <li class="span4">
-                      <a href="{{host}}/welcome" class="thumbnail">
-                        <img src="{{host}}/static/img/photo/placeholder/360x268" alt="">
-                      </a>
-                    </li>
-                    <li class="span2">
-                      <a href="{{host}}/welcome" class="thumbnail">
-                        <img src="{{host}}/static/img/photo/placeholder/160x120" alt="">
-                      </a>
-                    </li>
-                    <li class="span2">
-                      <a href="{{host}}/welcome" class="thumbnail">
-                        <img src="{{host}}/static/img/photo/placeholder/160x120" alt="">
-                      </a>
-                    </li>
-                    <li class="span2">
-                      <a href="{{host}}/welcome" class="thumbnail">
-                        <img src="{{host}}/static/img/photo/placeholder/160x120" alt="">
-                      </a>
-                    </li>
-                    <li class="span2">
-                      <a href="{{host}}/welcome" class="thumbnail">
-                        <img src="{{host}}/static/img/photo/placeholder/160x120" alt="">
-                      </a>
-                    </li>
-                    <li class="span2">
-                      <a href="{{host}}/welcome" class="thumbnail">
-                        <img src="{{host}}/static/img/photo/placeholder/160x120" alt="">
-                      </a>
-                    </li>
-                  </ul>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
                 </div>
-                <!--end span6-->
-                <div class="span6">
-                  <section class="sec-header">
-                    <h3 class="font-bree-serif">The Markup</h3>
-                    <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"thumbnails"</span><span class="tag">&gt;</span></li><li class="L1"><span class="tag">&lt;li</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"span4"</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"thumbnail"</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;img</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">"http://placehold.it/360x268"</span><span class="pln"> </span><span class="atn">alt</span><span class="pun">=</span><span class="atv">""</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;/a&gt;</span><span class="pln"> </span><span class="tag">&lt;/li&gt;</span></li><li class="L2"><span class="pln">....</span></li><li class="L3"><span class="tag">&lt;/ul&gt;</span></li></ol></pre>
-                  </section>
-                  <section class="sec-header">
-                    <h3 class="font-bree-serif">CSS</h3>
-                    <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">thumbnails </span><span class="pun">{</span></li><li class="L1"><span class="pln">  margin</span><span class="pun">-</span><span class="pln">left</span><span class="pun">:</span><span class="pln"> </span><span class="pun">-</span><span class="lit">20px</span><span class="pun">;</span></li><li class="L2"><span class="pln">  list</span><span class="pun">-</span><span class="pln">style</span><span class="pun">:</span><span class="pln"> none</span><span class="pun">;</span></li><li class="L3"><span class="pln">  </span><span class="pun">*</span><span class="pln">zoom</span><span class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span class="pun">;</span></li><li class="L4"><span class="pun">}</span></li><li class="L5"><span class="pun">.</span><span class="pln">thumbnails </span><span class="pun">&gt;</span><span class="pln"> li </span><span class="pun">{</span></li><li class="L6"><span class="pln">  </span><span class="kwd">float</span><span class="pun">:</span><span class="pln"> left</span><span class="pun">;</span></li><li class="L7"><span class="pln">  margin</span><span class="pun">-</span><span class="pln">bottom</span><span class="pun">:</span><span class="pln"> </span><span class="lit">18px</span><span class="pun">;</span></li><li class="L8"><span class="pln">  margin</span><span class="pun">-</span><span class="pln">left</span><span class="pun">:</span><span class="pln"> </span><span class="lit">20px</span><span class="pun">;</span></li><li class="L9"><span class="pun">}</span></li><li class="L0"><span class="pun">...</span></li></ol></pre>
-                  </section>
+                <div class="image-galery"><a class="images4" href="./Fransisca Gallery_files/3_b.jpg"><img src="./Fransisca Gallery_files/3_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
                 </div>
-                <!--end span6-->
-              </div>
-              <!--end row-->
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Sun</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Sunrise</a>,
+                    <a href="http://modalrabi.web.id/themes/fransisca/#">Dawn</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Morning</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Landscape</a></p>
+                </div>
             </div>
-            <!--end examples-content-->
-            <!--
-          =====================================
-          How to Use Tab Content
-          =====================================
-          -->
-            <div class="tab-pane" id="howtouse">
-              <section class="sec-header">
-                <h3 class="font-bree-serif">Link Css</h3>
-                <p>Move the <strong>plugin CSS</strong> file to your server and link to it in the <code><abbr title="&lt;head&gt;">head</abbr></code> section of your document.</p>
-                <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;link</span><span class="pln"> </span><span class="atn">rel</span><span class="pun">=</span><span class="atv">"stylesheet"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"yourplugin.css"</span><span class="pln"> </span><span class="tag">/&gt;</span></li></ol></pre>
-              </section>
-              <section class="sec-header">
-                <h3 class="font-bree-serif">Link JS</h3>
-                <p>Move the <strong>plugin JS</strong> file to your server and link to it before the closing <code><abbr title="&lt;body&gt;">body</abbr></code> tag.</p>
-                <p>Please note that you must include jQuery (v1.7 or later) before the slider JS file.</p>
-                <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">"jquery-1.7.1.min.js"</span><span class="tag">&gt;&lt;/script&gt;</span></li><li class="L1"><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">"jquery.yourplugin.min.js"</span><span class="tag">&gt;&lt;/script&gt;</span></li></ol></pre>
-              </section>
-              <section class="sec-header">
-                <h3 class="font-bree-serif">The Markup</h3>
-                <p>Add the following markup</p>
-                <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"thumbnails"</span><span class="tag">&gt;</span></li><li class="L1"><span class="tag">&lt;li</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"span4"</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"thumbnail"</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;img</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">"http://placehold.it/360x268"</span><span class="pln"> </span><span class="atn">alt</span><span class="pun">=</span><span class="atv">""</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;/a&gt;</span><span class="pln"> </span><span class="tag">&lt;/li&gt;</span></li><li class="L2"><span class="pln">....</span></li><li class="L3"><span class="tag">&lt;/ul&gt;</span></li></ol></pre>
-              </section>
-              <section class="sec-header">
-                <h3 class="font-bree-serif">Call Plugin</h3>
-                <p>Just before the closing <code><abbr title="&lt;body&gt;">body</abbr></code> tag (after any JS file includes), call the plugin with code below:</p>
-                <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;script&gt;</span></li><li class="L1"><span class="pln">$</span><span class="pun">(</span><span class="pln">document</span><span class="pun">).</span><span class="pln">ready</span><span class="pun">(</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L2"><span class="pln">  $</span><span class="pun">(</span><span class="str">'.selector'</span><span class="pun">).</span><span class="pln">yourPlugin</span><span class="pun">();</span></li><li class="L3"><span class="pun">});</span></li><li class="L4"><span class="tag">&lt;/script&gt;</span></li></ol></pre>
-              </section>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a class="group" rel="wheel_group" href="./Fransisca Gallery_files/1_b.jpg"><img src="./Fransisca Gallery_files/1_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Tree</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Landscape</a>,
+                    <a href="http://modalrabi.web.id/themes/fransisca/#">Forest</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Nature</a></p>
+                </div>
             </div>
-            <!--end howtouse-content-->
-            <!--
-          =====================================
-          Documentation Tab Content
-          =====================================
-          -->
-            <div class="tab-pane" id="documentation">
-              <section class="sec-header">
-                <h3 class="font-bree-serif">Plugin Settings</h3>
-                <p>Plugin accepts settings from an object of key/value pairs, and can be assigned to any HTML element.</p>
-                <table class="table table-bordered settings">
-                  <thead>
-                    <tr>
-                      <th><strong>Property</strong>
-                      </th>
-                      <th><strong>Default</strong>
-                      </th>
-                      <th><strong>Description</strong>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Property1</td>
-                      <td>Default Value</td>
-                      <td>some description about this</td>
-                    </tr>
-                    <tr>
-                      <td>Property2</td>
-                      <td>"Default String"</td>
-                      <td>some description about this</td>
-                    </tr>
-                    <tr>
-                      <td>Property3</td>
-                      <td>false</td>
-                      <td>some description about this</td>
-                    </tr>
-                    <tr>
-                      <td>Property4</td>
-                      <td>Default Value</td>
-                      <td>some description about this</td>
-                    </tr>
-                    <tr>
-                      <td>Property5</td>
-                      <td>"Default String"</td>
-                      <td>some description about this</td>
-                    </tr>
-                    <tr>
-                      <td>Property6</td>
-                      <td>false</td>
-                      <td>some description about this</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a rel="wheel_group" href="./Fransisca Gallery_files/5_b.jpg"><img src="./Fransisca Gallery_files/5_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Building</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Home</a></p>
+                </div>
+            </div>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a rel="wheel_group" href="./Fransisca Gallery_files/2_b.jpg"><img src="./Fransisca Gallery_files/2_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Sea</a></p>
+                </div>
+            </div>
+            <div class="col-md-3 galery">
+                <div class="menu-galery">
+                    <ul>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                        <li><a href="http://modalrabi.web.id/themes/fransisca/#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="image-galery"><a class="images3" href="./Fransisca Gallery_files/4_b.jpg"><img src="./Fransisca Gallery_files/4_b.jpg"></a></div>
+                <div class="count-galery">
+                    <ul>
+                        <li><i class="icon-comment"></i> 5</li>
+                        <li><i class="icon-download-alt"></i> 7</li>
+                        <li><i class="icon-star"></i> 2</li>
+                        <li><i class="icon-eye-open"></i> 20</li>
+                    </ul>
+                </div>
+                <div class="tags-galery">
+                    <p><i class="icon-tags"></i> Tags : <a href="http://modalrabi.web.id/themes/fransisca/#">Building</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Tower</a>,
+                    <a href="http://modalrabi.web.id/themes/fransisca/#">Eifel</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Wonders of the world</a>, <a href="http://modalrabi.web.id/themes/fransisca/#">Miracle</a></p>
+                </div>
+            </div>
 
-              </section>
-            </div>
-            <!--end documentation-content-->
-            <!--
-          =====================================
-          FAQ Tab Content
-          =====================================
-          -->
-            <div class="tab-pane" id="faq">
-              <section class="sec-header">
-                <h3 class="font-bree-serif">FAQ <small>Option1</small></h3>
-                <div class="row">
-                  <div class="span3">
-                    <div class="well">
-                      <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="{{host}}/welcome">Category 1</a>
-                        </li>
-                        <li><a href="{{host}}/welcome">Category 2</a>
-                        </li>
-                        <li><a href="{{host}}/welcome">Category 3</a>
-                        </li>
-                        <li><a href="{{host}}/welcome">Category 4</a>
-                        </li>
-                        <li><a href="{{host}}/welcome">Category 5</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <!--end well-->
-                  </div>
-                  <!--end span3-->
-                  <div class="span9">
-                    <form class="well form-search">
-                      <input type="text" class="span7" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source="[&quot;keyword1&quot;,&quot;keyword2&quot;]">
-                      <button type="submit" class="btn btn-success">Search</button>
-                    </form>
-                    <div class="accordion" id="faq-accordion">
-                      <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                          Question #1
-                        </a>
-                        </div>
-                        <div id="collapseOne" class="accordion-body collapse in">
-                          <div class="accordion-inner">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                          </div>
-                        </div>
-                      </div>
-                      <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                          Question Item #2
-                        </a>
-                        </div>
-                        <div id="collapseTwo" class="accordion-body collapse">
-                          <div class="accordion-inner">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                          </div>
-                        </div>
-                      </div>
-                      <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-                          Question Item #3
-                        </a>
-                        </div>
-                        <div id="collapseThree" class="accordion-body collapse">
-                          <div class="accordion-inner">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--end accordion-->
-                  </div>
-                  <!--end span9-->
-                </div>
-                <!--end row-->
-              </section>
-
-              <section class="sec-header">
-                <h3 class="font-bree-serif">FAQ <small>Option2</small></h3>
-                <div class="accordion" id="faq-accordion1">
-                  <div class="accordion-group">
-                    <div class="accordion-heading">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
-                          Question #1
-                        </a>
-                    </div>
-                    <div id="collapse1" class="accordion-body collapse in">
-                      <div class="accordion-inner">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="accordion-group">
-                    <div class="accordion-heading">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse2">
-                          Question Item #2
-                        </a>
-                    </div>
-                    <div id="collapse2" class="accordion-body collapse">
-                      <div class="accordion-inner">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="accordion-group">
-                    <div class="accordion-heading">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">
-                          Question Item #3
-                        </a>
-                    </div>
-                    <div id="collapse3" class="accordion-body collapse">
-                      <div class="accordion-inner">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--end accordion-->
-              </section>
-            </div>
-            <!--end faq-content-->
-            <!--
-          =====================================
-          Roadmap and changelog Tab Content
-          =====================================
-          -->
-            <div class="tab-pane" id="roadmap">
-              <section class="sec-header">
-                <h3 class="font-bree-serif">Roadmap</h3>
-                <p>For more up-to-date information on release dates for these versions, please refer to the <a href="{{host}}/welcome" class="tip" data-original-title="Link to your Github Account">Issues Milestones</a>.</p>
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th><strong>Version</strong>
-                      </th>
-                      <th><strong>Description</strong>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1.0.3</td>
-                      <td>Description about this version goes here</td>
-                    </tr>
-                    <tr>
-                      <td>1.0.2</td>
-                      <td>Description about this version goes here</td>
-                    </tr>
-                    <tr>
-                      <td>1.0.1</td>
-                      <td>Description about this version goes here</td>
-                    </tr>
-                    <tr>
-                      <td>1.0.0</td>
-                      <td>Description about this version goes here</td>
-                    </tr>
-
-                  </tbody>
-                </table>
-              </section>
-
-              <section class="sec-header">
-                <h3 class="font-bree-serif">Changelog</h3>
-                <div class="accordion" id="changelog-accordion">
-                  <div class="accordion-group">
-                    <div class="accordion-heading">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseaa">
-                        <strong>1.0.3 (June 1, 2012)</strong>
-                      </a>
-                    </div>
-                    <div id="collapseaa" class="accordion-body collapse in">
-                      <div class="accordion-inner">
-                        <h5>CSS Changes</h5>
-                        <ul>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                        </ul>
-                        <h5>Javascript Changes</h5>
-                        <ul>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="accordion-group">
-                    <div class="accordion-heading">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseab">
-                        <strong>1.0.2 (April 1, 2012)</strong>
-                      </a>
-                    </div>
-                    <div id="collapseab" class="accordion-body collapse">
-                      <div class="accordion-inner">
-                        <h5>HTML Changes</h5>
-                        <ul>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                        </ul>
-                        <h5>Javascript Changes</h5>
-                        <ul>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="accordion-group">
-                    <div class="accordion-heading">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseac">
-                        <strong>1.0.1 (March 1, 2012)</strong>
-                      </a>
-                    </div>
-                    <div id="collapseac" class="accordion-body collapse">
-                      <div class="accordion-inner">
-                        <h5>HTML Changes</h5>
-                        <ul>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                        </ul>
-                        <h5>Javascript Changes</h5>
-                        <ul>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                          <li>Some description about the changes</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--end accordion-->
-              </section>
-            </div>
-            <!--end roadmap-content-->
-          </div>
-          <!--end tab-content-->
         </div>
-        <!--end tabbable-->
+    </div>
 
-        <div class="well align-center">
-          <h4>For any queries or issues. <a href="{{host}}/welcome">Submit issues</a> on github or Contact me <a href="mailto:">plugin-support@gmail.com</a></h4>
+    <div class="container">
+        <div class="pagination">
+        <ul>
+          <li class="disabled"><a href="http://modalrabi.web.id/themes/fransisca/#" title="Go to the first page">« First</a></li>
+          <li><a href="http://modalrabi.web.id/themes/fransisca/#" title="Go to the previous page">←</a></li>
+          <li class="active"><a href="http://modalrabi.web.id/themes/fransisca/#">1</a></li>
+          <li><a href="http://modalrabi.web.id/themes/fransisca/#">2</a></li>
+          <li><a href="http://modalrabi.web.id/themes/fransisca/#">..</a></li>
+          <li><a href="http://modalrabi.web.id/themes/fransisca/#">8</a></li>
+          <li><a href="http://modalrabi.web.id/themes/fransisca/#">9</a></li>
+          <li><a href="http://modalrabi.web.id/themes/fransisca/#" title="Go to the next page">→</a></li>
+          <li><a href="http://modalrabi.web.id/themes/fransisca/#" title="Go to the last page">Last »</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer">
+        <hr class="alt">
+        <div class="row">
+            <div class="span6">© 2012 Fransisca Gallery. All right reserved.</div>
+            <div class="span6">
+                <ul>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#">Terms Of Service</a></li>
+                    <li><a href="http://modalrabi.web.id/themes/fransisca/#">Privacy</a></li>
+                </ul>
+            </div>
         </div>
-        <!--end well-->
-      </div>
-      <!--end span12-->
     </div>
-    <!--end row-->
-  </div>
-  <!--end container-->
-</div>
-<!--end main-content-->
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="span6">
-        <p>© Plugin-Documentation Theme. All Rights Reserved</p>
-      </div>
-      <div class="span2 offset4">
-        <p><a href="{{host}}/welcome" id="top">Go To Top</a>
-        </p>
-      </div>
-      <!--end span2-->
-    </div>
-    <!--end row-->
-  </div>
-  <!--end container-->
-</footer>
 {% endblock %}
+
+

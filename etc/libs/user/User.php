@@ -1,6 +1,6 @@
 <?php
 namespace libs\user;
-require_once "setup.php";
+require_once ".autoload.php";
 use configs\Vecni;
 use libs\mongodb\Model;
 use libs\schedule\Calendar;
