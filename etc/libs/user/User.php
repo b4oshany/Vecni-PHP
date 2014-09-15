@@ -65,16 +65,15 @@ class User extends Model{
     * false if there was an error during login
     */
     public static function login($email, $password){
-        $user = self::$model->findOne(array("email"=>$email,
+        $user = self::find_one(array("email"=>$email,
                                          "password"=>md5($password)
                                          ),
                                       array("password" => 0)
                                      );
         if(!empty($user)){
-            $user["id"] = (string) $user["_id"];
             $user->update(array('$set'=>array("is_login"=>true)));
             $user->is_login = true;
-            return self::start_session($user);
+            return self::start_session($user->to_array());
         }else{
             return 0;
         }
@@ -89,7 +88,7 @@ class User extends Model{
     */
     public function register($email, $password){
         $user_exist = self::$model->findOne(array('email'=>$email));
-        if(!empty($user_exist)){
+        if(empty($user_exist)){
             $this->email = $email;
         }else{
             return 0;
