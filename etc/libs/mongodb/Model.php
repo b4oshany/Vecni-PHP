@@ -15,6 +15,8 @@ abstract class Model extends Object{
     protected static $model;                            // current scoped collection
     protected static $mongodb;                          // mongodb connection
     public static $collection = "default";           // collection name
+    public static $db = "vecni_init";
+    public static $connection;
     protected $updates = array();
 
     /**
@@ -24,8 +26,11 @@ abstract class Model extends Object{
     */
     public static function setUp(){
         if(!isset(self::$mongodb)){
-            $connection = new \MongoClient();
-            self::$mongodb = $connection->tattle_tale;
+            if(!isset(self::$connection)){
+                self::$connection = new \MongoClient();
+            }
+            $db = self::$db;
+            self::$mongodb = self::$connection->$db;
         }
     }
 

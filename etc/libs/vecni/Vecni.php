@@ -38,7 +38,7 @@ class Vecni{
 
     private $vars = array();
     private static $app_route = array();
-    private static $display_error = true;
+    public static $display_error = false;
 
 
     public static function run_config(){
@@ -244,7 +244,7 @@ class Vecni{
     public static function redirect($url = "welcome"){
         ?>
             <script>
-                window.location.assign("<?php echo $url ?>");
+                window.location.assign("<?php echo self::$host."/".$url ?>");
             </script>
         <?php
     }
