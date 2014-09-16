@@ -21,7 +21,7 @@
     <div class="btn-group input-group {{holder_class}} " data-toggle="buttons">
         {% for option in options %}
         <label class="btn {{option.label_class}}" {% autoescape %}{{option.label_kargs|raw}}{% endautoescape %}>
-            <input  name="{{name}}" type="radio" class="{{option.class}}" 
+            <input  name="{{name}}" type="radio" class="{{option.class}}"
                    value="{{option.key}}"
                    {% if default == option.key %}
                         selected
@@ -39,7 +39,7 @@
         <span class="input-group-addon noCurve"><div class="glyphicon glyphicon-tower"  ></div></span>
         <select class="form-control" name="{{name}}">
             {% for key, value in options %}
-                <option value="{{key}}" 
+                <option value="{{key}}"
                         {% if default == key %}
                             selected
                         {% endif %}
@@ -77,24 +77,27 @@
       <button type="submit" class="btn btn-warning btn-lg">Invite Me!</button>
     </form>
 {% endmacro %}
-    
-    
-    
+
+
+
 {% macro social_fb_button() %}
-    <div class="fb-login-button btn btn-primary social-button noCurve" style="width:100px;" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false" data-scope="email,user_birthday,user_education_history" ></div>    
+    <button type="button" class="fb-login-button btn btn-primary social-button noCurve" style="width:100px;" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false" data-scope="email,user_birthday,user_education_history" ></button>
 {% endmacro %}
-    
+
 {% macro social_gplus_button() %}
-    <div id="gplus-login" type="button" class="btn btn-danger social-button noCurve g-signin" style="width:100px;"  data-callback="gplus_signinCallback"
-    data-clientid="136591707736-log70mgd8lpelsmt8vrgnv2r0jv1vgnk.apps.googleusercontent.com"
-    data-cookiepolicy="single_host_origin"
-    data-requestvisibleactions="http://schema.org/AddAction"
-    data-scope="https://www.googleapis.com/auth/plus.login">
-	</div>
+    <button type="button" class="btn btn-danger social-button noCurve g-signin" id="gplus-login"
+            data-callback="gplus_signinCallback"
+            data-clientid="136591707736-log70mgd8lpelsmt8vrgnv2r0jv1vgnk.apps.googleusercontent.com"
+            data-cookiepolicy="single_host_origin"
+            data-theme="dark"
+            data-scope="email"
+            >
+        <span class="icon"></span>
+        <span class="buttonText">Google</span>
+    </button>
 {% endmacro %}
-    
+
 {% macro social_twitter_button() %}
-    <button type="button" class="btn btn-info social-button noCurve" style="width:100px;"><strong>Twitter</strong></button>    
+    <button type="button" class="btn btn-info social-button noCurve" style="width:100px;"><strong>Twitter</strong></button>
 {% endmacro %}
-                            
-                            
+

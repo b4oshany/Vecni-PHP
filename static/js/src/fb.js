@@ -81,7 +81,7 @@ function fb_login_user(json){
                          "access_token": accessToken,
                          "education_history": JSON.stringify(json.education)
                         };
-        $.post("facebooklogin", user_data, function(response){
+        $.post("user/login/facebook", user_data, function(response){
            if(response.status == 200){
                 window.location.reload();
            }else{
