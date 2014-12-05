@@ -1,7 +1,5 @@
 <?php
 namespace libs\vecni;
-require_once "http".DIRECTORY_SEPARATOR."Response.php";
-require_once "http".DIRECTORY_SEPARATOR."Request.php";
 require_once "Object.php";
 
 
@@ -27,21 +25,8 @@ class Vecni extends Object
     public static $company_email = 'b4.oshany@gmail.com';
     public static $company_name = 'Osoobe';
 
-
-    # absolute path of the application folder
-    private static $main_dir = "";
-    # name of the application folder
-    private static $main_dirname = "";
     # currently viewed route of the user
     private static $current_route = "";
-
-    # main directories of the application
-    private static $template_dir;
-    private static $static_dir;
-    private static $libs_dir;
-    private static $plugins_dir;
-    private static $controllers_dir;
-    private static $configs_dir;
     
     private static $paths = array(
         "core"=>"",
@@ -280,7 +265,7 @@ class Vecni extends Object
                 }
             }
             echo self::error_route();
-            Response::abort();
+            http\Response::abort();
         }else{
             require_once self::$paths["route_file"];
             try{
