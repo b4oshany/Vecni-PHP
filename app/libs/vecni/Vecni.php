@@ -135,8 +135,8 @@ class Vecni extends Object
         Response::abort("In order for you to continue.");
     }
 
-    public static function enable_error_reporting($display_error = true){
-        if(self::in_development() && $display_error){
+    public static function enable_error_reporting($display_error = true, $override_default=false){
+        if((self::in_development() && $display_error) || ($display_error && $override_default)){
             error_reporting(E_ALL);
             ini_set('display_errors',1);
             $php_error_file = self::$paths["plugins"].'error'.DIRECTORY_SEPARATOR.
