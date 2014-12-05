@@ -125,6 +125,7 @@ hr {
 header.navbar {
   background-color: #3c8dbc;
   border-color: transparent;
+  top: 0;
 }
 header.navbar .navbar-brand {
   color: white;

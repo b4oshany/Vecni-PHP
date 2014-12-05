@@ -3,4 +3,4 @@
 *.swp
 .DS_Store
 etc/configs/settings.ini.php
-static/css/gen/
+static/css/gen/*

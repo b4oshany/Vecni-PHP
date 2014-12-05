@@ -21,4 +21,5 @@ Vecni::$company_name = 'Osoobe';
 
 # Enable error reporting
 Vecni::enable_error_reporting();
+Vecni::use_less();
 ?>
