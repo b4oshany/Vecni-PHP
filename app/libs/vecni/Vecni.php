@@ -118,7 +118,7 @@ class Vecni extends Object
             <h3>Please run the following command in git bash.</h3>
             <code> git submodule update --init</code>
         <?php
-        Response::abort("In order for you to continue.");
+        http\Response::abort("In order for you to continue.");
     }
 
     public static function enable_error_reporting($display_error = true, $override_default=false){
