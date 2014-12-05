@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block styles %}
+<link href="{{static}}/dist/css/prettify.css" rel="stylesheet" />
+<link href="{{static}}/dist/css/fonts.css" rel="stylesheet" />
+<link href="{{static}}/dist/css/style.css" rel="stylesheet" />
+{% endblock %}
+{% block scripts %}
+
+{% endblock %} {% block content %}
+<div class="masthead">
+  <div class="container">
+    <a href="{{host}}" id="brand">Vecni</a>
+    <h1 class="font-bree-serif">Vecni Micro-Framework</h1>
+    <p class="font-open-sans-normal">Simple and flexible PHP Micro-Framework for your projects.</p>
+
+    <p class="jumbo">
+      <a href="https://github.com/b4oshany/vecni" class="btn btn-primary btn-large font-open-sans-normal"><strong>View Plugin on GitHub</strong></a>
+      <a href="{{host}}" class="btn btn-success btn-large font-open-sans-normal"><strong>Download Plugin </strong><small>(v1.0.0)</small></a>
+    </p>
+  </div>
+  <!--end container-->
+</div>
+<div class="container">
+
+    <!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
+  <li role="presentation"><a href="#dostart" role="tab" data-toggle="tab">How To Use</a></li>
+  <li role="presentation"><a href="#howto" role="tab" data-toggle="tab">How To Use</a></li>
+  <li role="presentation"><a href="#examples" role="tab" data-toggle="tab">Examples</a></li>
+  <li role="presentation"><a href="#documentation" role="tab" data-toggle="tab">Documentation</a></li>
+  <li role="presentation"><a href="#faq" role="tab" data-toggle="tab">FAQ</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="overview">
+    {% include 'demo/overview.html' %}
+  </div>
+  <div role="tabpanel" class="tab-pane" id="dostart">
+    {% include 'demo/dostart.html' %}
+  </div>
+  <div role="tabpanel" class="tab-pane" id="howto">
+    {% include 'demo/how_to.html' %}
+  </div>
+  <div role="tabpanel" class="tab-pane" id="examples">
+    {% include 'demo/examples.html' %}
+  </div>
+  <div role="tabpanel" class="tab-pane" id="documentation">
+    {% include 'demo/documentation.html' %}
+  </div>
+  <div role="tabpanel" class="tab-pane" id="faq">
+    {% include 'demo/faq.html' %}
+  </div>
+</div>
+</div>
+{% endblock %}
+
+

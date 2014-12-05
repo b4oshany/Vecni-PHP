@@ -1,0 +1,19 @@
+<h1 class="font-bree-serif">Getting Started</h1>
+<p>Vecni uses a number of components such as Twig for templating, Less for css pre-processing amongst others that will be mentioned in the Tech Stack section.</p>
+<p>In the root folder of the application, run the following git commands (git bash command line):</p>
+
+<pre class="prettyprint linenums">
+        git submodule update --init
+</pre>
+
+<p>This will perform a git clone on external modules that are needed.</p>
+
+<h1 class="font-bree-serif">Database Configuration</h1>
+<p>In the etc/configs folder there is a settings.ini.php file which contains basic server configuration. You can add your database settings or any settings you need to be rendered globally.</p>
+
+
+<h1 class="font-bree-serif">Apache Configuration</h1>
+<p>In order for the application to use url dispatching, one must enable the rewrite module in Apache.</p>
+<a href="http://b4oshany.blogspot.com/2014/08/by-default-Apache-disable-symbolic.html">Click here to enable rewrite module for Linux.</a>
+<a href="http://www.anmsaiful.net/blog/php/enable-Apache-rewrite-module.html">Click here to enable rewrite module for Windows.</a>
+<p>Enabling Apache rewrite module allows Vecni to be used at full capacity, where by all request to the Vecni base application is have to be validated via the index page. This will disallow direct POST and GET requests to files and folders.</p>

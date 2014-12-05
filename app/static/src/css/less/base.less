@@ -1,0 +1,124 @@
+body {
+    background-color: #f2f2f2;
+    font-family: segoeui, 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #555;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.bottom{
+    position: absolute;
+    bottom: 0;
+}
+
+.social-button{
+    height: 35px;
+}
+
+#main-content{
+    min-height: 500px;
+    margin-top: 80px;
+}
+
+form{
+    &[name="user_invite"]{
+        .bootstrap-tagsinput input{
+            font-size: 18px !important;
+            padding-bottom: 10px !important;
+            padding-top: 5px !important;
+        }
+
+        [type="submit"]{
+            vertical-align: top !important;
+        }
+    }
+}
+
+
+.alert{
+    position: fixed;
+    z-index: 10000;
+    top: 60px;
+    width: 90%;
+    margin: 0 5%;
+}
+
+/* Titles */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: #333;
+
+    h1 {
+       font-size: 40px;
+    }
+
+    h3 {
+        color: #95a5a6;
+        font-weight: 400;
+    }
+
+    h4 {
+        color: #95a5a6;
+        font-weight: 400;
+        font-size: 20px;
+    }
+}
+
+
+/* Paragraph & Typographic */
+p {
+    line-height: 28px;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.centered {
+    text-align: center;
+}
+
+/* Links */
+a {
+    color: #3498db;
+    word-wrap: break-word;
+    .transition(#3498db 0.1s ease-in background 0.1s ease-in);
+
+    &:before, &:after {
+        .transition(#3498db 0.1s ease-in background 0.1s ease-in);
+    }
+
+    &:hover, &:focus {
+        color: #7b7b7b;
+        text-decoration: none;
+        outline: 0;
+    }
+}
+
+
+ hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+.modal-body{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+/* Helpers */
+
+.noCurve{
+    border-radius:            0px;
+  -webkit-border-radius:    0px;
+  -moz-border-radius:        0px;
+}

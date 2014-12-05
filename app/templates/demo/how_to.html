@@ -1,0 +1,61 @@
+<!--
+
+<link href="http://localhost/vecni/static/dist/css/prettify.css" rel="stylesheet" />
+<link href="http://localhost/vecni/static/dist/css/fonts.css" rel="stylesheet" />
+<link href="http://localhost/vecni/static/dist/css/style.css" rel="stylesheet" />
+-->
+<div class="tab-pane" id="howtouse">
+  <section class="sec-header">
+    <h1 class="font-bree-serif">Defining A URL</h1>
+    <h3 class="font-bree-serif">Setting a Basic Route</h3>
+    <p>
+      The <b><i>main.ini.php</i></b> file is where all your URL Routes will be defined. In order for you to defined a url, you must call the <b>set_route</b> function from the Vecni package. The <b>set_route</b> function takes in two parameters, the relative url to be rendered and the function name that will handle the rendered url as seen below.</p>
+    <code class="prettyprint linenums">
+      <php-line><span class="tag">Vecni</span>::set_route(<span class="atv">"/"</span>, <span class="atv">"home"</span>)</php-line>
+      <div class="line"><span class="tag">function</span> home(){<span class="tag">return</span> <span class="atv">"Welcome to Vecni."</span>; }</div>
+    </code>
+    <p>When a user visits the homepage of your site, which is indicated by <attr>"/"</attr> (this stands for the root url for site or application), <b>Vecni</b> will find and execute the home function. As a result, <i>"Welcome to Vecni."</i> will be displayed to the user.</p>
+    <h3 class="font-bree-serif">Routes with variables.</h3>
+    <p>If dynamic url is need for a path, then url variables can be passed into the set_route function by placing a variable between curl bracels in the <b>dispatched url</b> at it's respective path as seen below.</p>
+    <code class="prettyprint linenums">
+      <php-line><span class="tag">Vecni</span>::set_route(<span class="atv">"/book/{book_name}"</span>, <span class="atv">"book_view"</span>)</php-line>
+      <func class="line"><func-name><span class="tag">function</span> book_view()</func-name>
+        <func-content>
+          <php-line>$book_name = <tag>Request::GET</tag>(<attr>"book_name"</attr>)</php-line>
+          <php-line><span class="tag">return</span> <span class="atv">"You are viewing $book_name."</span></php-line>
+        </func-content>
+      </func>
+    </code>
+    <p>Therefore, if a user visits <b>http://localhost/vecni/book/Harry Potter/</b>, the following will be shown:</p>
+    <pre class="html-page">
+    You are viewing Harry Potter.
+    </pre>
+  </section>
+  <section class="sec-header">
+    <h3 class="font-bree-serif">Link Css</h3>
+    <p>Move the <strong>plugin CSS</strong> file to your server and link to it in the
+      <code><abbr title="&lt;head&gt;">head</abbr></code>
+      section of your document.
+    </p>
+    <pre class="prettyprint linenums">
+      <ol class="linenums">
+      <li class="L0"><span class="tag">&lt;link</span><span class="pln"> </span><span class="atn">rel</span><span class="pun">=</span><span class="atv">"stylesheet"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"yourplugin.css"</span><span class="pln"> </span><span class="tag">/&gt;</span></li></ol></pre>
+  </section>
+  <section class="sec-header">
+    <h3 class="font-bree-serif">Link JS</h3>
+    <p>Move the <strong>plugin JS</strong> file to your server and link to it before the closing <code><abbr title="&lt;body&gt;">body</abbr></code> tag.</p>
+    <p>Please note that you must include jQuery (v1.7 or later) before the slider JS file.</p>
+    <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">"jquery-1.7.1.min.js"</span><span class="tag">&gt;&lt;/script&gt;</span></li><li class="L1"><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">"jquery.yourplugin.min.js"</span><span class="tag">&gt;&lt;/script&gt;</span></li></ol></pre>
+  </section>
+  <section class="sec-header">
+    <h3 class="font-bree-serif">The Markup</h3>
+    <p>Add the following markup</p>
+    <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"thumbnails"</span><span class="tag">&gt;</span></li><li class="L1"><span class="tag">&lt;li</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"span4"</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"thumbnail"</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;img</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">"http://placehold.it/360x268"</span><span class="pln"> </span><span class="atn">alt</span><span class="pun">=</span><span class="atv">""</span><span class="tag">&gt;</span><span class="pln"> </span><span class="tag">&lt;/a&gt;</span><span class="pln"> </span><span class="tag">&lt;/li&gt;</span></li><li class="L2"><span class="pln">....</span></li><li class="L3"><span class="tag">&lt;/ul&gt;</span></li></ol></pre>
+  </section>
+  <section class="sec-header">
+    <h3 class="font-bree-serif">Call Plugin</h3>
+    <p>Just before the closing <code><abbr title="&lt;body&gt;">body</abbr></code> tag (after any JS file includes), call the plugin with code below:</p>
+    <pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;script&gt;</span></li><li class="L1"><span class="pln">$</span><span class="pun">(</span><span class="pln">document</span><span class="pun">).</span><span class="pln">ready</span><span class="pun">(</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L2"><span class="pln">  $</span><span class="pun">(</span><span class="str">'.selector'</span><span class="pun">).</span><span class="pln">yourPlugin</span><span class="pun">();</span></li><li class="L3"><span class="pun">});</span></li><li class="L4"><span class="tag">&lt;/script&gt;</span></li></ol></pre>
+  </section>
+</div>
+<!--end howtouse-content-->

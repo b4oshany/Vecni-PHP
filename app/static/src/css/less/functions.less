@@ -1,0 +1,21 @@
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow: @style @c;
+  -o-box-shadow: @style @c;
+  box-shadow:         @style @c;
+}
+
+.transition(@style){
+  -webkit-transition: @style;
+    -moz-transition: @style;
+    -ms-transition: @style;
+    -o-transition: @style;
+    transition: @style;
+}
+
+.backgroundsize(@style){
+    -webkit-background-size: @style;
+    -moz-background-size: @style;
+    -o-background-size: @style;
+    background-size: @style;
+}

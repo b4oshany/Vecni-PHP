@@ -1,0 +1,15 @@
+[submodule "app/plugins/twig"]
+        path = app/plugins/twig
+        url = git://github.com/fabpot/Twig.git
+[submodule "app/plugins/mailer"]
+        path = app/plugins/mailer
+        url = git@github.com:PHPMailer/PHPMailer.git
+[submodule "app/plugins/error"]
+        path = app/plugins/error
+        url = git@github.com:JosephLenton/PHP-Error.git
+[submodule "app/plugins/less"]
+        path = app/plugins/less
+        url = git@github.com:leafo/lessphp.git
+[submodule "app/static/ext/sweetalert"]
+        path = app/static/ext/sweetalert
+        url = git@github.com:t4t5/sweetalert.git

@@ -1,0 +1,93 @@
+
+{% macro input(name, kargs, class, inp_class, type, value) %}
+<div class="input-group {{inp_class}}">
+  <input type="{{ type|default('text') }}" name="{{ name }}" value="{{ value|e }}" id="{{name}}" {% autoescape %}{{kargs|raw}}{% endautoescape %} class="form-control {{class}}" />
+</div>
+{% endmacro %}
+
+{% macro email_input(name, kargs, class, inp_class, value) %}
+<div class="input-group {{inp_class}}">
+  <input type="email" name="{{ name }}" value="{{ value|e }}" id="{{name}}"  {% autoescape %}{{kargs|raw}}{% endautoescape %} class="form-control {{class}}" pattern='^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/>
+</div>
+{% endmacro %}
+
+{% macro password_input(name, kargs, class, inp_class, value) %}
+<div class="input-group {{inp_class}}">
+  <input type="password" name="{{ name }}" value="{{ value|e }}" id="{{name}}"  {% autoescape %}{{kargs|raw}}{% endautoescape %} class="form-control {{class}}" pattern='.{6,21}'/>
+</div>
+{% endmacro %}
+
+{% macro hidden_input(name, kargs, class, inp_class, value) %}
+<div class="input-group {{inp_class}}">
+  <input type="hidden" name="{{ name }}" value="{{ value|e }}" id="{{name}}" {% autoescape %}{{kargs|raw}}{% endautoescape %} class="form-control {{class}}" pattern='.{6,21}'/>
+</div>
+{% endmacro %}
+
+{% macro radio_input(name, options, default="", holder_class) %}
+    <div class="btn-group input-group {{holder_class}} " data-toggle="buttons">
+        {% for option in options %}
+        <label class="{{option.label_class}}" {% autoescape %}{{option.label_kargs|raw}}{% endautoescape %}>
+            <input  name="{{name}}" type="radio" class="{{option.class}}" id="{{name}}"
+                   value="{{option.key}}"
+                   {% if default == option.key %}
+                        selected
+                   {% endif %}
+                   {% autoescape %}{{option.kargs|raw}}{% endautoescape %} name="{{ name }}"/>
+             {{option.value}}
+        </label>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+
+{% macro select_input(name, options, default="", holder_class="") %}
+    <div class="form-group input-group {{holder_class}} ">
+        <select class="form-control" name="{{name}}" id="{{name}}" >
+            {% for key, value in options %}
+                <option value="{{key}}"
+                        {% if default == key %}
+                            selected
+                        {% endif %}
+                        >{{value}}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro %}
+
+{% macro textarea(name, kargs, class, inp_class, value) %}
+<div class="input-group {{inp_class}}">
+    <textarea name="{{ name }}" id="{{name}}"  {% autoescape %}{{kargs|raw}}{% endautoescape %} class="form-control {{class}}">{{ value|e }}</textarea>
+</div>
+{% endmacro %}
+
+{% macro labelled_input(label, field) %}
+<label class='control-label'><span>{{label}}</span>
+    {{field}}
+</label>
+{% endmacro %}
+
+{% macro help_input(description, field) %}
+    {{field}}
+    <p class="help-block">{{description}}</p>
+{% endmacro %}
+
+{% macro social_fb_button() %}
+    <button type="button" class="fb-login-button btn btn-primary social-button noCurve" style="width:100px;" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false" data-scope="email,user_birthday,user_education_history" ></button>
+{% endmacro %}
+
+{% macro social_gplus_button() %}
+    <button type="button" class="btn btn-danger social-button noCurve g-signin" id="gplus-login"
+            data-callback="gplus_signinCallback"
+            data-clientid="136591707736-log70mgd8lpelsmt8vrgnv2r0jv1vgnk.apps.googleusercontent.com"
+            data-cookiepolicy="single_host_origin"
+            data-theme="dark"
+            data-scope="email"
+            >
+        <span class="icon"></span>
+        <span class="buttonText">Google</span>
+    </button>
+{% endmacro %}
+
+{% macro social_twitter_button() %}
+    <button type="button" class="btn btn-info social-button noCurve" style="width:100px;"><strong>Twitter</strong></button>
+{% endmacro %}

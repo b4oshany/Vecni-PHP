@@ -1,0 +1,8 @@
+# Turn rewriting on
+RewriteEngine On
+# Redirect requests to index.php
+RewriteCond %{REQUEST_URI} !=index\.php
+RewriteCond %{REQUEST_FILENAME}  !-l
+RewriteCond %{REQUEST_FILENAME}  !-d
+RewriteCond %{REQUEST_FILENAME}  !-f
+RewriteRule .* index.php?%{QUERY_STRING} [L]

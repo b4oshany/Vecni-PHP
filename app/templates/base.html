@@ -1,0 +1,39 @@
+{% import "macros/forms.html" as forms %}
+<!DOCTYPE html>
+<html class="{% block html_class %}{{html_class}}{% endblock %}" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>
+        {% block title %}{{title}}{% endblock %}
+    </title>
+    {% include 'bit/styles.html' %}
+    {% block head %}
+    {% endblock %}
+    {% include 'bit/analytics.html' %}
+    {% block styles %}
+    {% endblock %}
+    <link rel="shortcut icon" href="{{static}}/img/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{static}}/img/icons/favicon.ico" type="image/x-icon">
+  </head>
+
+  <body>
+    <div id="fb-root"></div><!--Something A got with Facebook-->
+    {% block header %}
+      {% include 'bit/header.html' %}
+    {% endblock %}
+    {% include 'bit/announcements.html' %}
+    <div id="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% include 'bit/footer.html' %}
+    {% include 'bit/init.html' %}
+    {% include 'bit/scripts.html' %}
+    {% block scripts %}
+    {% endblock %}
+  </body>
+</html>

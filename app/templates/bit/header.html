@@ -1,0 +1,96 @@
+<header class="navbar navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{host}}">{{config.BRAND_NAME}}</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="nav-menu">
+      <ul class="nav navbar-nav">
+        <li class="active">
+          <a href="#"><span class="glyphicon glyphicon-th-list"></span></a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <form class="form-inline" role="form" style="padding: 8px;" method="post" action="{{host}}/books">
+            <div class="form-group">
+              <input type="search" class="form-control" name="q" placeholder="Search for..." value="{{search}}">
+            </div>
+            <button type="submit" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span></button>
+          </form>
+        </li>
+        {% if user %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-user"></span>
+              <span class="user_name">{{user.first_name}}</span>
+              <span class="caret"></span>
+            </a>
+            <section class="dropdown-menu user-overview" role="menu">
+              <div class="user-profile">
+                <img src="static/img/icons/user.png" class="img-circle" alt="User Image" />
+                <a href="#">{{user.first_name}} {{user.last_name}}</a>
+                <span>Member since Nov. 2014</span>
+              </div>
+              <ul class="nav nav-pills quick-pick">
+                <li><a href="#">My Home</a></li>
+                <li><a href="#">Watch List</a></li>
+                <li><a href="#">Settings</a></li>
+              </ul>
+              <div class="fn-profile">
+                <button type="button" class="btn btn-default">View Profile</button>
+                <button type="button" class="btn btn-default pull-right"
+                        onclick="window.location.assign('{{host}}/logout')">Sign Out</button>
+              </div>
+            </section>
+          </li>
+        {% else %}
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span>
+            <span class="signin">Log in</span>
+            <span class="caret"></span>
+          </a>
+          <section class="dropdown-menu user-overview logreg row" role="menu">
+            <section class="col-md-12">
+              <form name="login" action="{{host}}/user/signin/process" method="post">
+                <h4>Log in</h4>
+                <div class="form-group input-group ">
+                  <span class="input-group-addon noCurve"><div class="glyphicon glyphicon-user"  ></div></span>
+                    {{forms.email_input("email", 'id="email" placeholder="Enter your email"', "", "full-width")}}
+                </div>
+                <div class="form-group input-group">
+                  <span class="input-group-addon noCurve" ><div class="glyphicon glyphicon-lock"  ></div></span>
+                  {{forms.password_input("password", 'id="password" placeholder="Re-enter Password"', "", "full-width")}}
+                </div>
+                <div class="checkbox inline">
+                  <label>
+                    <input type="checkbox" name="remember-me"> Remember me
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-default inline pull-right">Sign in</button>
+              </form>
+            </section>
+            <section class="col-md-12">
+              <h5>
+                <a href="{{host}}/user/registration" class="inline user-register">Create Account</a>
+                <a href="{{host}}/user/password/reset" class="inline pull-right password-reset">Forget Password</a>
+              </h5>
+            </section>
+          </section>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</header>

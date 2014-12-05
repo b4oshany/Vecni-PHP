@@ -1,0 +1,5 @@
+*~
+*.DS_Store
+.DS_Store
+etc/configs/settings.ini.php
+static/css/gen/
