@@ -1,5 +1,5 @@
 <?php
-namespace libs\vecni;
+namespace libs\vecni\http;
 
 class Request{
     public static function init(){
@@ -7,13 +7,19 @@ class Request{
             $_SESSION["access_key"] = uniqid('vecni_');
         }
     }
+    
+    private static function filter_input($filter_type, $var){
+         return filter_input($filter_type, $var, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_SANITIZE_ENCODED);
+    }
 
     public static function POST($post_name, $return = false){
-        return (!empty($_POST[$post_name]))? $_POST[$post_name] : $return;
+        $data = self::filter_input(INPUT_POST, $post_name);
+        return (!empty($_POST[$post_name]))? $data : $return;
     }
 
     public static function GET($post_name, $return = false){
-        return (!empty($_GET[$post_name]))? $_GET[$post_name] : $return;
+        $data = self::filter_input(INPUT_GET, $post_name);
+        return (!empty($_GET[$post_name]))? $data : $return;
     }
 
     public static function set($object, $data){

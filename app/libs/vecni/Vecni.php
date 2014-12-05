@@ -1,6 +1,7 @@
 <?php
 namespace libs\vecni;
-require_once "Response.php";
+require_once "http".DIRECTORY_SEPARATOR."Response.php";
+require_once "http".DIRECTORY_SEPARATOR."Request.php";
 require_once "Object.php";
 
 
