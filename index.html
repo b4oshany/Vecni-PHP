@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" type="text/css" href="app/static/src/css/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="app/static/src/css/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="app/static/src/css/print.css" media="print">
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -28,52 +28,82 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+          <h1>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>Vecni is a light-weight PHP micro-framework that utilizes url dispatching to server files instead of filesystem url resolution. It utilizes Twig, which is equivalent to Python Jinja2 templates for advance template management.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+
+<h1>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Getting Started</h1>
+<p>Vecni uses a number of components such as Twig for templating, Less for css pre-processing amongst others that will be mentioned in the Tech Stack section.
+
+In the root folder of the application, run the following git commands (git bash command line):</p>
+
+<pre><code>$ git submodule update --init</code></pre>
+
+<p>This will perform a git clone on external modules that are needed..</p>
+
+
+<h2 class="font-bree-serif">Database Configuration</h2>
+<p>In the etc/configs folder there is a settings.ini.php file which contains basic server configuration. You can add your database settings or any settings you need to be rendered globally.</p>
+
+
+<h2>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Apache Configuration</h2>
+<p>In order for the application to use url dispatching, one must enable the rewrite module in Apache.</p>
+<a href="http://b4oshany.blogspot.com/2014/08/by-default-Apache-disable-symbolic.html">Click here to enable rewrite module for Linux.</a>
+<a href="http://www.anmsaiful.net/blog/php/enable-Apache-rewrite-module.html">Click here to enable rewrite module for Windows.</a>
+<p>Enabling Apache rewrite module allows Vecni to be used at full capacity, where by all request to the Vecni base application is have to be validated via the index page. This will disallow direct POST and GET requests to files and folders.</p>
+
+
+<h1 class="font-bree-serif">Defining A URL</h1>
+<h3 class="font-bree-serif">Setting a Basic Route</h3>
+
+<p>The main.ini.php file is where all your URL Routes will be defined. In order for you to defined a url, you must call the set_route function from the Vecni package. The set_route function takes in two parameters, the relative url to be rendered and the function name that will handle the rendered url as seen below.</p>
+
+<pre><code class="prettyprint linenums">
+<php-line><span class="tag">Vecni</span>::set_route(<span class="atv">"/"</span>, <span class="atv">"home"</span>){</php-line>
+<div class="line"><span class="tag">function</span> home(){<span class="tag">return</span> <span class="atv">"Welcome to Vecni."</span>; }</div>
 </code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>When a user visits the homepage of your site, which is indicated by <attr>"/"</attr> (this stands for the root url for site or application), <b>Vecni</b> will find and execute the home function. As a result, <i>"Welcome to Vecni."</i> will be displayed to the user.</p>
+<h3 class="font-bree-serif">Routes with variables.</h3>
+<p>If dynamic url is need for a path, then url variables can be passed into the set_route function by placing a variable between curl bracels in the <b>dispatched url</b> at it's respective path as seen below.</p>
+<pre><code class="prettyprint linenums">
+  <php-line><span class="tag">Vecni</span>::set_route(<span class="atv">"/book/{book_name}"</span>, <span class="atv">"book_view"</span>)</php-line>
+  <func class="line"><func-name><span class="tag">function</span> book_view(){</func-name>
+    <func-content>
+      <php-line>$book_name = <tag>Request::GET</tag>(<attr>"book_name"</attr>)</php-line>
+      <php-line><span class="tag">return</span> <span class="atv">"You are viewing $book_name."</span></php-line>
+    </func-content></func>}
+</code></pre>
+<p>Therefore, if a user visits <b>http://localhost/vecni/book/Harry Potter/</b>, the following will be shown:</p>
+<pre class="html-page">
+You are viewing Harry Potter.
+</pre>
 
 <h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Oshane Bailey (<a href="https://github.com/b4oshany" class="user-mention">@b4oshany</a>) author of Vecni and CTO of <a href="www.startuprobot.com">Startuprobot</a>.</p>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="support-or-contact" class="anchor" href="http://vecni.osoobe.2fh.co"><span class="octicon octicon-link"></span></a>Support and Documentation</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Check out the documentation at <a href="http://vecni.osoobe.2fh.co">http://vecni.osoobe.2fh.co</a> or contact <a href="mailto:b4.oshany@gmail.com">b4.oshany@gmail.com</a>.</p>
         </section>
 
         <aside id="sidebar">
           <a href="https://github.com/b4oshany/vecni/zipball/master" class="button">
-            <small>Download</small>
+            <small>Download Vecni Source Files</small>
             .zip file
           </a>
-          <a href="https://github.com/b4oshany/vecni/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
+          <a href="app/static/data/vecni.zip" class="button">
+            <small>Download Vecni Compiled Files</small>
+            .zip file
           </a>
 
           <p class="repo-owner"><a href="https://github.com/b4oshany/vecni"></a> is maintained by <a href="https://github.com/b4oshany">b4oshany</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
