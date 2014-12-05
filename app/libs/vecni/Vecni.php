@@ -114,9 +114,13 @@ class Vecni extends Object
     }
 
     public static function get_submodules(){
+        $req_copy = self::getRootFolder().'app/configs/hooks into '.self::getRootFolder().'git/hooks/';
         ?>
             <h3>Please run the following command in git bash.</h3>
             <code> git submodule update --init</code>
+            <p>In addition, copy the contents of <?php echo $req_copy; ?></p>
+            <p>By doing this, it will ensure that the permissions and other
+             server settings will not be modified by git during a push or pull</p>
         <?php
         http\Response::abort("In order for you to continue.");
     }
