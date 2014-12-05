@@ -1,5 +1,5 @@
 <?php
-namespace libs\vecni;
+namespace libs\vecni\http;
 require_once "Request.php";
 
 class Response{

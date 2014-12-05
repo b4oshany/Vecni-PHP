@@ -1,7 +1,7 @@
 <?php
 # define package usage
-use libs\vecni\Response;
-use libs\vecni\Request;
+use libs\vecni\http\Response;
+use libs\vecni\http\Request;
 use libs\vecni\Vecni;
 use controller\user\User;
 

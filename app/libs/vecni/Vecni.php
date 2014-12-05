@@ -1,6 +1,7 @@
 <?php
 namespace libs\vecni;
-require_once "Response.php";
+require_once "http".DIRECTORY_SEPARATOR."Response.php";
+require_once "http".DIRECTORY_SEPARATOR."Request.php";
 require_once "Object.php";
 
 
@@ -10,7 +11,8 @@ function staticCall($class, $function, $args = array()){
     return null;
 }
 
-class Vecni extends Object{
+class Vecni extends Object
+{
     /*
     *    Section 1.1 Comapny Information
     *    The following lines below consisit of the company detailed information which is used across this website
@@ -27,64 +29,96 @@ class Vecni extends Object{
 
 
     # absolute path of the application folder
-    public static $main_dir = "";
+    private static $main_dir = "";
     # name of the application folder
-    public static $main_dirname = "";
+    private static $main_dirname = "";
     # currently viewed route of the user
-    public static $current_route = "";
+    private static $current_route = "";
 
     # main directories of the application
-    public static $template_dir;
-    public static $static_dir;
-    public static $libs_dir;
-    public static $plugins_dir;
-    public static $controllers_dir;
-    public static $configs_dir;
+    private static $template_dir;
+    private static $static_dir;
+    private static $libs_dir;
+    private static $plugins_dir;
+    private static $controllers_dir;
+    private static $configs_dir;
+    
+    private static $paths = array(
+        "core"=>"",
+        "index"=>"",
+        "static"=>array(
+            "relative"=>"",
+            "absolute"=>""
+        ),
+        "libs"=>"",
+        "plugins"=>"",
+        "configs"=>"",
+        "hostname"=>"",
+        "host"=>""
+    );
 
     public static $routes_file;
     public static $mdb;
+    
     public static $host;
-    public static $protocol;
 
     public static $twig;
 
     private $vars = array();
     private static $app_route = array();
 
-
-    public static function run_config(){
+    public static function init($file)
+    {
+        self::$paths["hostname"] = $_SERVER["SERVER_NAME"];
+        self::$paths["host"] = dirname($_SERVER["SCRIPT_NAME"]);
+        
         # get the root folder of the application
         # absolute address
-        self::$main_dir = dirname(dirname(dirname(dirname(__FILE__))));
+        self::$paths["core"] = dirname($file);
         # relative address
-        self::$main_dirname = basename(self::$main_dir );
+        self::$paths["index_file"] = basename($file);
 
         # set the default subfolders of the application
-        self::$static_dir = self::$main_dirname.DIRECTORY_SEPARATOR."app/static";
+        self::$paths["static"] = "app".DIRECTORY_SEPARATOR."static";
 
-        self::$routes_file = self::$main_dir.DIRECTORY_SEPARATOR."main.ini.php";
+        self::$paths["route_file"] = self::$paths["core"].DIRECTORY_SEPARATOR."main.ini.php";
 
-        self::$template_dir = self::$main_dir.DIRECTORY_SEPARATOR."app/templates".DIRECTORY_SEPARATOR;
-        self::$libs_dir = self::$main_dir.DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR;
-        self::$plugins_dir = self::$main_dir.DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."plugins".DIRECTORY_SEPARATOR;
-        self::$controllers_dir = self::$main_dir.DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."controller".DIRECTORY_SEPARATOR;
-        self::$configs_dir = self::$main_dir.DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."configs".DIRECTORY_SEPARATOR;
+        self::$paths["templates"] = self::$paths["core"].DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR;
+        self::$paths["libraries"] = self::$paths["core"].DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR;
+        self::$paths["plugins"] = self::$paths["core"].DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."plugins".DIRECTORY_SEPARATOR;
+        self::$paths["controllers"] = self::$paths["core"].DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."controller".DIRECTORY_SEPARATOR;
+        self::$paths["configs"] = self::$paths["core"].DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."configs".DIRECTORY_SEPARATOR;
 
-        include_once Vecni::$configs_dir."settings.ini.php";
-
-        self::get_host();
+        include_once self::$paths["configs"]."settings.ini.php";
         self::twig_loader();
     }
-
-
-    public static function get_host(){
-        self::$host = $_SERVER["SERVER_NAME"];
-        self::$protocol = isset($_SERVER["HTTPS"]) ? 'https://' : 'http://';
-        if(self::$host == "localhost"){
-            self::$host = self::$protocol.self::$host."/".self::$main_dirname;
-        }else{
-            self::$host = self::$protocol.self::$host;
-        }
+    
+    public static function getPluginsFolder(){
+        return self::$paths["plugins"];
+    }
+    
+    public static function getTemplatesFolder(){
+        return self::$paths["templates"];
+    }
+    
+    public static function getLibsFolder(){
+        return self::$paths["libraries"];
+    }
+    
+    public static function getConfigsFolder(){
+        return self::$paths["configs"];
+    }
+    
+    public static function getIndexFile(){
+        return self::$paths["index"];
+    }
+    
+    public static function getRootFolder(){
+        return self::$paths["core"];
+    }
+    
+    public static function getStaticFolder($relative_path=true){
+        return (($relative_path)? self::$paths["host"]."/" : self::$paths["core"].DIRECTORY_SEPARATOR).self::$paths["static"];
     }
 
     public static function in_development(){
@@ -102,11 +136,11 @@ class Vecni extends Object{
         Response::abort("In order for you to continue.");
     }
 
-    public static function enable_error_reporting($display_error = true){
-        if(self::in_development() && $display_error){
+    public static function enable_error_reporting($display_error = true, $override_default=false){
+        if((self::in_development() && $display_error) || ($display_error && $override_default)){
             error_reporting(E_ALL);
             ini_set('display_errors',1);
-            $php_error_file = self::$plugins_dir.'error'.DIRECTORY_SEPARATOR.
+            $php_error_file = self::$paths["plugins"].'error'.DIRECTORY_SEPARATOR.
                              'src'.DIRECTORY_SEPARATOR.'php_error.php';
             if(file_exists($php_error_file)){
                 require_once $php_error_file;
@@ -121,7 +155,7 @@ class Vecni extends Object{
     }
 
     public static function twig_loader(){
-        $twig_autoload = self::$plugins_dir
+        $twig_autoload = self::$paths["plugins"]
                 ."twig".DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR
                 ."Twig".DIRECTORY_SEPARATOR."Autoloader.php";
 
@@ -131,14 +165,14 @@ class Vecni extends Object{
             # register autloading package twig
             \Twig_Autoloader::register();
             # get the templates folder and prepare template rendering
-            $loader = new \Twig_Loader_Filesystem(self::$template_dir);
+            $loader = new \Twig_Loader_Filesystem(self::$paths["templates"]);
             self::$twig = new \Twig_Environment($loader, array(
                 'debug' => true,));
             self::$twig->addExtension(new \Twig_Extension_Debug());
             # added global variables to twig
             self::$twig->addGlobal("config", self::get_configs());
-            self::$twig->addGlobal("host", self::$host);
-            self::$twig->addGlobal("static", self::$host."/app/static");
+            self::$twig->addGlobal("host", self::$paths["host"]);
+            self::$twig->addGlobal("static", self::getStaticFolder());
 
             #allow call to static functions.
             self::$twig->addFunction('staticCall', new \Twig_Function_Function('staticCall'));
@@ -148,19 +182,18 @@ class Vecni extends Object{
     }
 
     public static function use_less(){
-        $less_file = self::$plugins_dir
+        $less_file = self::$paths["plugins"]
                 ."less".DIRECTORY_SEPARATOR."lessc.inc.php";
         if(file_exists($less_file)){
             require_once $less_file;
             $less = new \lessc;
             # compile css less files
-            $css_file = self::$main_dir
-                                  .DIRECTORY_SEPARATOR."static"
+            $static = self::getStaticFolder(false);
+            $css_file = $static
                                   .DIRECTORY_SEPARATOR."gen"
                                   .DIRECTORY_SEPARATOR."css"
                                   .DIRECTORY_SEPARATOR."style.css";
-            $less_file = self::$main_dir
-                                  .DIRECTORY_SEPARATOR."static"
+            $less_file = $static
                                   .DIRECTORY_SEPARATOR."src"
                                   .DIRECTORY_SEPARATOR."css"
                                   .DIRECTORY_SEPARATOR."less"
@@ -180,7 +213,7 @@ class Vecni extends Object{
     }
 
     public static function email_loader(){
-        $php_mailer = self::$plugins_dir."mailer".DIRECTORY_SEPARATOR."PHPMailerAutoload.php";
+        $php_mailer = self::$paths["plugins"]."mailer".DIRECTORY_SEPARATOR."PHPMailerAutoload.php";
         if(file_exists($php_mailer)){
             require_once $php_mailer;
             $mailer = new \PHPMailer;
@@ -195,7 +228,7 @@ class Vecni extends Object{
 
     public function render($template_file) {
         try{
-            include self::$template_dir.$template_file;
+            include self::$paths["templates"].$template_file;
         }catch(Exception $e){
             print $e;
         }
@@ -223,7 +256,7 @@ class Vecni extends Object{
         if($app_route == null){
             krsort(self::$app_route);
             $path = urldecode($_SERVER['REQUEST_URI']);
-            if(self::$host."/" != self::$protocol.$_SERVER["SERVER_NAME"].$path){
+            if(self::$paths["host"]."/" != $path){
                 unset(self::$app_route["/"]);
             }
             // Search for the respective url dispatching function.
@@ -249,7 +282,7 @@ class Vecni extends Object{
             echo self::error_route();
             Response::abort();
         }else{
-            require_once self::$routes_file;
+            require_once self::$paths["route_file"];
             try{
                 self::$current_route = $app_route;
                 echo $app_route();
@@ -282,8 +315,8 @@ class Vecni extends Object{
 
     public static function get_path(){
         $path = $_SERVER['REQUEST_URI'];
-        $len =  strlen(self::$main_dirname);
-        $pos = strripos($path, self::$main_dirname);
+        $len =  strlen(self::$paths["core"]);
+        $pos = strripos($path, self::$paths["core"]);
         if($pos <= $len){
             return substr($path, ($len+1));
         }
@@ -312,7 +345,7 @@ class Vecni extends Object{
     }
 
     public static function redirect($url = "/home", $async=false, $title=""){
-        $url = self::$host.$url;
+        $url = self::$paths["host"].$url;
         if(!$async){
         ?>
             <script>
@@ -358,6 +391,4 @@ class Vecni extends Object{
         }
     }
 }
-
-Vecni::run_config();
 ?>
