@@ -2,7 +2,7 @@
 # define package usage
 use libs\vecni\http\Response;
 use libs\vecni\http\Request;
-use libs\vecni\Vecni;
+use libs\vecni\Vecni as app;
 use controller\user\User;
 
 User::start_session();
@@ -10,9 +10,9 @@ User::start_session();
 Response::init();
 
 // Set the default title of website.
-Vecni::$twig->addGlobal("title", Vecni::$BRAND_NAME);
+app::$twig->addGlobal("title", app::$BRAND_NAME);
 if(User::is_login()){
-    Vecni::$twig->addGlobal("user", User::get_current_user());
+    app::$twig->addGlobal("user", User::get_current_user());
 }
 
 /**
@@ -21,19 +21,19 @@ Welcome:
     This function is the default fall back function that
     have been registered in the system by default.
 */
-Vecni::set_route("/", "welcome");
-Vecni::set_route("/home", "welcome");
+app::set_route("/", "welcome");
+app::set_route("/home", "welcome");
 function welcome(){
     if(User::is_login()){
-        return Vecni::$twig->render("demo/vecni_docs.html",
+        return app::$twig->render("demo/vecni_docs.html",
                     array(
                         "html_class"=>"welcome"
                     ));
     }else{
-        return Vecni::$twig->render('demo/vecni_docs.html',
+        return app::$twig->render('demo/vecni_docs.html',
                       array(
                         "html_class"=>"welcome",
-                        "title"=>Vecni::$BRAND_NAME
+                        "title"=>app::$BRAND_NAME
                       )
                   );
     }
@@ -42,9 +42,9 @@ function welcome(){
 /**
 * Sign in page for users
 */
-Vecni::set_route("/user/signin", "signin_require");
+app::set_route("/user/signin", "signin_require");
 function signin_require($message=""){
-    return Vecni::$twig->render('user_signin.html',
+    return app::$twig->render('user_signin.html',
               array(
                 "html_class"=>"signin",
                 "title"=>"Signin Required",
@@ -57,7 +57,7 @@ function signin_require($message=""){
 /**
 * Sign in processing for users
 */
-Vecni::set_route("/user/signin/process", "process_login");
+app::set_route("/user/signin/process", "process_login");
 function process_login(){
     if(!empty($_POST['email']) && !empty($_POST['password'])){
         $email = $_POST['email'];
@@ -71,7 +71,7 @@ function process_login(){
             }
         }else{
             if($status){
-                Vecni::nav_back();
+                app::nav_back();
             }else{
                 signin_require();
             }
@@ -83,12 +83,12 @@ function process_login(){
 /**
 * Registration page for users
 */
-Vecni::set_route("/user/registration", "reg_request");
+app::set_route("/user/registration", "reg_request");
 function reg_request($message=""){
     if(User::is_login()){
-        Vecni::redirect();
+        app::redirect();
     }
-    return Vecni::$twig->render('user_registration.html',
+    return app::$twig->render('user_registration.html',
                         array("html_class"=>"user-registration",
                              "title"=>"Registration",
                              )
@@ -98,7 +98,7 @@ function reg_request($message=""){
 /**
 * Registration processing for users
 */
-Vecni::set_route("/user/registration/process", "register");
+app::set_route("/user/registration/process", "register");
 function register(){
     global $user;
     if(($first_name = Request::POST('first_name')) &&
@@ -123,21 +123,21 @@ function register(){
             }
         }else{
             if($status){
-                Vecni::redirect();
+                app::redirect();
             }else{
-                Vecni::redirect();
+                app::redirect();
             }
         }
     }
 }
 
-Vecni::set_route("/facebooklogin", "login_with_social_network");
-Vecni::set_route("/googleplus", "login_with_social_network");
-Vecni::set_route("/twitter", "login_with_social_network");
+app::set_route("/facebooklogin", "login_with_social_network");
+app::set_route("/googleplus", "login_with_social_network");
+app::set_route("/twitter", "login_with_social_network");
 function login_with_social_network(){
     global $user;
     if(User::is_login()){
-        Vecni::redirect();
+        app::redirect();
     }
     if(!empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['social_network']) && !empty($_POST['social_network_id']) && !empty($_POST['email'])){
         $new_user = new User();
@@ -166,13 +166,13 @@ function login_with_social_network(){
 * Log out users out of Tattle Tale
 * @redirect page welcome
 */
-Vecni::set_route("/logout", "log_out");
+app::set_route("/logout", "log_out");
 function log_out(){
     if(User::is_login()){
         User::log_out();
-        Vecni::$twig->addGlobal("user", new User());
+        app::$twig->addGlobal("user", new User());
     }
-    Vecni::redirect();
+    app::redirect();
 }
 
 ?>

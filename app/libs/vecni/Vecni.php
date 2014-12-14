@@ -51,6 +51,10 @@ class Vecni extends Object
 
     private $vars = array();
     private static $app_route = array();
+    
+    public function __construct($file){
+        self::init($file);   
+    }
 
     public static function init($file)
     {
