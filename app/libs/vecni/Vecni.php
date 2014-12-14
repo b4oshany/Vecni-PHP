@@ -117,8 +117,10 @@ class Vecni extends Object
         return false;
     }
 
-    public static function get_submodules(){
+    public static function get_submodules($missing_plugin=""){
         $req_copy = self::getRootFolder().'app/configs/hooks into '.self::getRootFolder().'git/hooks/';
+        if(!empty($missing_plugin))
+            echo "<p>Missing plugin $missing_plugin.<p>";
         ?>
             <h3>Please run the following command in git bash.</h3>
             <code> git submodule update --init</code>
@@ -139,7 +141,7 @@ class Vecni extends Object
                 require_once $php_error_file;
                 \php_error\reportErrors();
             }else{
-                self::get_submodules();
+                self::get_submodules("PHPError");
             }
             ini_set('html_errors',1);
         }else{
@@ -170,7 +172,7 @@ class Vecni extends Object
             #allow call to static functions.
             self::$twig->addFunction('staticCall', new \Twig_Function_Function('staticCall'));
         }else{
-            self::get_submodules();
+            self::get_submodules("Twig");
         }
     }
 
@@ -201,7 +203,7 @@ class Vecni extends Object
             chmod($css_file, 0777);
             return $less;
         }else{
-            self::get_submodules();
+            self::get_submodules("Less");
         }
     }
 
@@ -215,7 +217,7 @@ class Vecni extends Object
             $mailer->WordWrap = 70;
             return $mailer;
         }else{
-            self::get_submodules();
+            self::get_submodules("PHPMailer");
         }
     }
 
@@ -385,3 +387,4 @@ class Vecni extends Object
     }
 }
 ?>
+
