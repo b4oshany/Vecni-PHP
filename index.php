@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once "app/libs/vecni/Autoloader.php";
-use libs\vecni\Vecni;
-Vecni::init(__FILE__);
+use libs\vecni\Vecni as app;
+app::init(__FILE__);
 include "main.ini.php";
-Vecni::get_route();
+app::get_route();
 ?>
