@@ -3,12 +3,6 @@ namespace libs\vecni;
 require_once "Object.php";
 
 
-function staticCall($class, $function, $args = array()){
-    if (class_exists($class) && method_exists($class, $function))
-        return call_user_func_array(array($class, $function), $args);
-    return null;
-}
-
 class Vecni extends Object
 {
     /*
@@ -27,7 +21,7 @@ class Vecni extends Object
 
     # currently viewed route of the user
     private static $current_route = "";
-    
+
     private static $paths = array(
         "core"=>"",
         "index"=>"",
@@ -44,23 +38,21 @@ class Vecni extends Object
 
     public static $routes_file;
     public static $mdb;
-    
-    public static $host;
 
     public static $twig;
 
     private $vars = array();
     private static $app_route = array();
-    
+
     public function __construct($file){
-        self::init($file);   
+        self::init($file);
     }
 
     public static function init($file)
     {
         self::$paths["hostname"] = $_SERVER["SERVER_NAME"];
         self::$paths["host"] = dirname($_SERVER["SCRIPT_NAME"]);
-        
+
         # get the root folder of the application
         # absolute address
         self::$paths["core"] = dirname($file);
@@ -78,40 +70,51 @@ class Vecni extends Object
         self::$paths["controllers"] = self::$paths["core"].DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."controller".DIRECTORY_SEPARATOR;
         self::$paths["configs"] = self::$paths["core"].DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."configs".DIRECTORY_SEPARATOR;
 
-        include_once self::$paths["configs"]."settings.ini.php";
+        self::get_settings();
         self::twig_loader();
+
+        Session::start();
     }
-    
+
+    public static function get_settings(){
+        include_once self::$paths["configs"]."settings.ini.php";
+    }
+
     public static function getPluginsFolder(){
         return self::$paths["plugins"];
     }
-    
+
     public static function getTemplatesFolder(){
         return self::$paths["templates"];
     }
-    
+
     public static function getLibsFolder(){
         return self::$paths["libraries"];
     }
-    
+
     public static function getConfigsFolder(){
         return self::$paths["configs"];
     }
-    
+
     public static function getIndexFile(){
         return self::$paths["index"];
     }
-    
+
     public static function getRootFolder(){
         return self::$paths["core"];
     }
     
+    public static function getHost(){
+        return self::$paths["host"];
+    }
+
     public static function getStaticFolder($relative_path=true){
         return (($relative_path)? self::$paths["host"]."/" : self::$paths["core"].DIRECTORY_SEPARATOR).self::$paths["static"];
     }
 
     public static function in_development(){
         if($_SERVER["SERVER_NAME"] == "localhost"){
+            http\Response::disableCaching();
             return true;
         }
         return false;
@@ -155,10 +158,9 @@ class Vecni extends Object
                 ."Twig".DIRECTORY_SEPARATOR."Autoloader.php";
 
         if(file_exists($twig_autoload)){
-            require_once $twig_autoload;
+            twig\VecniTwig::setTwigAutoloader($twig_autoload);
+            twig\VecniTwig::register();
 
-            # register autloading package twig
-            \Twig_Autoloader::register();
             # get the templates folder and prepare template rendering
             $loader = new \Twig_Loader_Filesystem(self::$paths["templates"]);
             self::$twig = new \Twig_Environment($loader, array(
@@ -169,8 +171,8 @@ class Vecni extends Object
             self::$twig->addGlobal("host", self::$paths["host"]);
             self::$twig->addGlobal("static", self::getStaticFolder());
 
-            #allow call to static functions.
-            self::$twig->addFunction('staticCall', new \Twig_Function_Function('staticCall'));
+            twig\Filter::register();
+
         }else{
             self::get_submodules("Twig");
         }
@@ -274,8 +276,7 @@ class Vecni extends Object
                     return;
                 }
             }
-            echo self::error_route();
-            http\Response::abort();
+            self::error_route();
         }else{
             require_once self::$paths["route_file"];
             try{
@@ -294,10 +295,29 @@ class Vecni extends Object
     public static function error_route(){
         if(isset(self::$app_route["error404"])){
             $app_route = self::$app_route["error404"];
-            return $app_route();
+            $app_route();
+            http\Response::abort();
         }else{
-            return "404. Not Found";
+            self::abort();
         }
+    }
+
+    /**
+    * Abort all php process and return HTTP status code 404 to the connected client.
+    * @param string $message - HTTP Response message to output to the client.
+        It is default to Not Found.
+    * @param int $status_code - HTTP Response status code. The status code is
+        default to 404, which means Not Found.
+    * @param string $status_text - HTTP Response status text. The status text is
+        default to Not Found.
+    */
+    public static function abort($message = "Not Found", $status_code=404, $status_text="Not Found"){
+        if(!http\Request::is_async()){
+            echo self::$twig->render('404.html',
+                                     array('message'=>$message)
+                                   );
+        }
+        http\Response::abort($message, $status_code, $status_text);
     }
 
     public static function index_route(){

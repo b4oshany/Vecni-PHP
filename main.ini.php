@@ -7,6 +7,7 @@ use controller\user\User;
 
 User::start_session();
 
+$less = app::use_less();
 Response::init();
 
 // Set the default title of website.
@@ -71,9 +72,9 @@ function process_login(){
             }
         }else{
             if($status){
-                app::nav_back();
+                return app::nav_back();
             }else{
-                signin_require();
+                return signin_require();
             }
         }
     }

@@ -2,7 +2,7 @@
 namespace controller\user;
 use libs\vecni\Object;
 use libs\mysql\PDOConnector;
-use libs\vecni\Vecni;
+use libs\vecni\Vecni as app;
 
 /**
 * @package user
@@ -21,13 +21,38 @@ use libs\vecni\Vecni;
 */
 
 class User extends Object{
-    public $user_id;           // username of user
-    public $first_name;         // user first name
-    public $last_name;          // user last name
-    public $email;              // user email
-    public $is_login;           // user login status
-    public $status;             // user registration status
-    public $dob;                // user date of birth
+    public $user_id;            // id of user.
+    public $first_name;         // user first name.
+    public $last_name;          // user last name.
+    public $email;              // user email.
+    public $is_login;           // user login status.
+    public $status;             // user registration status.
+    public $dob;                // user date of birth.
+    public $profile_pic;        // user profile picture.
+
+    /**
+    * Return the full name of the user.
+    * @return string - full name, i.e. first and last name of the user.
+    */
+    public function get_fullname(){
+        return "$this->first_name $this->last_name";
+    }
+
+    /**
+    * Return the url of the user profile picture.
+    * @return string - url of picture.
+    */
+    public function get_profile_pic(){
+        if(!empty($this->profile_pic)){
+            return $this->profile_pic;
+        }
+        return self::get_default_profile_pic();
+    }
+
+
+    public static function get_default_profile_pic(){
+        return "static/src/img/icons/user.png";
+    }
 
     /**
     * Login user with their normal user account
@@ -124,7 +149,7 @@ class User extends Object{
     */
     public static function get_current_user(){
         if(isset($_SESSION['uid'])){
-            return self::object_cast($_SESSION['uid']);
+            return self::quick_cast($_SESSION['uid']);
         }else{
             return null;
         }
