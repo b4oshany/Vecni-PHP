@@ -1,0 +1,26 @@
+/**
+* @package Carousel
+*/
+
+@carousel-height: 400px;
+.carousel{
+
+    .carousel-inner{
+        height: @carousel-height;
+        width: 100%;
+        
+        .item{
+            height: @carousel-height !important;
+            
+            &.active{
+                height: @carousel-height !important;            
+            }
+        }
+    }
+    #carousel-settings{
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        z-index: 10;
+    }
+}

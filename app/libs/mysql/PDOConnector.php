@@ -3,7 +3,7 @@ namespace libs\mysql;
 require_once "MysqlAutoloader.php";
 class PDOConnector{
     //privilige user for the database
-    protected static $database_user;
+    public static $database_user;
     protected static $database_pass;
 
     //set the database to use
