@@ -73,4 +73,4 @@ Author of [Vecni]
 [social buttons]: http://lipis.github.io/bootstrap-social/
 [Click here to enable rewrite module for Linux]: http://b4oshany.blogspot.com/2014/08/by-default-apache-disable-symbolic.html
 [Click here to enable rewrite module for Windows]: http://www.anmsaiful.net/blog/php/enable-apache-rewrite-module.html
-[Vecni]: http://b4oshany.github.io/vecni/
+[Vecni]: http://b4oshany.github.io/Vecni-PHP
