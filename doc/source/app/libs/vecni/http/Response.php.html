@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <script
+            type="text/javascript"
+            src="../../../../../js/jquery-1.4.2.min.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shCore.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushJScript.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushPhp.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushXml.js">
+        </script>
+        <link
+            href="../../../../../syntax_highlighter/styles/shCore.css" rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="../../../../../syntax_highlighter/styles/shCoreEclipse.css"
+            rel="stylesheet" type="text/css"
+        />
+        <link
+            href="../../../../../syntax_highlighter/styles/shThemeWordpress.css"
+            rel="stylesheet" type="text/css"
+        />
+    </head>
+    <body>
+        <pre class="brush: php">&lt;?php
+namespace libs\vecni\http;
+use libs\vecni\Vecni as app;
+require_once &quot;Request.php&quot;;
+
+class Response{
+    public static function init(){
+        if(!isset($_SESSION[&quot;access_key&quot;])){
+            $_SESSION[&quot;access_key&quot;] = uniqid('vecni_');
+        }
+    }
+    
+    /**
+    * Disable caching.
+    */
+    public static function disableCaching(){
+        header(&quot;Cache-Control: no-store, no-cache, must-revalidate, max-age=0&quot;);
+        header(&quot;Cache-Control: post-check=0, pre-check=0&quot;, false);
+        header(&quot;Pragma: no-cache&quot;);
+    }
+
+    public static function json_response($status_code=200, $message=&quot;ok&quot;){
+        header('Content-Type: application/json');
+        return json_encode(array('status'=&gt;$status_code,
+                          'message'=&gt;$message));
+    }
+
+    public static function json_feed($message=&quot;&quot;){
+        header('Content-Type: application/json');
+        return json_encode($message);
+    }
+
+    public static function add_header($header, $message){
+        header(&quot;$header: $message&quot;);
+    }
+
+    public static function abort($message = &quot;Not Found&quot;, $status_code=404, $status_text=&quot;Not Found&quot;){
+        header(&quot;Connection: close&quot;, true);
+        header(&quot;Message: $message&quot;);
+        if(Request::is_async()){
+            echo self::json_response($status_code, $message);
+        }
+        header(&quot;HTTP/1.0 $status_code $status_text&quot;);
+        die();
+    }
+}
+
+
+?&gt;
+</pre>
+        <script type="text/javascript">
+             SyntaxHighlighter.all();
+             jQuery('.gutter div').each(function(key, data){
+                jQuery(data).prepend('<a name="L'+jQuery(data).text()+'"/>');
+             });
+        </script>
+    </body>
+</html>

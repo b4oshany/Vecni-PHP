@@ -1,0 +1,528 @@
+<html>
+    <head>
+        <script
+            type="text/javascript"
+            src="../../../../js/jquery-1.4.2.min.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shCore.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shBrushJScript.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shBrushPhp.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shBrushXml.js">
+        </script>
+        <link
+            href="../../../../syntax_highlighter/styles/shCore.css" rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="../../../../syntax_highlighter/styles/shCoreEclipse.css"
+            rel="stylesheet" type="text/css"
+        />
+        <link
+            href="../../../../syntax_highlighter/styles/shThemeWordpress.css"
+            rel="stylesheet" type="text/css"
+        />
+    </head>
+    <body>
+        <pre class="brush: php">&lt;?php
+/**
+* Vecni utilizes url dispatching to server files instead of filesystem url resolution.
+*
+* The aim of Vecni is to allow fast development and separate developers and designers task
+* from each other without bombarding them with tones of tools which they may not need.
+* In addition, Vecni is about the developers, who want to do most of coding,
+* but have unique tools and functions to aid in development. For instance,
+* Vecni uses advance namespaces and autoloading tools to access modules
+* from anywhere, which is much like python or C++ package management.
+* For more information on Vecni {@link http://b4oshany.github.io/vecni/ for Documentation of Vecni PHP}.
+*
+* @author Oshane Bailey &lt;b4.oshany@gmail.com&gt;
+* @version v0.1.0
+*/
+namespace libs\vecni;
+require_once &quot;Object.php&quot;;
+
+/**
+* Manage the dispatching of url as well as application configuration.
+* Note: It is recommend to use Vecni namespace as app.
+* For example: 
+* &lt;?php
+*   use libs\vecni\Vecni as app;
+* ?&gt; 
+* @version v0.1.0
+*/
+class Vecni extends Object{
+    /** @var string $BRAND_NAME The brand name. */
+    public static $BRAND_NAME = 'Vecni';
+    /** @var string $company_address Address of the company. */
+    public static $company_address = 'Kingston, Jamaica';
+    /** @var sting $company_number Company contact number. */
+    public static $company_number = '(876) 8295969';
+    /** @var string $company_enail Company email address. */
+    public static $company_email = 'b4.oshany@gmail.com';
+    /** @var string $company_name Name of the company. */
+    public static $company_name = 'Osoobe';
+    /** @var $paths[] Folders/paths within the application. */
+    private static $paths = array(
+        &quot;core&quot;=&gt;&quot;&quot;,
+        &quot;index&quot;=&gt;&quot;&quot;,
+        &quot;static&quot;=&gt;array(
+            &quot;relative&quot;=&gt;&quot;&quot;,
+            &quot;absolute&quot;=&gt;&quot;&quot;
+        ),
+        &quot;libs&quot;=&gt;&quot;&quot;,
+        &quot;plugins&quot;=&gt;&quot;&quot;,
+        &quot;configs&quot;=&gt;&quot;&quot;,
+        &quot;hostname&quot;=&gt;&quot;&quot;,
+        &quot;host&quot;=&gt;&quot;&quot;
+    );
+    /** 
+    * @var \Twig_Environment $twig Twig Template management
+    *   {@link http://twig.sensiolabs.org/ for Twig Documentation}.
+    */
+    public static $twig;
+    
+    private $vars = array();
+    /** @var $app_route[] User defined urls with their associative dispatching function. */ 
+    private static $app_route = array();
+    
+    /**
+    * Vecni uses a base file to figure out the project tree structure.
+    * The base file is usual the index.php or a file which which in the root folder of the project.
+    * Nevertheless, Vecni uses the index.php file to initiate the application, since all server request
+    * is pass through the index.php, where applicable.
+    *
+    * @param string $file Base file of the application
+    * @uses self::get_settings() to get user defined configuration in the
+    *   {@link app/configs/settings.ini.php settings.ini.php} file.
+    * @uses self::twig_loader() to set the Twig Environment,
+    *   see {@link http://twig.sensiolabs.org/ for Twig Documentation}.
+    * @uses libs/vecni/Session::start to start a server session.
+    */
+    public static function init($file)
+    {
+        self::$paths[&quot;hostname&quot;] = $_SERVER[&quot;SERVER_NAME&quot;];
+        self::$paths[&quot;host&quot;] = dirname($_SERVER[&quot;SCRIPT_NAME&quot;]);
+
+        # get the root folder of the application
+        # absolute address
+        self::$paths[&quot;core&quot;] = dirname($file);
+        # relative address
+        self::$paths[&quot;index_file&quot;] = basename($file);
+
+        # set the default subfolders of the application
+        self::$paths[&quot;static&quot;] = &quot;app&quot;.DIRECTORY_SEPARATOR.&quot;static&quot;;
+
+        self::$paths[&quot;route_file&quot;] = self::$paths[&quot;core&quot;].DIRECTORY_SEPARATOR.&quot;main.ini.php&quot;;
+
+        self::$paths[&quot;templates&quot;] = self::$paths[&quot;core&quot;].DIRECTORY_SEPARATOR.&quot;app&quot;.DIRECTORY_SEPARATOR.&quot;templates&quot;.DIRECTORY_SEPARATOR;
+        self::$paths[&quot;libraries&quot;] = self::$paths[&quot;core&quot;].DIRECTORY_SEPARATOR.&quot;app&quot;.DIRECTORY_SEPARATOR.&quot;libs&quot;.DIRECTORY_SEPARATOR;
+        self::$paths[&quot;plugins&quot;] = self::$paths[&quot;core&quot;].DIRECTORY_SEPARATOR.&quot;app&quot;.DIRECTORY_SEPARATOR.&quot;plugins&quot;.DIRECTORY_SEPARATOR;
+        self::$paths[&quot;controllers&quot;] = self::$paths[&quot;core&quot;].DIRECTORY_SEPARATOR.&quot;app&quot;.DIRECTORY_SEPARATOR.&quot;controller&quot;.DIRECTORY_SEPARATOR;
+        self::$paths[&quot;configs&quot;] = self::$paths[&quot;core&quot;].DIRECTORY_SEPARATOR.&quot;app&quot;.DIRECTORY_SEPARATOR.&quot;configs&quot;.DIRECTORY_SEPARATOR;
+
+        self::get_settings();
+        self::twig_loader();
+
+        Session::start();
+    }
+
+    /** 
+    * Get the user defined configurations found in the settings.ini.php file.
+    * @see &quot;https://github.com/b4oshany/vecni/blob/master/app/configs/settings.ini.php&quot;
+    *   settings.ini.php settings.ini.php file.
+    */
+    public static function get_settings(){
+        include_once self::$paths[&quot;configs&quot;].&quot;settings.ini.php&quot;;
+    }
+
+    /** Get the plugins folder of application. */
+    public static function getPluginsFolder(){
+        return self::$paths[&quot;plugins&quot;];
+    }
+
+    /** Get the templates folder of the application. */
+    public static function getTemplatesFolder(){
+        return self::$paths[&quot;templates&quot;];
+    }
+
+    /** Get the libs (library) folder of the application. */
+    public static function getLibsFolder(){
+        return self::$paths[&quot;libraries&quot;];
+    }
+
+    /** Get the configs (configuration) folder of the application. */
+    public static function getConfigsFolder(){
+        return self::$paths[&quot;configs&quot;];
+    }
+
+    /**
+    * Get the base file of the application.
+    * The base file is usually the index.php file.
+    */
+    public static function getIndexFile(){
+        return self::$paths[&quot;index&quot;];
+    }
+
+    /** Get the root folder of the application based on the base file. */
+    public static function getRootFolder(){
+        return self::$paths[&quot;core&quot;];
+    }
+    
+    /** Get the FQDN or URI of the application */
+    public static function getHost(){
+        return self::$paths[&quot;host&quot;];
+    }
+
+    /**
+    * Get the static folder of the application.
+    * @param boolean $relative Set it to true for relative path (URL path) or false for absolute path (filesystem).
+    * @return string Path of static folder.
+    */
+    public static function getStaticFolder($relative_path=true){
+        return (($relative_path)? self::$paths[&quot;host&quot;].&quot;/&quot; : self::$paths[&quot;core&quot;].DIRECTORY_SEPARATOR).self::$paths[&quot;static&quot;];
+    }
+
+    /**
+    * Check if the project is on a development server or a production server.
+    * Note: Caching is disable if the project is on a development server.
+    * @return boolean True if it is on a development server, else false.
+    */
+    public static function in_development(){
+        if($_SERVER[&quot;SERVER_NAME&quot;] == &quot;localhost&quot;){
+            http\Response::disableCaching();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+    * Notify the developer that plugins or modules are missing, if applicable.
+    * Missing modules will only displayed on development server.
+    * Note: if a module is missing, all php process will be terminated for this application.
+    */
+    public static function get_submodules($missing_plugin=&quot;&quot;){
+        $req_copy = self::getRootFolder().'app/configs/hooks into '.self::getRootFolder().'git/hooks/';
+        if(!empty($missing_plugin))
+            echo &quot;&lt;p&gt;Missing plugin $missing_plugin.&lt;p&gt;&quot;;
+        ?&gt;
+            &lt;h3&gt;Please run the following command in git bash.&lt;/h3&gt;
+            &lt;code&gt; git submodule update --init&lt;/code&gt;
+            &lt;p&gt;In addition, copy the contents of &lt;?php echo $req_copy; ?&gt;&lt;/p&gt;
+            &lt;p&gt;By doing this, it will ensure that the permissions and other
+             server settings will not be modified by git during a push or pull&lt;/p&gt;
+        &lt;?php
+        http\Response::abort(&quot;In order for you to continue.&quot;);
+    }
+
+    /**
+    * Enable PHPError reporting on local or development server.
+    * This plugin is location in the app/plugins folder.
+    * @uses &quot;http://phperror.net/&quot; PHPError reporting.
+    */
+    public static function enable_error_reporting($display_error = true, $override_default=false){
+        if((self::in_development() &amp;&amp; $display_error) || ($display_error &amp;&amp; $override_default)){
+            error_reporting(E_ALL);
+            ini_set('display_errors',1);
+            $php_error_file = self::$paths[&quot;plugins&quot;].'error'.DIRECTORY_SEPARATOR.
+                             'src'.DIRECTORY_SEPARATOR.'php_error.php';
+            if(file_exists($php_error_file)){
+                require_once $php_error_file;
+                \php_error\reportErrors();
+            }else{
+                self::get_submodules(&quot;PHPError&quot;);
+            }
+            ini_set('html_errors',1);
+        }else{
+            ini_set('display_errors',0);
+        }
+    }
+
+    /**
+    * Enable Twig Template Management.
+    * This plugin is location in the app/plugins folder.
+    * @uses &quot;http://twig.sensiolabs.org/&quot; Twig.
+    */
+    public static function twig_loader(){
+        $twig_autoload = self::$paths[&quot;plugins&quot;]
+                .&quot;twig&quot;.DIRECTORY_SEPARATOR.&quot;lib&quot;.DIRECTORY_SEPARATOR
+                .&quot;Twig&quot;.DIRECTORY_SEPARATOR.&quot;Autoloader.php&quot;;
+
+        if(file_exists($twig_autoload)){
+            twig\VecniTwig::setTwigAutoloader($twig_autoload);
+            twig\VecniTwig::register();
+
+            # get the templates folder and prepare template rendering
+            $loader = new \Twig_Loader_Filesystem(self::$paths[&quot;templates&quot;]);
+            self::$twig = new \Twig_Environment($loader, array(
+                'debug' =&gt; true,));
+            self::$twig-&gt;addExtension(new \Twig_Extension_Debug());
+            # added global variables to twig
+            self::$twig-&gt;addGlobal(&quot;config&quot;, self::get_configs());
+            self::$twig-&gt;addGlobal(&quot;host&quot;, self::$paths[&quot;host&quot;]);
+            self::$twig-&gt;addGlobal(&quot;static&quot;, self::getStaticFolder());
+
+            twig\Filter::register();
+
+        }else{
+            self::get_submodules(&quot;Twig&quot;);
+        }
+    }
+
+    /** 
+    * Enable LESS CSS plugin, a functional CSS compiler.
+    * Enabling this plugin will generate a new compilied css from the list of less and/or css
+    * files defined in {@link https://github.com/b4oshany/vecni/blob/master/app/static/src/css/less/style.less
+    *   style.less} file located in app/static/src/css/less/ to
+    * {@link https://github.com/b4oshany/vecni/blob/master/app/static/gen/css/style.css style.css} file located
+    * in app/static/src/gen/css.
+    * Note: Ensure that app/static/src/gen folder have the correct permission of 775.
+    * This plugin is location in the app/plugins folder.
+    *   
+    * @uses &quot;http://lesscss.org/&quot; PHPLess Compiler.
+    */
+    public static function use_less(){
+        $less_file = self::$paths[&quot;plugins&quot;]
+                .&quot;less&quot;.DIRECTORY_SEPARATOR.&quot;lessc.inc.php&quot;;
+        if(file_exists($less_file)){
+            require_once $less_file;
+            $less = new \lessc;
+            # compile css less files
+            $static = self::getStaticFolder(false);
+            $css_file = $static
+                                  .DIRECTORY_SEPARATOR.&quot;gen&quot;
+                                  .DIRECTORY_SEPARATOR.&quot;css&quot;
+                                  .DIRECTORY_SEPARATOR.&quot;style.css&quot;;
+            $less_file = $static
+                                  .DIRECTORY_SEPARATOR.&quot;src&quot;
+                                  .DIRECTORY_SEPARATOR.&quot;css&quot;
+                                  .DIRECTORY_SEPARATOR.&quot;less&quot;
+                                  .DIRECTORY_SEPARATOR.&quot;style.less&quot;;
+            $style = $less-&gt;compileFile($less_file);
+            if(file_exists($css_file)){
+                unlink($css_file);
+            }
+            $fp = fopen($css_file, 'w');
+            fwrite($fp, $style);
+            fclose($fp);
+            chmod($css_file, 0777);
+            return $less;
+        }else{
+            self::get_submodules(&quot;Less&quot;);
+        }
+    }
+
+    /**
+    * Enable PHPMailer to send html emails.
+    * @uses &quot;https://github.com/PHPMailer/PHPMailer&quot; PHPMailer plugin located in app/plugins/ folder.
+    */
+    public static function email_loader(){
+        $php_mailer = self::$paths[&quot;plugins&quot;].&quot;mailer&quot;.DIRECTORY_SEPARATOR.&quot;PHPMailerAutoload.php&quot;;
+        if(file_exists($php_mailer)){
+            require_once $php_mailer;
+            $mailer = new \PHPMailer;
+            $mailer-&gt;From = self::$company_email;
+            $mailer-&gt;isHTML(true);
+            $mailer-&gt;WordWrap = 70;
+            return $mailer;
+        }else{
+            self::get_submodules(&quot;PHPMailer&quot;);
+        }
+    }
+
+    /**
+    * Get the current visited url.
+    *
+    * @return string URL the current request url.
+    */
+    public static function get_current_route(){
+        return self::$current_route;
+    }
+
+    /**
+    * Execute the defined dispatching function on the current request url.
+    * 
+    * @parma string $app_route URL string to execute. $app_route is null by default,
+    *   this is done to render the homepage.
+    */
+    public static function get_route($app_route=null){
+        /**
+        * Get the url dispatching function to be used to render the view or data.
+        *
+        * @param string|null $app_route, url for the dispatching function to be used if
+            string, else assume it's the home page.
+        */
+        if($app_route == null){
+            krsort(self::$app_route);
+            $path = urldecode($_SERVER['REQUEST_URI']);
+            if(self::$paths[&quot;host&quot;].&quot;/&quot; != $path){
+                unset(self::$app_route[&quot;/&quot;]);
+            }
+            // Search for the respective url dispatching function.
+            foreach(self::$app_route as $url =&gt; $app_route){
+                $url_regex = str_replace('/', '\/', $url);
+                $url_regexpr = preg_replace(&quot;/\{.+?\}/&quot;, &quot;.+&quot;, $url_regex);
+                $result = preg_match(&quot;/&quot;.$url_regexpr.'\/?\??.*$'.&quot;/&quot;, $path);
+                // If an unique id is found and has a unique variable id,
+                // set it to a GET request.
+                if($result){
+                    preg_match(&quot;/&quot;.$url_regexpr.&quot;/&quot;, $path, $matches);
+                    $data = explode(&quot;/&quot;, $matches[0]);
+                    $args = explode(&quot;/&quot;, $url);
+                    foreach($args as $key =&gt; $arg){
+                        if(strpos($arg, &quot;{&quot;) !== false){
+                            $_GET[substr($arg, 1, -1)] = $data[$key];
+                        }
+                    }
+                    echo $app_route();
+                    return;
+                }
+            }
+            self::error_route();
+        }else{
+            require_once self::$paths[&quot;route_file&quot;];
+            try{
+                self::$current_route = $app_route;
+                echo $app_route();
+            }catch(Exception $e){
+                echo self::get_route();
+            }
+        }
+    }
+
+    /** Set the function to render the error page. */
+    public static function set_error_route($fn_name){
+        self::$app_route[&quot;error404&quot;] = $fn_name;
+    }
+
+    /** Trigger application abort and error page. */
+    public static function error_route(){
+        if(isset(self::$app_route[&quot;error404&quot;])){
+            $app_route = self::$app_route[&quot;error404&quot;];
+            $app_route();
+            http\Response::abort();
+        }else{
+            self::abort();
+        }
+    }
+
+    /**
+    * Abort all php process and return HTTP status code 404 to the connected client.
+    * @param string $message - HTTP Response message to output to the client.
+        It is default to Not Found.
+    * @param int $status_code - HTTP Response status code. The status code is
+        default to 404, which means Not Found.
+    * @param string $status_text - HTTP Response status text. The status text is
+        default to Not Found.
+    */
+    public static function abort($message = &quot;Not Found&quot;, $status_code=404, $status_text=&quot;Not Found&quot;){
+        if(!http\Request::is_async()){
+            echo self::$twig-&gt;render('404.html',
+                                     array('message'=&gt;$message)
+                                   );
+        }
+        http\Response::abort($message, $status_code, $status_text);
+    }
+
+    /**
+    * Set the url to be rendered by a specific url dispatching function.
+    * @param string $url URL to be rendered.
+    * @param string|function The function name or the actual function to act as the dispatching function
+    *   to render the url.
+    */
+    public static function set_route($url, $app_route){
+        self::$app_route[$url] = $app_route;
+    }
+
+    /**
+    * Get the current path of the request url.
+    * @return string Path of the resquest.
+    */
+    public static function get_path(){
+        $path = $_SERVER['REQUEST_URI'];
+        $len =  strlen(self::$paths[&quot;core&quot;]);
+        $pos = strripos($path, self::$paths[&quot;core&quot;]);
+        if($pos &lt;= $len){
+            return substr($path, ($len+1));
+        }
+        return substr($path, 1);
+    }
+
+    /**
+    * Compile the basic information of company into an array.
+    * @return string[] Company information.
+    */
+    public static function get_configs(){
+        return array(
+            &quot;BRAND_NAME&quot;=&gt;self::$BRAND_NAME,
+            &quot;company_address&quot;=&gt;self::$company_address,
+            &quot;company_number&quot;=&gt;self::$company_number,
+            &quot;company_email&quot;=&gt;self::$company_email,
+            &quot;company_name&quot;=&gt;self::$company_name
+        );
+    }
+
+    /**
+    * Perform a server redirection.
+    * @param string $url Url to redirect to.
+    * @param bool $asnyc Type of response redirect, i.e. Asynchronous redirection or synchronous.
+    * @param string $title Title of the redirection.
+    */
+    public static function redirect($url = &quot;/home&quot;, $title=&quot;&quot;, $async=false){
+        $url = self::$paths[&quot;host&quot;].$url;
+        if(!$async){
+        ?&gt;
+            &lt;script&gt;
+                window.location.assign(&quot;&lt;?php echo $url; ?&gt;&quot;);
+            &lt;/script&gt;
+        &lt;?php
+        }else{
+            $data = array(&quot;page&quot;=&gt;$title);
+        ?&gt;
+            &lt;script&gt;
+                history.replaceState(&lt;?php echo json_encode($data).&quot;, \&quot;$title\&quot;, \&quot;$url\&quot;&quot;; ?&gt;);
+                document.title = &lt;?php echo &quot;'$title'&quot;; ?&gt;;
+            &lt;/script&gt;
+        &lt;?php
+        }
+    }
+
+    /** Reload the page. */
+    public static function reload(){
+        ?&gt;
+        &lt;script&gt;
+            window.location.reload();
+        &lt;/script&gt;
+        &lt;?php
+     }
+
+    /** Navigate back to a previous browser history. */
+    public static function nav_back(){
+        ?&gt;
+        &lt;script&gt;
+            window.history.back();
+        &lt;/script&gt;
+        &lt;?php
+    }
+}
+?&gt;
+
+</pre>
+        <script type="text/javascript">
+             SyntaxHighlighter.all();
+             jQuery('.gutter div').each(function(key, data){
+                jQuery(data).prepend('<a name="L'+jQuery(data).text()+'"/>');
+             });
+        </script>
+    </body>
+</html>

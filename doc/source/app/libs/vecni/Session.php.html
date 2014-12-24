@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <script
+            type="text/javascript"
+            src="../../../../js/jquery-1.4.2.min.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shCore.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shBrushJScript.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shBrushPhp.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../syntax_highlighter/scripts/shBrushXml.js">
+        </script>
+        <link
+            href="../../../../syntax_highlighter/styles/shCore.css" rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="../../../../syntax_highlighter/styles/shCoreEclipse.css"
+            rel="stylesheet" type="text/css"
+        />
+        <link
+            href="../../../../syntax_highlighter/styles/shThemeWordpress.css"
+            rel="stylesheet" type="text/css"
+        />
+    </head>
+    <body>
+        <pre class="brush: php">&lt;?php
+namespace libs\vecni;
+require_once &quot;Object.php&quot;;
+
+class Session extends Object{
+    /**
+    * Set the session data for the current and previous request.
+    */
+    public static function start(){
+        if(!isset($_SESSION[&quot;ACCESS_KEY&quot;])){
+            $_SESSION[&quot;ACCESS_KEY&quot;] = uniqid('vecni_');
+        }
+        $previous = null;
+        if(isset($_SESSION[&quot;APP_SESSION&quot;]) &amp;&amp; isset($_SESSION[&quot;APP_SESSION&quot;][&quot;CURRENT&quot;])){
+            $previous = $_SESSION[&quot;APP_SESSION&quot;][&quot;CURRENT&quot;];
+        }
+        $_SESSION[&quot;APP_SESSION&quot;] = array(
+            &quot;CURRENT&quot;=&gt;array(
+                &quot;time&quot;=&gt;date(&quot;m/d/Y H:i:s&quot;),
+                &quot;client&quot;=&gt;array(
+                &quot;ip&quot;=&gt;$_SERVER[&quot;REMOTE_ADDR&quot;]
+                )
+            ),
+            &quot;PREVIOUS&quot;=&gt;$previous
+        );
+    }
+
+    /**
+    * Set a session variable.
+    * @param string $key - name of the session variable.
+    * @param mixed $value - value of the session variable.
+    */
+    public static function set($key, $value){
+        $_SESSION[$key] = $value;
+    }
+
+    /**
+    * Get a session variable.
+    * @param string $key - name of the session variable.
+    * @return mixed - value of the session variable.
+    */
+    public static function get($key, $default=false){
+        return (isset($_SESSION[$key]))? $_SESSION[$key]: $default;
+    }
+
+    /**
+    * Get the current session data.
+    * @param string $key - name of the current session varaible.
+    * @return mixed - value of the current session variable.
+    */
+    public static function current_data($key, $default=null){
+        $stock = $_SESSION[&quot;APP_SESSION&quot;][&quot;CURRENT&quot;];
+        return (!empty($stock[$key]))? $stock[$key]: $default;
+    }
+    /**
+    * Get the previous session data.
+    * @param string $key - name of the previous session varaible.
+    * @return mixed - value of the previous session variable.
+    */
+    public static function previous_data($key, $default=null){
+        $previous = $_SESSION[&quot;APP_SESSION&quot;][&quot;PREVIOUS&quot;];
+        return (!empty($previous[$key]))? $previous[$key]: $default;
+    }
+}
+</pre>
+        <script type="text/javascript">
+             SyntaxHighlighter.all();
+             jQuery('.gutter div').each(function(key, data){
+                jQuery(data).prepend('<a name="L'+jQuery(data).text()+'"/>');
+             });
+        </script>
+    </body>
+</html>

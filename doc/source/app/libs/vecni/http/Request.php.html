@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <script
+            type="text/javascript"
+            src="../../../../../js/jquery-1.4.2.min.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shCore.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushJScript.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushPhp.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushXml.js">
+        </script>
+        <link
+            href="../../../../../syntax_highlighter/styles/shCore.css" rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="../../../../../syntax_highlighter/styles/shCoreEclipse.css"
+            rel="stylesheet" type="text/css"
+        />
+        <link
+            href="../../../../../syntax_highlighter/styles/shThemeWordpress.css"
+            rel="stylesheet" type="text/css"
+        />
+    </head>
+    <body>
+        <pre class="brush: php">&lt;?php
+namespace libs\vecni\http;
+
+class Request{
+    public static function get_request_log(){
+        return $_SESSION[&quot;CURRENT_REQUEST&quot;] or null;
+    }
+
+    public static function add_request_log($key, $value){
+        if(!isset($_SESSION[&quot;CURRENT_REQUEST&quot;])){
+            $_SESSION[&quot;CURRENT_REQUEST&quot;] = array();
+        }
+        $_SESSION[&quot;CURRENT_REQUEST&quot;][$key] = $value;
+    }
+
+    private static function filter_input($var){
+         return filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_SANITIZE_ENCODED);
+    }
+
+    public static function POST($post_name, $return = false){
+        return (!empty($_POST[$post_name]))? self::filter_input($_POST[$post_name]) : $return;
+    }
+
+    public static function GET($post_name, $return = false){
+        return (!empty($_GET[$post_name]))? self::filter_input($_GET[$post_name]) : $return;
+    }
+
+    public static function FILE_INPUT($input_name, $return = false){
+        return (!empty($_FILES[$input_name]))? $_FILES[$input_name]: $return;
+    }
+    
+    public static function set($object, $data){
+        if(!empty($data)){
+            $object = $data;
+            return $object;
+        }
+    }
+
+    public static function is_async(){
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &amp;&amp; strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
+            return true;
+        }
+        return false;
+    }
+}
+
+
+?&gt;
+</pre>
+        <script type="text/javascript">
+             SyntaxHighlighter.all();
+             jQuery('.gutter div').each(function(key, data){
+                jQuery(data).prepend('<a name="L'+jQuery(data).text()+'"/>');
+             });
+        </script>
+    </body>
+</html>

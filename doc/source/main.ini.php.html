@@ -1,0 +1,227 @@
+<html>
+    <head>
+        <script
+            type="text/javascript"
+            src="../js/jquery-1.4.2.min.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../syntax_highlighter/scripts/shCore.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../syntax_highlighter/scripts/shBrushJScript.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../syntax_highlighter/scripts/shBrushPhp.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../syntax_highlighter/scripts/shBrushXml.js">
+        </script>
+        <link
+            href="../syntax_highlighter/styles/shCore.css" rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="../syntax_highlighter/styles/shCoreEclipse.css"
+            rel="stylesheet" type="text/css"
+        />
+        <link
+            href="../syntax_highlighter/styles/shThemeWordpress.css"
+            rel="stylesheet" type="text/css"
+        />
+    </head>
+    <body>
+        <pre class="brush: php">&lt;?php
+# define package usage
+use libs\vecni\http\Response;
+use libs\vecni\http\Request;
+use libs\vecni\Vecni as app;
+use controller\user\User;
+
+User::start_session();
+
+$less = app::use_less();
+Response::init();
+
+// Set the default title of website.
+app::$twig-&gt;addGlobal(&quot;title&quot;, app::$BRAND_NAME);
+if(User::is_login()){
+    app::$twig-&gt;addGlobal(&quot;user&quot;, User::get_current_user());
+}
+
+/**
+* Render the welcome page.
+* @example http://exmaple.com/
+* @exmaple http://exmaple.com/home.
+*/
+app::set_route(&quot;/&quot;, &quot;welcome&quot;);
+app::set_route(&quot;/home&quot;, &quot;welcome&quot;);
+function welcome(){
+    if(User::is_login()){
+        return app::$twig-&gt;render(&quot;demo/vecni_docs.html&quot;,
+                    array(
+                        &quot;html_class&quot;=&gt;&quot;welcome&quot;
+                    ));
+    }else{
+        return app::$twig-&gt;render('demo/vecni_docs.html',
+                      array(
+                        &quot;html_class&quot;=&gt;&quot;welcome&quot;,
+                        &quot;title&quot;=&gt;app::$BRAND_NAME
+                      )
+                  );
+    }
+}
+
+/**
+* Render sign in page for users.
+* @exmaple http://example.com/user/signin
+*/
+app::set_route(&quot;/user/signin&quot;, &quot;signin_require&quot;);
+function signin_require($message=&quot;&quot;){
+    return app::$twig-&gt;render('user_signin.html',
+              array(
+                &quot;html_class&quot;=&gt;&quot;signin&quot;,
+                &quot;title&quot;=&gt;&quot;Signin Required&quot;,
+                &quot;message&quot;=&gt;$message
+              )
+          );
+}
+
+
+/**
+* Process user's signin.
+* @example http://example.com/user/signin/process
+*/
+app::set_route(&quot;/user/signin/process&quot;, &quot;process_login&quot;);
+function process_login(){
+    if(!empty($_POST['email']) &amp;&amp; !empty($_POST['password'])){
+        $email = $_POST['email'];
+        $pass = $_POST['password'];
+        $status = User::login($email, $pass);
+        if(Request::is_async()){
+            if($status){
+                return Response::json_response(200, $email);
+            }else{
+                return Response::abort(&quot;$email, does not exists in our system. Please register for account if you don't have one&quot;);
+            }
+        }else{
+            if($status){
+                return app::nav_back();
+            }else{
+                return signin_require();
+            }
+        }
+    }
+}
+
+
+/**
+* Registration page for users
+*/
+app::set_route(&quot;/user/registration&quot;, &quot;reg_request&quot;);
+function reg_request($message=&quot;&quot;){
+    if(User::is_login()){
+        app::redirect();
+    }
+    return app::$twig-&gt;render('user_registration.html',
+                        array(&quot;html_class&quot;=&gt;&quot;user-registration&quot;,
+                             &quot;title&quot;=&gt;&quot;Registration&quot;,
+                             )
+                        );
+}
+
+/**
+* Registration processing for users
+*/
+app::set_route(&quot;/user/registration/process&quot;, &quot;register&quot;);
+function register(){
+    global $user;
+    if(($first_name = Request::POST('first_name')) &amp;&amp;
+       ($last_name =  Request::POST('last_name')) &amp;&amp;
+       ($password = Request::POST('password')) &amp;&amp;
+       ($email = Request::POST('email'))){
+        $new_user = new User();
+        $new_user-&gt;first_name = $first_name;
+        $new_user-&gt;last_name = $last_name;
+        if($dob = Request::POST('dob')){
+            $new_user-&gt;dob  = $dob;
+        }else{
+            $new_user-&gt;dob = &quot;0000-00-00&quot;;
+        }
+        $new_user-&gt;gender = Request::POST('gender', &quot;other&quot;);
+        $status = $new_user-&gt;register($email, $password);
+        if(Request::is_async()){
+            if($status){
+                return Response::json_response(200, $email);
+            }else{
+                return Response::abort(&quot;This accound has already been registered&quot;);
+            }
+        }else{
+            if($status){
+                app::redirect();
+            }else{
+                app::redirect();
+            }
+        }
+    }
+}
+
+app::set_route(&quot;/facebooklogin&quot;, &quot;login_with_social_network&quot;);
+app::set_route(&quot;/googleplus&quot;, &quot;login_with_social_network&quot;);
+app::set_route(&quot;/twitter&quot;, &quot;login_with_social_network&quot;);
+function login_with_social_network(){
+    global $user;
+    if(User::is_login()){
+        app::redirect();
+    }
+    if(!empty($_POST['first_name']) &amp;&amp; !empty($_POST['last_name']) &amp;&amp; !empty($_POST['social_network']) &amp;&amp; !empty($_POST['social_network_id']) &amp;&amp; !empty($_POST['email'])){
+        $new_user = new User();
+        $new_user-&gt;first_name = $_POST['first_name'];
+        $new_user-&gt;last_name = $_POST['last_name'];
+        $email = $_POST['email'];
+        $new_user-&gt;dob  = DateTime::createFromFormat('m/d/Y',
+                                           $_POST['dob']);
+        $new_user-&gt;gender = $_POST['gender'];
+        if(!empty($_POST['school'])){
+            $new_user-&gt;school = $_POST['school'];
+        }
+        $account_type = $_POST['social_network'];
+        $account_id = $_POST['social_network_id'];
+        $status = $new_user-&gt;login_with_social_network($email, $account_type, $account_id);
+        if($status){
+            return Response::json_response(200, $email);
+        }else{
+            return Response::json_response(204, &quot;Something went wrong&quot;);
+        }
+    }
+}
+
+
+/**
+* Log out users out of Tattle Tale
+* @redirect page welcome
+*/
+app::set_route(&quot;/logout&quot;, &quot;log_out&quot;);
+function log_out(){
+    if(User::is_login()){
+        User::log_out();
+        app::$twig-&gt;addGlobal(&quot;user&quot;, new User());
+    }
+    app::redirect();
+}
+
+?&gt;
+
+
+</pre>
+        <script type="text/javascript">
+             SyntaxHighlighter.all();
+             jQuery('.gutter div').each(function(key, data){
+                jQuery(data).prepend('<a name="L'+jQuery(data).text()+'"/>');
+             });
+        </script>
+    </body>
+</html>

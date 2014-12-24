@@ -1,0 +1,133 @@
+<html>
+    <head>
+        <script
+            type="text/javascript"
+            src="../../../../../js/jquery-1.4.2.min.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shCore.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushJScript.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushPhp.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="../../../../../syntax_highlighter/scripts/shBrushXml.js">
+        </script>
+        <link
+            href="../../../../../syntax_highlighter/styles/shCore.css" rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="../../../../../syntax_highlighter/styles/shCoreEclipse.css"
+            rel="stylesheet" type="text/css"
+        />
+        <link
+            href="../../../../../syntax_highlighter/styles/shThemeWordpress.css"
+            rel="stylesheet" type="text/css"
+        />
+    </head>
+    <body>
+        <pre class="brush: php">&lt;?php
+namespace libs\scifile\handler;
+use libs\scifile\File;
+
+class ImageUpload{
+    protected $image, $accept_types, $type, $min_size, $max_size;
+    public $fullsize, $thumbnail;
+
+    /**
+    * @param string $upload_file - the name of image being uploaded.
+    * @param string $rename_to - rename the uploaded to the image to the name given.
+    *   If no rename string was given, then do not perform the renaming of the uploaded image.
+    * @param array $accept_types - list of accepted types.
+    * @param int $min_size - the accepted minimuim size of images.
+    * @param int $max_size - the accepted maximuim size of images.
+    */
+    public function __construct($upload_file, $rename_to = false,
+     $accept_types = array(&quot;.gif&quot;, &quot;.jpeg&quot;, &quot;.jpg&quot;, &quot;.png&quot;),
+     $min_size = 0, $max_size = 5000000){
+        $this-&gt;image = $upload_file;
+        $this-&gt;accept_types = $accept_types;
+        $this-&gt;min_size = $min_size;
+        $this-&gt;max_size = $max_size;
+        if($rename_to != false){
+            $this-&gt;image[&quot;name&quot;] = GDImage::renameImage($this-&gt;image[&quot;name&quot;], $rename_to);
+        }
+        $this-&gt;type = strtolower(strrchr($upload_file['name'], '.'));
+    }
+
+    /**
+    * Check if the type of uploaded image is accepted based on its type.
+    * @return bool - true if type uploaded image type is ok, else false.
+    */
+    private function accept_type(){
+        $type = $this-&gt;type;
+        $accept_types = $this-&gt;accept_types;
+        if(in_array($type, $accept_types)){return true;}else{return false;}
+    }
+
+    /**
+    * Check if the type of uploaded image is accepted based on its size.
+    * @return bool - true if type uploaded image size is ok, else false.
+    */
+    private function accept_size(){
+        $image = $this-&gt;image;
+        $max = $this-&gt;max_size;
+        $min = $this-&gt;min_size;
+        return ($image[&quot;size&quot;] &lt; $max &amp;&amp; $image[&quot;size&quot;] &gt; $min)? true:false;
+    }
+
+    /**
+    * Check if the type of uploaded image has any error.
+    * @return bool - true if type uploaded image has error, else false.
+    */
+    private function error_check(){
+        $image = $this-&gt;image;
+        return ($image[&quot;error&quot;] &gt; 0)? true : false;
+    }
+
+    /**
+    * Process the uploaded image and create a thumbnail image, where applicable.
+    * @param string $dir - directory to save the uploaded image to.
+    * @param bool $create_thumbnail - create a thumbnail image if true.
+    * @param int $thmb_height - height of the thumbnail image.
+    * @param int $thmb_width - width of the thumbnail image.
+    */
+    public function process_upload($dir = '', $create_thumbnail = false, $thmb_height = 200, $thmb_width = 200){
+        $type_status = $this-&gt;accept_type();
+        $size_status = $this-&gt;accept_size();
+        if($size_status &amp;&amp; $type_status &amp;&amp; File::mkdir($dir)){
+            $img = ($dir == '')? ''.$dir.$this-&gt;image['name'] : ''.$dir.'/'.$this-&gt;image['name'];
+            if(move_uploaded_file($this-&gt;image['tmp_name'], $img)){
+                if($create_thumbnail){
+                    $this-&gt;thumbnail = GDImage::create_thumbnail($img, $dir, $thmb_width, $thmb_height);
+                }
+                $this-&gt;fullsize = $img;
+                return  'success';
+            }else{
+                return 'failed';
+            }
+        }else{
+            return (!$size_status)? 'invalid size '.$this-&gt;accept_size() :'invalid type';
+        }
+    }
+}
+
+?&gt;
+
+</pre>
+        <script type="text/javascript">
+             SyntaxHighlighter.all();
+             jQuery('.gutter div').each(function(key, data){
+                jQuery(data).prepend('<a name="L'+jQuery(data).text()+'"/>');
+             });
+        </script>
+    </body>
+</html>
