@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>Vecni PHP</title>
+    <parser>
+        <default-package-name>main</default-package-name>
+        <target>./../vecni-gh-pages/doc</target>
+    </parser>
+    <files>
+        <file>*.php</file>
+        <directory>app</directory>
+        <ignore>app/plugins/*</ignore>
+        <ignore>app/static/*</ignore>
+    </files>
+    <transformations>
+        <template name="clean" />
+    </transformations>
+</phpdoc>
