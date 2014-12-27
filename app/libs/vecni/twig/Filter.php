@@ -14,7 +14,6 @@ class Filter{
     * @param string $name - Name of the filter.
     * @param mixed $filter - A filter can be a string, function or array
     *    consiting of the class name and method.
-    * @uses 
     */
     public static function addFilter($name, $filter){        
         $filter = new \Twig_SimpleFilter($name, $filter);
@@ -32,16 +31,20 @@ class Filter{
     }
     
     /**
+    * Add filters from a class to twig.
+    * @param string $name - Name of the filter.
+    * @param string $filter - Name of the static function or variable.
+    *    consiting of the class name and method.
+    */
+    public static function addClassFilter($filter_name, $fn_name=""){
+        self::addFilter($filter_name, array(get_called_class(), $fn_name));
+    }
+    
+    /**
     * Register the default filters for Vecni.
     */
     public static function register(){
-        /*
-        # Allow call to static functions.
-        app::$twig->addFunction(new \Twig_SimpleFunction("static",
-            function($class, $function, $args=array()){
-                return self::staticClass($class, $function, $args);
-        }));*/
-        self::addFilter("relative", array(__CLASS__, "relative"));
+        self::addFilter("relative", array(get_called_class(), "relative"));
     }
 
 }

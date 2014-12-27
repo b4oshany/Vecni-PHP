@@ -1,1 +1,2 @@
 chgrp -R www-data .
+git submodule update --init

@@ -16,14 +16,13 @@ if(User::is_login()){
     app::$twig->addGlobal("user", User::get_current_user());
 }
 
-/**
-Welcome:
-    Navigational view that renders the welcome page to the user.
-    This function is the default fall back function that
-    have been registered in the system by default.
-*/
+
 app::set_route("/", "welcome");
-app::set_route("/home", "welcome");
+app::set_route("/home", "welcome");/**
+* Render the welcome page.
+* @example http://exmaple.com/
+* @exmaple http://exmaple.com/home.
+*/
 function welcome(){
     if(User::is_login()){
         return app::$twig->render("demo/vecni_docs.html",
@@ -40,10 +39,12 @@ function welcome(){
     }
 }
 
-/**
-* Sign in page for users
-*/
+
 app::set_route("/user/signin", "signin_require");
+/**
+* Render the sign in page for users
+* @example http://vecni.com/user/signin
+*/
 function signin_require($message=""){
     return app::$twig->render('user_signin.html',
               array(
@@ -55,10 +56,11 @@ function signin_require($message=""){
 }
 
 
-/**
-* Sign in processing for users
-*/
 app::set_route("/user/signin/process", "process_login");
+/**
+* Process the user signin.
+* @example http://vecni.com/user/sigin/process
+*/
 function process_login(){
     if(!empty($_POST['email']) && !empty($_POST['password'])){
         $email = $_POST['email'];
@@ -81,10 +83,12 @@ function process_login(){
 }
 
 
-/**
-* Registration page for users
-*/
+
 app::set_route("/user/registration", "reg_request");
+/**
+* Render the registration page.
+* @example http://vecni.com/user/registration
+*/
 function reg_request($message=""){
     if(User::is_login()){
         app::redirect();
@@ -96,10 +100,11 @@ function reg_request($message=""){
                         );
 }
 
-/**
-* Registration processing for users
-*/
 app::set_route("/user/registration/process", "register");
+/**
+* Process the user registration.
+* @example http://vecni.com/user/sigin/process
+*/
 function register(){
     global $user;
     if(($first_name = Request::POST('first_name')) &&
@@ -132,9 +137,15 @@ function register(){
     }
 }
 
-app::set_route("/facebooklogin", "login_with_social_network");
-app::set_route("/googleplus", "login_with_social_network");
-app::set_route("/twitter", "login_with_social_network");
+app::set_route("/user/facebook/login", "login_with_social_network");
+app::set_route("/user/googleplus/login", "login_with_social_network");
+app::set_route("/user/twitter/login", "login_with_social_network");
+/**
+* Process the user sigin or registration via social netowrk.
+* @example http://vecni.com/user/facebook/login
+* @example http://vecni.com/user/googleplus/login
+* @exmaple http://vecni.com/user/twitter/login
+*/
 function login_with_social_network(){
     global $user;
     if(User::is_login()){
@@ -163,11 +174,11 @@ function login_with_social_network(){
 }
 
 
-/**
-* Log out users out of Tattle Tale
-* @redirect page welcome
-*/
 app::set_route("/logout", "log_out");
+/**
+* Log out users out of the system.
+* @example http://vecni.com/logout
+*/
 function log_out(){
     if(User::is_login()){
         User::log_out();

@@ -9,16 +9,13 @@ class Response{
             $_SESSION["access_key"] = uniqid('vecni_');
         }
     }
-    
-    /**
-    * Disable caching.
-    */
-    public static function disableCaching(){
-        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
-    }
 
+    /**
+    * Return a basic json response wit a status code and message.
+    * @param mixed $status Resposne status.
+    * @param mixed $message Response text.
+    * @return JSON data.
+    */
     public static function json_response($status_code=200, $message="ok"){
         header('Content-Type: application/json');
         return json_encode(array('status'=>$status_code,

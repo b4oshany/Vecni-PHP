@@ -1,27 +1,42 @@
 <?php
+/**
+* Vecni utilizes url dispatching to server files instead of filesystem url resolution.
+*
+* The aim of Vecni is to allow fast development and separate developers and designers task
+* from each other without bombarding them with tones of tools which they may not need.
+* In addition, Vecni is about the developers, who want to do most of coding,
+* but have unique tools and functions to aid in development. For instance,
+* Vecni uses advance namespaces and autoloading tools to access modules
+* from anywhere, which is much like python or C++ package management.
+* For more information on Vecni {@link http://b4oshany.github.io/vecni/ for Documentation of Vecni PHP}.
+*
+* @author Oshane Bailey <b4.oshany@gmail.com>
+* @version v0.1.0
+*/
 namespace libs\vecni;
 require_once "Object.php";
 
-
-class Vecni extends Object
-{
-    /*
-    *    Section 1.1 Comapny Information
-    *    The following lines below consisit of the company detailed information which is used across this website
-    */
-    # name of the website
+/**
+* Manage the dispatching of url as well as application configuration.
+* Note: It is recommend to use Vecni namespace as app.
+* For example: 
+* <?php
+*   use libs\vecni\Vecni as app;
+* ?> 
+* @version v0.1.0
+*/
+class Vecni extends Object{
+    /** @var string $BRAND_NAME The brand name. */
     public static $BRAND_NAME = 'Vecni';
-    # company location
+    /** @var string $company_address Address of the company. */
     public static $company_address = 'Kingston, Jamaica';
-    # company contact number
+    /** @var sting $company_number Company contact number. */
     public static $company_number = '(876) 8295969';
-    # company email address
+    /** @var string $company_enail Company email address. */
     public static $company_email = 'b4.oshany@gmail.com';
+    /** @var string $company_name Name of the company. */
     public static $company_name = 'Osoobe';
-
-    # currently viewed route of the user
-    private static $current_route = "";
-
+    /** @var $paths[] Folders/paths within the application. */
     private static $paths = array(
         "core"=>"",
         "index"=>"",
@@ -36,18 +51,46 @@ class Vecni extends Object
         "host"=>""
     );
 
-    public static $routes_file;
-    public static $mdb;
-
+    /** 
+    * @var \Twig_Environment $twig Twig Template management
+    *   {@link http://twig.sensiolabs.org/ for Twig Documentation}.
+    */
     public static $twig;
+    
+    /**
+     * @var string $mode Type of mode the application should be in.var
+     * By defualt, the application is in dynamic mode, which means it actual
+     * mode will varies depending on the server it is on. Another mode is production
+     * , which is used on a live server. The last option is the debug mode, which is used
+     * on a development or local server. This will allow developers to view documentations
+     * and perform system administration task.
+     */
+    public static $mode = "dynamic";
+    
+    /**
+    * @var \php_error\reportErrors $errorHandler PHPError handler.
+    * ({@link http://phperror.net/ for PHPError Documentation.}) 
+    */
+    private static $errorHandler;
 
-    private $vars = array();
+    /** @var $app_route[] User defined urls with their associative dispatching function. */ 
     private static $app_route = array();
-
-    public function __construct($file){
-        self::init($file);
-    }
-
+    /** @var int $version Version number. */
+    public static $version = 1.0;
+    
+    /**
+    * Vecni uses a base file to figure out the project tree structure.
+    * The base file is usual the index.php or a file which which in the root folder of the project.
+    * Nevertheless, Vecni uses the index.php file to initiate the application, since all server request
+    * is pass through the index.php, where applicable.
+    *
+    * @param string $file Base file of the application
+    * @uses self::get_settings() to get user defined configuration in the
+    *   {@link app/configs/settings.ini.php settings.ini.php} file.
+    * @uses self::twig_loader() to set the Twig Environment,
+    *   see {@link http://twig.sensiolabs.org/ for Twig Documentation}.
+    * @uses libs/vecni/Session::start to start a server session.
+    */
     public static function init($file)
     {
         self::$paths["hostname"] = $_SERVER["SERVER_NAME"];
@@ -72,56 +115,86 @@ class Vecni extends Object
 
         self::get_settings();
         self::twig_loader();
-
         Session::start();
     }
 
+    /** 
+    * Get the user defined configurations found in the settings.ini.php file.
+    * @see "https://github.com/b4oshany/vecni/blob/master/app/configs/settings.ini.php"
+    *   settings.ini.php settings.ini.php file.
+    */
     public static function get_settings(){
         include_once self::$paths["configs"]."settings.ini.php";
     }
 
+    /** Get the plugins folder of application. */
     public static function getPluginsFolder(){
         return self::$paths["plugins"];
     }
 
+    /** Get the templates folder of the application. */
     public static function getTemplatesFolder(){
         return self::$paths["templates"];
     }
 
+    /** Get the libs (library) folder of the application. */
     public static function getLibsFolder(){
         return self::$paths["libraries"];
     }
 
+    /** Get the configs (configuration) folder of the application. */
     public static function getConfigsFolder(){
         return self::$paths["configs"];
     }
 
+    /**
+    * Get the base file of the application.
+    * The base file is usually the index.php file.
+    */
     public static function getIndexFile(){
         return self::$paths["index"];
     }
 
+    /** Get the root folder of the application based on the base file. */
     public static function getRootFolder(){
         return self::$paths["core"];
     }
     
+    /** Get the FQDN or URI of the application */
     public static function getHost(){
         return self::$paths["host"];
     }
 
+    /**
+    * Get the static folder of the application.
+    * @param boolean $relative Set it to true for relative path (URL path) or false for absolute path (filesystem).
+    * @return string Path of static folder.
+    */
     public static function getStaticFolder($relative_path=true){
         return (($relative_path)? self::$paths["host"]."/" : self::$paths["core"].DIRECTORY_SEPARATOR).self::$paths["static"];
     }
 
+    /**
+    * Check if the project is on a development server or a production server.
+    * Note: Caching is disable if the project is on a development server.
+    * @return boolean True if it is on a development server, else false.
+    */
     public static function in_development(){
-        if($_SERVER["SERVER_NAME"] == "localhost"){
-            http\Response::disableCaching();
+        if($_SERVER["SERVER_NAME"] == "localhost" || self::$mode == "debug"){
             return true;
         }
         return false;
     }
 
+    /**
+    * Notify the developer that plugins or modules are missing, if applicable.
+    * Missing modules will only displayed on development server.
+    * Note: if a module is missing, all php process will be terminated for this application.
+    *
+    * @param string @missing_plugin Module that is missing.
+    */
     public static function get_submodules($missing_plugin=""){
-        $req_copy = self::getRootFolder().'app/configs/hooks into '.self::getRootFolder().'git/hooks/';
+        $req_copy = self::getRootFolder().'/app/configs/hooks into '.self::getRootFolder().'/.git/hooks/';
         if(!empty($missing_plugin))
             echo "<p>Missing plugin $missing_plugin.<p>";
         ?>
@@ -134,24 +207,82 @@ class Vecni extends Object
         http\Response::abort("In order for you to continue.");
     }
 
-    public static function enable_error_reporting($display_error = true, $override_default=false){
+    /**
+    * Enable PHPError reporting on local or development server.
+    * This plugin is location in the app/plugins folder.
+    * By default, error will only be displayed on local or developmenet server.
+    * If for some reason there is a need to display error on production server
+    * set $display_error=true and $override_default=true.
+    *
+    * @uses "http://phperror.net/" PHPError reporting.
+    * @uses self::enable_PHPError_plugin for php error reporting.
+    * @param boolean $display_error Display error if set to true.
+    * @param boolean $override_default Override the default displaying of error.
+    * @param boolean $enable_error_plugin Enable PHPError plugin.
+    */
+    public static function enable_error_reporting($display_error = true,
+        $override_default=false, $enable_error_plugin=true){
         if((self::in_development() && $display_error) || ($display_error && $override_default)){
             error_reporting(E_ALL);
             ini_set('display_errors',1);
-            $php_error_file = self::$paths["plugins"].'error'.DIRECTORY_SEPARATOR.
-                             'src'.DIRECTORY_SEPARATOR.'php_error.php';
-            if(file_exists($php_error_file)){
-                require_once $php_error_file;
-                \php_error\reportErrors();
-            }else{
-                self::get_submodules("PHPError");
-            }
             ini_set('html_errors',1);
+            self::enable_PHPError_plugin();
         }else{
             ini_set('display_errors',0);
         }
     }
+    
+    /**
+    * Enable PHPError plugin on or off.
+    * PHPError is used for stylish error reporting.
+    * @uses "http://phperror.net/" PHPError reporting.
+    */
+    public static function enable_PHPError_plugin(){
+        $php_error_file = self::$paths["plugins"].'error'.DIRECTORY_SEPARATOR.
+                         'src'.DIRECTORY_SEPARATOR.'php_error.php';
+        if(file_exists($php_error_file)){
+            require_once $php_error_file;
+            self::$errorHandler = new \php_error\ErrorHandler();
+            self::toggle_PHPError_plugin(true);
+        }else{
+            self::get_submodules("PHPError");
+        }        
+    }
+    
+    /**
+    * Get PHPError Handler.
+    * @return \php_error\ErrorHandler PHPError Handler.
+    */
+    public static function get_error_handler(){
+        return self::$errorHandler;
+    }
+    
+    /**
+    * Toggle PHPError plugin on or off.
+    * PHPError is used for stylish error reporting.
+    * @uses "http://phperror.net/" PHPError reporting.
+    * @param boolean $display_error Set it to true to turn off PHPError plugin
+    * else true. The default is true.
+    */
+    public static function toggle_PHPError_plugin($display_error=true){
+        if(!empty(self::$errorHandler)){
+            if($display_error){
+                self::$errorHandler->turnOn();
+            }else{
+                self::$errorHandler->turnOff();            
+            }
+        }
+    }
 
+    /**
+    * Enable Twig Template Management.
+    * This plugin is location in the app/plugins folder.
+    * By default, three of the app variables will be accessible to twig, i.e.
+    * ({@link libs\vecni\Vecni::get_configs() configs}), ({@link libs\vecni\Vecni::getHost() host})
+    * ({@link libs\vecni\Vecni::getStaticFolder() static}). 
+    * @uses "http://twig.sensiolabs.org/" Twig.
+    * @uses libs\vecni\twig\Filter to register default filters for Twig.
+    */
     public static function twig_loader(){
         $twig_autoload = self::$paths["plugins"]
                 ."twig".DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR
@@ -170,7 +301,14 @@ class Vecni extends Object
             self::$twig->addGlobal("config", self::get_configs());
             self::$twig->addGlobal("host", self::$paths["host"]);
             self::$twig->addGlobal("static", self::getStaticFolder());
-
+            
+            if(self::in_development()){
+                self::$twig->clearCacheFiles();
+                self::$twig->clearTemplateCache();
+            }
+            self::$twig->addGlobal("version", self::version());
+            
+            twig\TwigFunction::addClassFunction("url_for");
             twig\Filter::register();
 
         }else{
@@ -178,6 +316,18 @@ class Vecni extends Object
         }
     }
 
+    /** 
+    * Enable LESS CSS plugin, a functional CSS compiler.
+    * Enabling this plugin will generate a new compilied css from the list of less and/or css
+    * files defined in {@link https://github.com/b4oshany/vecni/blob/master/app/static/src/css/less/style.less
+    *   style.less} file located in app/static/src/css/less/ to
+    * {@link https://github.com/b4oshany/vecni/blob/master/app/static/gen/css/style.css style.css} file located
+    * in app/static/src/gen/css.
+    * Note: Ensure that app/static/src/gen folder have the correct permission of 775.
+    * This plugin is location in the app/plugins folder.
+    *   
+    * @uses "http://lesscss.org/" PHPLess Compiler.
+    */
     public static function use_less(){
         $less_file = self::$paths["plugins"]
                 ."less".DIRECTORY_SEPARATOR."lessc.inc.php";
@@ -209,6 +359,10 @@ class Vecni extends Object
         }
     }
 
+    /**
+    * Enable PHPMailer to send html emails.
+    * @uses "https://github.com/PHPMailer/PHPMailer" PHPMailer plugin located in app/plugins/ folder.
+    */
     public static function email_loader(){
         $php_mailer = self::$paths["plugins"]."mailer".DIRECTORY_SEPARATOR."PHPMailerAutoload.php";
         if(file_exists($php_mailer)){
@@ -223,26 +377,21 @@ class Vecni extends Object
         }
     }
 
-    public function render($template_file) {
-        try{
-            include self::$paths["templates"].$template_file;
-        }catch(Exception $e){
-            print $e;
-        }
-    }
-
-    public function __set($name, $value) {
-        $this->vars[$name] = $value;
-    }
-
-    public function __get($name) {
-        return $this->vars[$name];
-    }
-
+    /**
+    * Get the current visited url.
+    *
+    * @return string URL the current request url.
+    */
     public static function get_current_route(){
         return self::$current_route;
     }
 
+    /**
+    * Execute the defined dispatching function on the current request url.
+    * 
+    * @parma string $app_route URL string to execute. $app_route is null by default,
+    *   this is done to render the homepage.
+    */
     public static function get_route($app_route=null){
         /**
         * Get the url dispatching function to be used to render the view or data.
@@ -288,10 +437,48 @@ class Vecni extends Object
         }
     }
 
+    /**
+    * Get url for the dispatching function.
+    *
+    * @param string $fn_name Name of the dispatching function.
+    * @param string[] $args Associative array with the url args (key) and its value.
+    * @return string URL to be rendered.
+    */
+    public static function url_for($fn_name, array $args, $fqnd=true){
+        if($url = array_search($fn_name, self::$app_route)){
+            foreach($args as $arg => $value){
+                $url = str_replace("{{$arg}}", "$value", $url);
+            }
+            return ($fqnd)? self::$paths["host"]."/$url" : $url;
+        }else{
+            throw new error\UrlException("No such dispatching function was defined");
+            self::abort();
+        }
+    }
+    
+    /**
+    * Get dispatching function for the dispatched url.
+    * @param string $dispatched_url Dispatched url that is assigned to the dispatching function.
+    * @return string|bool Name of the dispatcheing function if found false if not.
+    */
+    public static function dispatching_func_for($dispatched_url){
+        if(isset(self::$app_route[$dispatched_url])){
+            return self::$app_route[$dispatched_url];
+        }else{
+            throw new error\UrlException("No such dispatching function was defined");
+        }
+    }
+
+    /**
+    * Set the function to render the error page.
+    * @param string|function Function name or actual function to use as the dispatching function
+    *   for the error page.
+    */
     public static function set_error_route($fn_name){
         self::$app_route["error404"] = $fn_name;
     }
 
+    /** Trigger application abort and error page. */
     public static function error_route(){
         if(isset(self::$app_route["error404"])){
             $app_route = self::$app_route["error404"];
@@ -320,14 +507,20 @@ class Vecni extends Object
         http\Response::abort($message, $status_code, $status_text);
     }
 
-    public static function index_route(){
-        return "It's working.............";
-    }
-
+    /**
+    * Set the url to be rendered by a specific url dispatching function.
+    * @param string $url URL to be rendered.
+    * @param string|function The function name or the actual function to act as the dispatching function
+    *   to render the url.
+    */
     public static function set_route($url, $app_route){
         self::$app_route[$url] = $app_route;
     }
 
+    /**
+    * Get the current path of the request url.
+    * @return string Path of the resquest.
+    */
     public static function get_path(){
         $path = $_SERVER['REQUEST_URI'];
         $len =  strlen(self::$paths["core"]);
@@ -338,6 +531,10 @@ class Vecni extends Object
         return substr($path, 1);
     }
 
+    /**
+    * Compile the basic information of company into an array.
+    * @return string[] Company information.
+    */
     public static function get_configs(){
         return array(
             "BRAND_NAME"=>self::$BRAND_NAME,
@@ -348,18 +545,13 @@ class Vecni extends Object
         );
     }
 
-    public static function set_Connection($db_user, $db_pass, $db_name, $db_location='localhost', $db_name){
-        self::$db_location = $db_location;
-        self::$db_name = $db_name;
-        self::$db_user = $db_user;
-        self::$db_pass = $db_pass;
-    }
-
-    public static function close_database(){
-        self::$db = null;
-    }
-
-    public static function redirect($url = "/home", $async=false, $title=""){
+    /**
+    * Perform a server redirection.
+    * @param string $url Url to redirect to.
+    * @param bool $asnyc Type of response redirect, i.e. Asynchronous redirection or synchronous.
+    * @param string $title Title of the redirection.
+    */
+    public static function redirect($url = "/home", $title="", $async=false){
         $url = self::$paths["host"].$url;
         if(!$async){
         ?>
@@ -378,7 +570,7 @@ class Vecni extends Object
         }
     }
 
-
+    /** Reload the page. */
     public static function reload(){
         ?>
         <script>
@@ -387,6 +579,7 @@ class Vecni extends Object
         <?php
      }
 
+    /** Navigate back to a previous browser history. */
     public static function nav_back(){
         ?>
         <script>
@@ -394,17 +587,15 @@ class Vecni extends Object
         </script>
         <?php
     }
-
-    public static function url_for($url_fn){
-        try{
-            $url = array_search($url_fn, self::$app_route, true);
-            if(!empty($url)){
-                return;
-            }
-        }catch(Exception $e){
-            return;
-        }
+    
+    /**
+    * Version and compiled time
+    * @return string Version number and timestamp compiled.
+    */
+    public static function version(){
+        return self::$version.((self::in_development())? "-".time():"");
     }
 }
+
 ?>
 

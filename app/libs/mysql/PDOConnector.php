@@ -43,32 +43,48 @@ class PDOConnector{
             die();
         }
     }
+    
 
-
-    public static function build_sql_update($cols, $id_col, $id, $sql, $udata){
-        //for each data in the user data array, collect the key for the table name and set the value as the cell value
-        $first = true;
-        foreach($udata as $key => $value){
-            //check if the preset column name is present in the mapping of the preset columns to db columns
-            if(array_key_exists($key, $cols)){
-                //if the preset column is present then build the sql from the matching preset columns - db columns
-                //get the db column from the column mapping
-                //append the db column to the column variable
-                //get the value from the udata to for each column and build the sql file with the specific value type
-                //build the update sql with both key and value pair
-                if($first){
-                    $col_key = $cols[$key];     //the value in the array based on the key
-                    $sql .= " $col_key = ".Db_Functions::returnType($value);
-                    $first = false;
-                }else{
-                    $col_key = $cols[$key];
-                    $sql .= ", $col_key = ".Db_Functions::returnType($value);
+    /**
+    * Build update query.
+    *
+    * @param string $table Table name.
+    * @param array $updates Associated array of updates, wher the key is the column name and the value is the data.
+    * @param string $condition Condition to append to the update.
+    * @param mixed $object Class or object to base the table column on.
+    * @param string|bool SQL update string if successful, else false.
+    */
+    public static function build_update_query($table, $updates, $condition=1, $object=false){
+        $temp = array();
+        if($object){
+            foreach($updates as $key => $value){
+                if(property_exists($object, $key)){
+                    $value_format = self::format($value);
+                    array_push($temp, "$key=$value_format");
                 }
             }
+        }else{
+            foreach($updates as $key => $value){
+                array_push($temp, "$key=$value");
+            }            
         }
-        $sql .= " where $id_col = '$id'"; //set the condition as in where the data should be inputed
-        return $sql;
+        if(!empty($temp)){
+            $updates = implode(",",$temp);
+            return "update $table set $updates where $condition";
+        }
+        return false;
     }
+    
+    /**
+    * Ensures that the mysql table value to the correct format.
+    * This will convert the data to the correct format, where applicable.
+    *
+    * @var mixed $table_data Mysql table data.
+    * @return mixed Correct format of the mysql table data.
+    */
+    public static function format($table_data){
+        return (!is_numeric($table_data) || !is_bool($table_data))? "'$table_data'": $table_data;
+    }	
 
     //build an insert or update on duplicate function
     public static function build_sql_insert_or_update($id_col, $sql, $udata){
