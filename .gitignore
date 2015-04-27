@@ -5,6 +5,7 @@
 app/static/etc/*
 app/static/css/gen/*
 app/configs/*.override.php
+app/plugins/*
 docs/
 .project
 .codio
