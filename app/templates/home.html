@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block styles %} {% endblock %} {% block scripts %}
+<script>
+  window["_GOOG_TRANS_EXT_VER"] = "1";
+</script>
+<script src="{{static}}/src/js/image-gallery.js"></script>
+<script src="{{static}}/src/js/jquery.mousewheel-3.0.6.pack.js"></script>
+<script src="{{static}}/src/js/jquery.fancybox.js"></script>
+<script src="{{static}}/src/js/welcome.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <section class="row row-margin-bottom">
+    <div class="col-md-3">
+      <img src="static/img/icons/logo.png" class="logo" id="main-logo" />
+    </div>
+    <div class="col-md-9">
+      <form>
+        <div class="form-group">
+          <div class="row">
+            <section class="col-md-3">
+              <select class="form-control input-lg">
+                <option value="rent" selected>For Rent</option>
+                <option value="sale">For Sale</option>
+                <option value="recent">Recently Added</option>
+              </select>
+            </section>
+            <section class="col-md-6">
+              <input type="search" class="form-control input-lg" placeholder="Search" />
+            </section>
+            <section class="col-md-3">
+              <button type="button" class="btn btn-primary input-lg width-6">Search</button>
+              <button type="button" class="btn btn-primary input-lg width-3"><span class="glyphicon glyphicon-filter"></span>
+              </button>
+            </section>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  <div class="row row-margin">
+    <div class="col-md-3">
+      <div class="nav-headers">
+        <section>Find Your Favorite Property with our filters.</section>
+      </div>
+      <ul class="nav nav-tabs nav-stacked">
+        <li><a href="#"><i class="icon-picture"></i>Recently Added</a>
+        </li>
+        <li><a href="#"><i class="icon-ok"></i>Top rated</a>
+        </li>
+        <li><a href="#"><i class="icon-bookmark"></i> Most Viewed</a>
+      </ul>
+    </div>
+    <div class="col-md-9">
+      <div id="advertise-carousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          {% for property in range(0, 6) %}
+          <li data-target="#advertise-carousel" data-slide-to="{{property}}" {% if property==1 %} class="active" {% endif %}></li>
+          {% endfor %}
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+          {% for property in range(1, 7) %}
+          <div class="item {% if property == 1 %} active {% endif %}">
+            <img src="static/img/photo/5_b.jpg" alt="{{property}}">
+            <div class="carousel-caption">
+              Property {{property}}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#advertise-carousel" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#advertise-carousel" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+      </div>
+      <div id="user-quicklist">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active">
+            <a href="#myfeeds" role="tab" data-toggle="tab">
+            {% if user %}
+              My Feeds
+            {% else %}
+              Feeds
+            {% endif %}
+          </a>
+          </li>
+          {% if user %}
+          <li><a href="#watchlist" role="tab" data-toggle="tab">Watch List</a>
+          </li>
+          {% endif %}
+          <li><a href="#featured" role="tab" data-toggle="tab">Recently Featured</a>
+          </li>
+          <li><a href="#recently_added" role="tab" data-toggle="tab">Recently Added</a>
+          </li>
+          <li><a href="#top_rated" role="tab" data-toggle="tab">Top Rated</a>
+          </li>
+        </ul>
+      </div>
+      <div id="user-summarylist" class="tab-content row-margin-2x-bottom">
+        <div class="tab-pane fade in hidden active" id="myfeeds"></div>
+        <div class="tab-pane fade in" id="watchlist">
+          Non quis aliqua esse arbitror, ita esse probant litteris est probant tamen se deserunt distinguantur, magna laboris appellat. E nulla excepteur cohaerescant nam duis ullamco eu consectetur. Et nam eram enim lorem, cupidatat adipisicing ne incididunt. Cillum ubi doctrina ubi dolore est nostrud ut excepteur. An deserunt domesticarum. Qui summis admodum exercitation, consequat quid cupidatat laboris.
+        </div>
+        <div class="tab-pane fade" id="featured">
+          Non anim ab sint. Ad quae illum minim vidisse ab singulis praesentibus do admodum ex commodo nisi iudicem occaecat, tempor velit labore quamquam quorum, mentitum ab minim, id cernantur eruditionem, singulis e sunt voluptate o quem an laboris et amet. Ipsum commodo quo quorum quid ubi quae cupidatat quamquam. Ne mandaremus praetermissum ab ab et imitarentur, aut fugiat cupidatat offendit, sint offendit quo firmissimum quo non tempor graviterque, ea malis legam nam occaecat, labore offendit sed reprehenderit, ubi officia ea officia. In nostrud ubi proident. Sint ad o veniam eiusmod, eu appellat est aliquip, nam amet lorem fore doctrina, minim eu expetendis in legam do amet fidelissimae mandaremus labore laborum, eram sempiternum proident illum probant, ne lorem doctrina mentitum a non magna senserit commodo. Quorum iis pariatur non sint cernantur aut appellat.
+        </div>
+        <div class="tab-pane fade" id="recently_added">
+          Mentitum de aute. Ea amet noster ipsum cupidatat, occaecat ipsum incurreret singulis sed summis et admodum aut quorum ne te laboris familiaritatem. Nulla praetermissum proident veniam fabulas, dolor despicationes pariatur quis consequat ut e illum malis anim mandaremus ab quem distinguantur laboris quae vidisse, aliquip nam eram, malis aliquip incurreret, aut sint nam sint ab quamquam elit ingeniis nostrud. Est quis ita anim de si elit iudicem doctrina an ex aut illum cupidatat nam in aute magna eu incididunt. Quo tamen probant admodum ad velit senserit ut illustriora ubi esse pariatur nam sempiternum, dolor senserit iis admodum ita ea do firmissimum, ad eram arbitror, quo ingeniis ea officia, occaecat aliqua deserunt excepteur. Eiusmod elit summis eiusmod cillum. Non culpa magna tamen ingeniis in summis sempiternum fabulas lorem incurreret an commodo esse se fabulas firmissimum ubi de enim quibusdam. Proident fugiat ullamco in quamquam philosophari ab commodo.
+        </div>
+        <div class="tab-pane fade" id="top_rated">
+          Occaecat nulla officia hic ea aut legam pariatur ita ad eu sint quorum quid et ubi quorum voluptate concursionibus ex elit consequat commodo iis amet incididunt quo magna labore ita ingeniis ad anim, nam offendit se probant. In velit incurreret in quae de eiusmod qui aute. Nostrud lorem admodum iudicem ita ne ne elit arbitror, amet appellat sed distinguantur, quamquam nulla illum admodum ipsum. Occaecat quem aliquip arbitror o ut fugiat labore ipsum tempor. Cernantur minim ne singulis imitarentur, id consequat ex mandaremus, fore arbitror do amet sunt, excepteur malis ingeniis. Lorem singulis iis quorum ipsum, fore singulis concursionibus te si nostrud eruditionem iis culpa iis iis culpa quamquam. Deserunt et legam. Ita varias laborum comprehenderit.
+        </div>
+      </div>
+    </div>
+    {% for property in properties %}
+    <article class="col-md-3">
+      {% include 'property/bit/property_summary.html' %}
+    </article>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+

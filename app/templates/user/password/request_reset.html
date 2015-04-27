@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% import "macros/forms.html" as forms %}
+{% block styles %}
+{% endblock %}
+{% block scripts %}
+<script>window["_GOOG_TRANS_EXT_VER"] = "1";</script>
+<script src="{{static}}/src/js/image-gallery.js"></script>
+<script src="{{static}}/src/js/jquery.mousewheel-3.0.6.pack.js"></script>
+<script src="{{static}}/src/js/jquery.fancybox.js"></script>
+{% endblock %}
+{% block content %}
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane fade in active" id="registration_type">
+    <div class="container">
+      <div class="row text-center pad-top ">
+        <div class="col-md-12">
+          <h3>{{title}}</h3>
+        </div>
+      </div>
+      <div class="row  pad-top">
+        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <form role="form" name="user-sigin" method="get" action=".">
+                <p>{{password_status_message}}</p>
+                <label>Enter your email address below</label>
+                <div class="form-group input-group">
+                  <span class="input-group-addon noCurve" ><div class="glyphicon glyphicon-envelope"  ></div></span>
+                  {{forms.email_input("email", 'id="email" placeholder="Enter your email"', "", "el-width-10")}}
+                </div>
+                <div class="btn-group pull-right">
+                  <button type="sumbit" class="btn btn-success noCurve">
+                    <strong>Reset Password</strong>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -5,13 +5,14 @@
 body {
     background-color: #f2f2f2;
     font-family: segoeui, 'Lato', sans-serif;
-    font-weight: 300;
-    font-size: 16px;
+    font-weight: normal;
+    font-size: 14px;
     color: #555;
     position: relative;
     -webkit-font-smoothing: antialiased;
     -webkit-overflow-scrolling: touch;
 }
+
 
 .el-width-10{
     width: 100% !important;
@@ -78,11 +79,12 @@ form {
         }
     }
 }
-.carousel .item img {
-    width: 100%;
-    height: inherit;
-    margin-top: -25%;
+
+input[type='file']{
+    padding-bottom: 40px;
 }
+
+/* End form style */
 .alert {
     position: fixed;
     z-index: 10000;
@@ -150,9 +152,15 @@ margin-bottom: @row-margin;
 .row-margin-2x-top {
     margin-top: @row-margin * 2;
 }
+.row-centered {
+    margin-right: auto !important;
+    margin-left: auto !important;
+    width: 95%;
+}
 .no-margin {
     margin: 0;
 }
+
 /* Links */
 
 a {
@@ -204,11 +212,15 @@ hr {
     }
     .card-menu {
         border-bottom: 1px solid #ccc;
-        padding: 10px;
-        a[rel=tooltip] {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        [rel=tooltip] {
             width: 23%;
             display: inline-block;
             text-align: center;
+            cursor: pointer;
             .glyphicon {
                 font-size: 28px;
                 color: #555;
@@ -310,4 +322,8 @@ hr {
     position: absolute;
     right: 0;
     padding: inherit;
+}
+
+.btn-pointer{
+  cursor: pointer;
 }

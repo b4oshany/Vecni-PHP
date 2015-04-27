@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% import "macros/forms.html" as forms %}
+{% block styles %}
+{% endblock %}
+{% block scripts %}
+<script>window["_GOOG_TRANS_EXT_VER"] = "1";</script>
+<script src="{{static}}/src/js/image-gallery.js"></script>
+<script src="{{static}}/src/js/jquery.mousewheel-3.0.6.pack.js"></script>
+<script src="{{static}}/src/js/jquery.fancybox.js"></script>
+<script src="{{static}}/src/js/welcome.js"></script>
+{% endblock %}
+{% block content %}
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane fade in active" id="registration_type">
+    <div class="container">
+      <div class="row text-center pad-top ">
+        <div class="col-md-12">
+          <h3>Registration Method</h3>
+        </div>
+      </div>
+      <div class="row  pad-top">
+        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4><strong>Sign Up with</strong></h4>
+            </div>
+            <div class="panel-body">
+              <form role="form">
+                <br/>
+
+                <!-- Split button -->
+                <div align="center">
+                  <div class="btn-group" >
+                    {{forms.social_fb_button()}}
+                    {{forms.social_twitter_button()}}
+                    {{forms.social_gplus_button()}}
+                  </div>
+                </div><br />
+                <h1 ALIGN ="center">OR<h1>
+                <a href="#normal_registration" role="tab" data-toggle="tab" class="btn btn-success btn-block noCurve"><strong>Register Here</strong></a>
+                <hr />
+                  <p>Already Registered ? <a href="{{host}}/user/signin">Login here</a></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="normal_registration">
+    <div class="container">
+      <div class="row text-center pad-top ">
+        <div class="col-md-12">
+          <h3>Normal Registration</h3>
+        </div>
+      </div>
+      <form class="register" name="register" method="post" action="{{host}}/user/registration/process">
+        <div class="row pad-top">
+          <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1 ">
+            <div class="panel tab-content"><!--panel-default-->
+              <fieldset class="panel-info tab-pane fade active in" id="step1">
+                <div class="panel-heading">
+                  <h4><strong>Register Yourself</strong></h4>
+                </div>
+                <br/>
+                <div class="panel-body">
+                  <div class="form-group input-group ">
+                    <span class="input-group-addon noCurve"><div class="glyphicon glyphicon-user"  ></div></span>
+                    {{forms.input("first_name", 'id="first_name" placeholder="First Name"',
+                    "noCurve", "full-width")}}
+                    {{forms.input("last_name", 'id="last_name" placeholder="Last Name"',
+                    "noCurve", "full-width")}}
+                  </div>
+                  <div class="form-group input-group">
+                    <span class="input-group-addon noCurve">
+                      <div class="glyphicon glyphicon-heart-empty"  ></div></span>
+                    {{forms.radio_input("gender", [{'key': 'male', 'value': 'Male',
+                    'label_class': 'btn-success noCurve'},
+                    {'key': 'female', 'value': 'Female',
+                    'label_class': 'btn-primary noCurve'},
+                    {'key': 'other', 'value':'Other', 'label_class': 'btn-info noCurve'}
+                    ], "Male", "noCurve")
+                    }}
+                  </div>
+                  <div class="form-group input-group input-append date"
+                       id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                    <span class="input-group-addon noCurve"><div class="glyphicon glyphicon-calendar"  ></div></span>
+                    {{forms.input("dob", 'placeholder="D.O.B"', "span2 noCurve",  "full-width", "date")}}
+                  </div>
+                  <div class="form-group input-group">
+                    <span class="input-group-addon noCurve" ><div class="glyphicon glyphicon-envelope"  ></div></span>
+                    {{forms.email_input("email", 'id="email" placeholder="Enter your email"', "", "full-width")}}
+                  </div>
+                  <div class="form-group input-group">
+                    <span class="input-group-addon noCurve" ><div class="glyphicon glyphicon-lock"  ></div></span>
+                    {{forms.password_input("password", 'id="password" placeholder="Password"', "", "full-width")}}
+                  </div>
+                  <div class="btn-group">
+                    <a href="#registration_type" role="tab" data-toggle="tab" class="btn btn-danger noCurve">
+                      <div class="glyphicon glyphicon-chevron-left"></div><strong>Back</strong>
+                    </a>
+                    <button type="sumbit" class="btn btn-success noCurve">
+                      <strong>Register</strong></div>
+                    </button>
+                  </div>
+                  <hr />
+                  <p>Already Registered ? <a href="{{host}}/user/signin">Login here</a></p>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

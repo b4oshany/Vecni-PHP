@@ -1,9 +1,10 @@
 <?php
 namespace libs\vecni\http;
-use libs\vecni\Vecni as app;
 require_once "Request.php";
+use libs\vecni\libs\NamespaceTrait;
 
-class Response{
+abstract class Response{
+    use NamespaceTrait;
     public static function init(){
         if(!isset($_SESSION["access_key"])){
             $_SESSION["access_key"] = uniqid('vecni_');
@@ -31,13 +32,16 @@ class Response{
         header("$header: $message");
     }
 
-    public static function abort($message = "Not Found", $status_code=404, $status_text="Not Found"){
+    public static function abort($message = "Not Found", $status_code=404, $raw_output=false){
         header("Connection: close", true);
         header("Message: $message");
-        if(Request::is_async()){
+        if(Request::is_async() && is_array($message)){
             echo self::json_response($status_code, $message);
         }
-        header("HTTP/1.0 $status_code $status_text");
+        if($raw_output){
+            echo $message;
+        }
+        header("HTTP/1.0 $status_code $message");
         die();
     }
 }

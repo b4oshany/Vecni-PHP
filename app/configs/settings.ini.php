@@ -16,10 +16,20 @@ app::$company_name = 'Osoobe Inc.';
 /***************** Database Connection ***********************/
 # If you intend to use a SQL Server, please uncomment the two lines
 # below to use the PDO Extension.
-# TODO: Set PDO Database connection in the settings.override.php file as seen below.
-# use libs\mysql\PDOConnector; // Place this after the openning php tags at the top.
-# PDOConnector::set_connection("user", "password", "database");
-# PDOConnector::connect();
+# NOTE: Create a file name settings.override.php in the same directory as this file.
+# The settings.override.php file must consist of the following:
+/* <?php
+    use libs\vecni\Vecni as app;
+    use libs\mysql\PDOConnector;
+
+    PDOConnector::set_connection(db_user, db_pass, db_name);
+    PDOConnector::connect();
+    app::$mode = "debug";
+ ?>
+*/
+# The db_name is 'ohomes'.
+# By default the db_user and db_pass is 'root', '' respectively, else replace those
+# variables with the corrent db_user and db_pass in the settings.override.php file.
 
 # Enable error reporting.
 # This is only applicable on development or local server.
@@ -46,7 +56,7 @@ Image::register_location(Image::build_path($absolute_static, $default_image_fold
 # NOTE: This file is ignore by git. It will contain your personal settings for the project.
 $settings_override = File::build_path(dirname(__FILE__), "settings.override.php");
 if(is_file($settings_override)){
-    require_once $settings_override;    
+    require_once $settings_override;
 }
 
 ?>

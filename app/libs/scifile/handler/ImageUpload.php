@@ -76,6 +76,19 @@ class ImageUpload{
         $image = $this->image;
         return ($image["error"] > 0)? true : false;
     }
+    
+    /**
+    * Remove recent uploaded files.
+    * @return bool - true if uploaded files have been remove, esle false.
+    */
+    public function remove_files(){
+        $is_removed = false;
+        if(!empty($this->thumbnail))
+            $is_removed = unlink($this->thumbnail);
+        if(!empty($this->fullsize))
+            $is_removed = ($is_removed)? unlink($this->fullsize) : $is_removed;
+        return $is_removed;
+    }
 
     /**
     * Process the uploaded image and create a thumbnail image, where applicable.
@@ -93,12 +106,13 @@ class ImageUpload{
         $size_status = $this->accept_size();
         if($size_status && $type_status && File::mkdir($dir)){
             $img = ($dir == '')? ''.$dir.$this->image['name'] : ''.$dir.'/'.$this->image['name'];
+            $file_exists = is_file($img);
             if(move_uploaded_file($this->image['tmp_name'], $img)){
                 if($createThumbnail){
-                    $this->thumbnail = GDImage::createThumbnail($img, $dir, $thumbnailWidth, $thumbnailHeight, $thumbnialResizeOption);
+                    $this->thumbnail = GDImage::createThumbnail($img, $dir, $thumbnailWidth, $thumbnailHeight, $thumbnailResizeOption);
                 }
                 $this->fullsize = $img;
-                return  'success';
+                return (($file_exists)? 'replaced' : 'success');
             }else{
                 return 'failed';
             }

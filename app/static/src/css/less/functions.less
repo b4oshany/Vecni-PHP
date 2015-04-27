@@ -1,8 +1,22 @@
+.box-shadow-inset(@style, @c) when (iscolor(@c)) {
+  -webkit-box-shadow: @style @c inset;
+  -moz-box-shadow: @style @c inset;
+  -o-box-shadow: @style @c inset;
+  box-shadow: @style @c inset;
+}
+
 .box-shadow(@style, @c) when (iscolor(@c)) {
   -webkit-box-shadow: @style @c;
   -moz-box-shadow: @style @c;
   -o-box-shadow: @style @c;
-  box-shadow:         @style @c;
+  box-shadow: @style @c;
+}
+
+.border-radius(@style){
+    -webkit-border-radius: @style;
+    -moz-border-radius: @style;
+    -o-border-radius: @style;
+    border-radius: @style;
 }
 
 .transition(@style){

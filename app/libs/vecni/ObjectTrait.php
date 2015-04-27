@@ -107,5 +107,19 @@ trait ObjectTrait{
                 $this->$key = $value;
         }
     }
+    
+    /**
+    * Get function parameters.
+    * @param string $funcName Function name.
+    * @return string[] List of parameter names.
+    */
+    public static function get_params($funcName) {
+        $f = new \ReflectionFunction($funcName);
+        $result = array();
+        foreach ($f->getParameters() as $param) {
+            $result[] = $param->name;   
+        }
+        return $result;
+    }
 }
 ?>

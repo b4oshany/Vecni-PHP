@@ -16,3 +16,6 @@
 [submodule "app/static/ext/jsuploader"]
 	path = app/static/ext/jsuploader
 	url = git@github.com:b4oshany/AJAX-Uploader.git
+[submodule "app/static/ext/googlemap"]
+	path = app/static/ext/googlemap
+	url = git@github.com:b4oshany/Google-Map-Javascript-APIv3.git

@@ -1,6 +1,5 @@
 <?php
 namespace libs\mysql;
-require_once "MysqlAutoloader.php";
 class PDOConnector{
     //privilige user for the database
     public static $database_user;
@@ -65,7 +64,8 @@ class PDOConnector{
             }
         }else{
             foreach($updates as $key => $value){
-                array_push($temp, "$key=$value");
+                $value_format = self::format($value);
+                array_push($temp, "$key=$value_format");
             }            
         }
         if(!empty($temp)){
@@ -83,48 +83,20 @@ class PDOConnector{
     * @return mixed Correct format of the mysql table data.
     */
     public static function format($table_data){
-        return (!is_numeric($table_data) || !is_bool($table_data))? "'$table_data'": $table_data;
-    }	
-
-    //build an insert or update on duplicate function
-    public static function build_sql_insert_or_update($id_col, $sql, $udata){
-        $first = true;
-        $values = $col = $update = '';
-        //print_r($id_col);
-        //echo '<br>';
-        //print_r($udata);
-        //echo '<br>';
-        //get the pre-set column name and its value out of the udata
-        foreach($udata as $key => $value){
-            //check if the preset column name is present in the mapping of the preset columns to db columns
-            if(array_key_exists($key, $id_col)){
-                //if the preset column is present then build the sql from the matching preset columns - db columns
-                //get the db column from the column mapping
-                //append the db column to the column variable
-                //get the value from the udata to for each column and build the sql file with the specific value type
-                //build the update sql with both key and value pair
-                if($first){
-                    $col_key = $id_col[$key];     //the value in the array based on the key
-                    $col = $col_key." " ;
-                    $values = " ".Db_Functions::returnType($value);
-                    $update = " $col_key = ".Db_Functions::returnType($value);
-                    $first = false;
-                }else{
-                    $col_key = $id_col[$key];
-                    $col = $col.",$col_key";
-                    $values = $values.','.Db_Functions::returnType($value);
-                    $update = $update.", $col_key = ".Db_Functions::returnType($value);
-                }
-            }
+        return (!is_numeric($table_data) && !is_bool($table_data))? "'$table_data'": $table_data;
+    }
+    
+    /**
+    * Import database.
+    * @var strign $file Path of the database file.
+    * @return boolean True if update was successful, else false.
+    */
+    public static function import($file){
+        if(is_file($file)){
+            PDODbImporter::importSQL($file, self::$db);
+            return true;
         }
-        if($col != ''){
-            //set the condition as in where the data should be inputed
-            $sql .= "($col) values($values) on duplicate key update $update";
-            return $sql;
-        }else{
-            echo $sql;
-            return 'err';
-        }
+        return false;
     }
 }
 

@@ -1,2 +1,5 @@
-chgrp -R www-data .
-git submodule update --init
+#!/bin/bash
+
+# Ensure that the correct ownership is applied
+if [ -n "$USER" ]; then chown -R $USER:www-data . ; ele chgrp -R www-data .; fi
+git submodule update --remote --merge

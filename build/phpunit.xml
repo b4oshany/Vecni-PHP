@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="../test.setup.php">
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory>../tests/</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <log type="coverage-html" target="coverage" />
+        <log type="coverage-xml" target="coverage/xml" />
+        <log type="coverage-clover" target="logs/clover.xml" />
+        <log type="coverage-crap4j" target="logs/crap4j.xml" />
+        <log type="junit" target="logs/junit.xml" logIncompleteSkipped="false" />
+    </logging>
+</phpunit>

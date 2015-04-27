@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>Ohomes Developer API</title>
+    <parser>
+        <default-package-name>main</default-package-name>
+        <target>docs/docs</target>
+    </parser>
+    <transformer>
+        <target>docs/docs</target>    
+    </transformer>
+    <files>
+        <file>*.php</file>
+        <directory>app</directory>
+        <ignore>app/plugins/*</ignore>
+        <ignore>app/static/*</ignore>
+        <ignore>app/data-dump/*</ignore>
+        <ignore>app/libs/vecni/Autoloader.php</ignore>
+    </files>
+    <transformations>
+        <template name="clean" />
+    </transformations>
+</phpdoc>

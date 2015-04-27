@@ -2,18 +2,20 @@
 * @package Carousel
 */
 
-@carousel-height: 400px;
 .carousel{
-
+    height: 400px;
     .carousel-inner{
-        height: @carousel-height;
+        height: inherit;
         width: 100%;
-        
+
         .item{
-            height: @carousel-height !important;
-            
-            &.active{
-                height: @carousel-height !important;            
+            height: inherit;
+            img{
+                  max-width: 100%;
+                  max-height: 100%;
+                  min-width: 80%;
+                  height: inherit;
+                  margin: 0 auto;
             }
         }
     }

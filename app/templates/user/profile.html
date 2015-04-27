@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% import "macros/forms.html" as forms %}
+{% import "macros/carousel.html" as carousel %}
+{% block scripts %}
+  <script src="{{static}}/ext/jsuploader/jquery-uploader.js?={{version}}"></script>
+  <script src="{{static}}/ext/googlemap/gmap.js?={{version}}"></script>
+  <script>
+  {% autoescape false %}
+    {% if current_user %}
+        app.profile_user.data = {{user|json_encode()}};
+    {% endif %}
+  {% endautoescape %}
+  </script>
+{% endblock %}
+{% block content %}
+
+<!-- begin:content -->
+<div id="content">
+  <div class="container">
+      <div class="row" role="head" id="head">
+        <div class="col-md-8">
+            <ul class="nav nav-pills" role="tablist">
+              {% if not owns_profile %}
+              <li >
+                <a id="user-message" data-target="user-message" data-toggle="modal" class="user-quick-links" role="presentation" href="#">
+                    <div class="fa fa-envelope"></div>
+                    <span class="item-badge">0</span>
+                    <div>Message</div>
+                </a>
+              </li>
+              <li >
+                <a id="user-contacts" data-target="user-contacts" class="user-quick-links" role="presentation" href="#">
+                    <div class="fa fa-group"></div>
+                    <div>Add Contact</div>
+                </a>
+              </li>
+              <li >
+                <a id="user-subscribes" data-target="user-subscribes" class="user-quick-links" role="presentation" href="#">
+                    <div class="fa fa-rss"></div>
+                    <span class="item-badge">0</span>
+                    <div>Subscribe</div>
+                </a>
+              </li>
+              {% else %}
+              <li>
+                <a id="user-watch-list" data-target="user-watch-list" class="user-quick-links" role="presentation" href="#">
+                    <div class="fa fa-eye"></div>
+                    <span class="item-badge">0</span>
+                    <div>Watch List</div>
+                </a>
+              </li>
+              <li>
+                <a id="user-views" data-target="#remote-modal" data-toggle="modal" class="user-quick-links" role="presentation"
+                   href="{{host}}/user/{{user.user_id}}/property-viewed/">
+                    <div class="fa fa-eye-slash"></div>
+                    <span class="item-badge">{{num_property_viewed}}</span>
+                    <div>Viewed</div>
+                </a>
+              </li>
+              {% endif %}
+              <li>
+                <a id="user-recommends" data-target="user-recommends" class="user-quick-links" role="presentation" href="#">
+                    <div class="fa fa-thumbs-o-up"></div>
+                    <span class="item-badge">0</span>
+                    <div>Recommends</div>
+                </a>
+              </li>
+              <li>
+                <a id="user-favourites" data-target="user-favourites" class="user-quick-links" role="presentation" href="#">
+                    <div class="fa fa-heart-o"></div>
+                    <span class="item-badge">{{user.favourites.count()}}</span>
+                    <div>Favourites</div>
+                </a>
+              </li>
+            </ul>
+        </div>
+        <div class="col-md-4" id="main-user-highlight">
+            <h1>{{user.get_fullname()}}</h1>
+            <label>Joined on <time>{{user.date_joined.format('F jS Y')}}</time><label>
+        </div>
+      </div>
+    <div class="row">
+      <!-- begin:sidebar -->
+      <div class="col-md-3 col-md-push-9 col-sm-4 col-sm-push-8 col-xs-12">
+        <!-- begin:user-profile -->
+        <div class="row" id="user-profile-panel">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-menu">
+                {% if owns_profile %}
+                <div class="fa fa-camera user change-pic"></div>
+                <div class="user change-pic-note">Update Profile Photo</div>
+                {% endif %}
+                <img src="{{host}}/{{user.profile_pic}}" class="user profile_pic el-width-10" />
+              </div>
+                  {% if user.tel %}
+                  <div class="list-group-item">
+                    <a href="tel:{{user.tel.main}}">{{user.tel.main}}</a>
+                  </div>
+                  {% endif %}
+                  <div class="list-group-item">
+                    <a href="mailto:{{user.email}}">{{user.email}}</a>
+                  </div>
+                  <div class="list-group-item">
+                    <span class="owner">{{user.first_name}} {{user.last_name}}</span>
+                    <span class="badge">name</span>
+                  </div>
+            </div>
+          </div>
+        </div>
+        <!-- end:user-profile -->
+
+        <!-- begin:tags -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="widget-title">
+                  <h3>Tags</h3>
+                </div>
+                <ul class="tags">
+                  <li><a href="#">City</a>
+                  </li>
+                  <li><a href="#">Tower</a>
+                  </li>
+                  <li><a href="#">Photonesia</a>
+                  </li>
+                  <li><a href="#">Building</a>
+                  </li>
+                  <li><a href="#">Uwuwuw</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end:tags -->
+      </div>
+      <!-- end:sidebar -->
+
+      <!-- begin:article -->
+      <div class="col-md-9 col-md-pull-3 col-sm-8 col-sm-pull-4 col-xs-12">
+        <!-- begin:placeholder -->
+        <div id="placeholder-quick-links"></div>
+        <!-- begin:article-content -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+            <div class="card-menu">
+                <h4>Daily Recommendation</h4>
+            </div>
+              <div class="card-content">
+                <div id="recommened-property">
+                    {{carousel.property_listings("property", properties, false)}}
+                </div>
+                <div class="detail-meta">
+                  <span><em>Tags : </em> <a href="#">Tower</a>, <a href="#">City</a>, <a href="#">Building</a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end:article-content -->
+      </div>
+      <!-- end:article -->
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -7,6 +7,6 @@ if [ -z "$template" ]
   then
     template="responsive-twig"
 fi
-rm -rf "$(pwd)-gh-pages/doc"
-phpdoc -d $(pwd) -t "$(pwd)-gh-pages/doc" -i app/plugins/ --template="$template" --defaultpackagename="main" --title="Vecni PHP Documentation"
-echo "Code documentation is located in $(pwd)-gh-pages/doc."
+rm -rf "$(pwd)-doc"
+phpdoc -d $(pwd) -t "$(pwd)-doc" -i app/plugins/ --template="$template"
+echo "Code documentation is located in $(pwd)-doc."

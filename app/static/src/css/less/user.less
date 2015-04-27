@@ -1,0 +1,142 @@
+html{
+    &.user_profile{
+        #head{
+            margin-bottom: @content-margin;
+
+            ul li a{
+                text-align: center;
+                div:first-child{
+                    font-size: 36px;
+                }
+                dic:last-child{
+                    font-size: 12px;
+                }
+
+                .item-badge{
+                  position: absolute;
+                  left: 70%;
+                }
+            }
+
+            #main-user-highlight{
+                text-align: right;
+                h1{
+                    margin-bottom: 3px;
+                    margin-top: 0px;
+                    color: #999;
+                    font-weight: bold !important;
+                    text-shadow: 0 1px 1px black;
+                }
+                time{
+                    color: #AAD450;
+                }
+            }
+        }
+
+        #user-profile-panel{
+            .card-menu{
+                position: relative;
+            }
+
+            .user.change-pic{
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+                font-size: 30px;
+                background: rgba(0,0,0,0.6);
+                padding: 5px;
+                .border-radius(10px);
+                z-index: 5;
+            }
+
+            .user.change-pic-note{
+                visibility: hidden;
+                position: absolute;
+                bottom: 20px;
+                background: rgba(0,0,0,0.6);
+                width: 100%;
+                left: 0;
+                background-clip: content-box;
+                text-align: right;
+                color: white;
+                height: 40px;
+                line-height: 40px;
+                &:hover{
+                    visibility: visible;
+                }
+            }
+
+            &:hover{
+                .user.change-pic{
+                    background: none;
+                }
+                .user.change-pic-note{
+                    visibility: visible;
+                }
+            }
+        }
+
+        .user-activities{
+            margin-bottom: @content-margin;
+            text-align: center;
+            .activity{
+                a{
+                    display: inline-block;
+                    .box-shadow(@main-shadow-thickness, @main-shadow-color);
+                    width: 100%;
+                    padding-bottom: 5px;
+                    padding-top: 5px;
+                    .border-radius(10px);
+                    color: white;
+                    font-weight: 500;
+
+                    &:not(:first-child){
+                        margin-left: 5px;
+                    }
+                    &:not(:last-child){
+                        margin-right: 5px;
+                    }
+
+                    div:last-child{
+                        font-size: 12px;
+                    }
+                }
+
+                &.user-ratings a{
+                    background: #FBCA54;
+                }
+
+                &.user-shares a{
+                    background: #4EBAFF;
+                }
+
+                &.user-recommends a{
+                    background: #AAD450;
+                }
+
+                &.user-favourites a{
+                    background: #F6402D;
+                }
+
+                &.user-watchlist a{
+                    background: #FF8A3C;
+                }
+
+                &.user-viewed a{
+                    background: #969696;
+                }
+            }
+        }
+
+        .carousel{
+            .carousel-inner{
+                height: 200px;
+            }
+
+            .carousel-control{
+                width: 7%;
+                background: none;
+            }
+        }
+    }
+}

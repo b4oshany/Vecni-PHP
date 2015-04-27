@@ -1,0 +1,17 @@
+{
+    "autoload":{
+        "psr-4": {
+            "controllers\\": "app/controllers",
+            "libs\\": "app/libs"
+        }
+    },
+    "config": {
+        "vendor-dir": "app/plugins"
+    },
+    "require": {
+        "joseph-lenton/php-error": "dev-master",
+        "leafo/lessphp": "0.5.0",
+        "phpmailer/phpmailer": "dev-master",
+        "twig/twig": "1.18.1"
+    }
+}

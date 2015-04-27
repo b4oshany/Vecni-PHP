@@ -1,6 +1,12 @@
-<script src="{{static}}/src/js/jquery.js"></script>
-<script src="{{static}}/ext/jsuploader/jquery-refresher.js"></script>
-<script src="{{static}}/ext/bootstrap/js/bootstrap.min.js"></script>
-<script src="{{static}}/ext/bootstrap/validator/dist/js/bootstrapValidator.js"></script>
-<script src="{{static}}/ext/sweetalert/lib/sweet-alert.min.js"></script>
-<script src="{{static}}/src/js/app.js"></script>
+<script src="{{static}}/src/js/jquery.js?v={{version}}"></script>
+<script src="{{static}}/src/js/jquery-oet.js?v={{version}}"></script>
+<script src="{{static}}/src/js/js-oet.js?v={{version}}"></script>
+<script src="{{static}}/src/js/app.js?v={{version}}"></script>
+<script>
+  {% autoescape false %}
+    {% if current_user %}
+        app.current_user.data = {{current_user|json_encode()}};
+    {% endif %}
+  {% endautoescape %}
+</script>
+<script src="{{static}}/ext/bootstrap/js/bootstrap.min.js?v={{version}}"></script>

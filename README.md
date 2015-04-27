@@ -1,6 +1,14 @@
 Description
 -----------
 
+Ohomes is a real estate e-commerce website that acts as a mediator between tenants 
+and landlords or perspective buyers and sellers.  This product offers a platform for tenants and house buyers to search, 
+buy or rent properties based on their requirements and budget at no additional cost. 
+Nevertheless, it offers a platform for landlords, Real Estate Agency or any laird who wish to publish and 
+advertise their properties to perspective buyers or tenants at an additional cost. Ohomes will use it mediatory functions to 
+manage all necessary activities amongst traders such as bill payment, meeting and home maintenance (in the case of renting).
+NOTE: Ohomes is powered by [Vecni].
+
 [Vecni] is a light-weight PHP micro-framework that utilizes url dispatching to server files instead of
 filesystem url resolution. It utilizes Twig, which is equivalent to Python Jinja2 templates for advance template
 management.
@@ -52,25 +60,22 @@ Tech Stack
   - [Bootstrap][], [Font Awesome][], [Social Buttons][]
   - [jQuery][]
   - [OpenID][] sign in (Google, Facebook, Twitter)
-
-
-Author of [Vecni]
--------------------------
-[Oshane Bailey]
-
-![alt tag](https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t1.0-1/c127.37.466.466/s148x148/76418_1578880746745_2542594_n.jpg)
+  - [PHPError][]
+  - [SweetAlerts][]
 
 
 [Oshane Bailey]: https://github.com/b4oshany
 [Twig]: http://twig.sensiolabs.org/doc/installation.html
+[PHPError]: http://phperror.net/
 [PHPMailer]: https://github.com/PHPMailer/PHPMailer
 [bootstrap]: http://getbootstrap.com/
-[font awesome]: http://fortawesome.github.com/Font-Awesome/
+[Font Awesome]: http://fortawesome.github.com/Font-Awesome/
 [jquery]: http://jquery.com/
 [less]: http://lesscss.org/
 [lesscss]: http://lesscss.org/
+[SweetAlerts]: http://tristanedwards.me/sweetalert
 [openid]: http://en.wikipedia.org/wiki/OpenID
-[social buttons]: http://lipis.github.io/bootstrap-social/
+[Social Buttons]: http://lipis.github.io/bootstrap-social/
 [Click here to enable rewrite module for Linux]: http://b4oshany.blogspot.com/2014/08/by-default-apache-disable-symbolic.html
 [Click here to enable rewrite module for Windows]: http://www.anmsaiful.net/blog/php/enable-apache-rewrite-module.html
-[Vecni]: http://b4oshany.github.io/Vecni-PHP
+[Vecni]: https://github.com/b4oshany/vecni

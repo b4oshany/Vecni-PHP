@@ -1,0 +1,20 @@
+{
+    "Jamaica": {
+        "parishes": [
+            {"name": "Clarendon"},
+            {"name": "Kingston"},
+            {"name": "Manchester"},
+            {"name": "Hanover"},
+            {"name": "Portland"},
+            {"name": "St. Catherine"},
+            {"name": "St. Andrew"},
+            {"name": "St. Thomas"},
+            {"name": "St. Mary"},
+            {"name": "St. Ann"},
+            {"name": "St. James"},
+            {"name": "St. Elizabeth"},
+            {"name": "Trelawny"},
+            {"name": "Westmoreland"}
+        ]
+    }
+}

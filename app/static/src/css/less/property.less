@@ -1,0 +1,61 @@
+html{
+  &.property_view{
+    #property_update_address, .property_update_address[type='submit'], #property-price-update{
+        display: none;
+    }
+    .property_address{
+        address{
+            display: inline-block;
+        }
+    }
+    .modal{
+        #property-price-update{
+            display: block !important;
+        }
+    }
+    #property-map .google-map{
+        min-height: 400px;
+        width: 100%;
+        border-top: 1px solid @main-shadow-color;
+    }
+    #nearby_place_add_modal .google-map{
+        height: 200px;
+        border: 1px solid @main-shadow-color;
+    }
+
+    #property-profile-carousel{
+      #carousel-settings{
+        display: none;
+      }
+
+      &:hover {
+        #carousel-settings{
+          display: block;
+          color: white;
+        }
+
+        .carousel-inner:after{
+          background: rgba(0,0,0,.3);
+          width: 100%;
+          display: block;
+          content: " ";
+          position: absolute;
+          top: 0;
+          height: 40px
+        }
+      }
+    }
+
+    #nearby-places{
+      tr{
+        .options{
+          display: none;
+        }
+
+        &:hover .options{
+          display: table-cell;
+        }
+      }
+    }
+  }
+}

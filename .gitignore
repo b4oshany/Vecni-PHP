@@ -2,4 +2,9 @@
 *.DS_Store
 *.swp
 .DS_Store
+app/static/etc/*
 app/static/css/gen/*
+app/configs/*.override.php
+docs/
+.project
+.codio
